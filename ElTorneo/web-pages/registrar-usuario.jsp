@@ -1,19 +1,21 @@
+        
+<link href="assets/css/estiloRegistrar-usuario.css" rel="stylesheet" type="text/css">
 
-<div class="card tc-card">
-    <div class="card-body">
-        <h4 class="card-title" id="tituloForm">Registrar Tecnico</h4> 
+<div class="card tc-card" id="bodyRegistrar" >
+    <div class="card-body"  >
+        <h4 class="card-title" id="tituloForm"> <b>  Registrar Tecnico </b></h4> 
         <br>
         <form class="forms-sample" id="reg_usuario"  onsubmit="return false;">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="ap1_usuario">Nombres *</label>
+                        <label for="ap1_usuario">* Nombres: </label>
                         <input type="text" class="form-control nombre" id="nom1_usuario" name="ap1_usuario" autocomplete="off" maxlength="45"  required>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="ap2_usuario">Apellidos *</label>
+                        <label for="ap2_usuario">* Apellidos: </label>
                         <input type="text" class="form-control nombre" id="ap1_usuario" name="ap2_usuario" autocomplete="off" maxlength="45" >
                     </div>
                 </div>
@@ -21,14 +23,14 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="documento">Número documento: *</label>
+                        <label for="documento">* Número documento: </label>
                         <input type="text" maxlength="10"  class="form-control numeros"  id="documentoB" name="documento" autocomplete="off" >
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="email">Correo: *</label>
+                        <label for="email">* Correo: </label>
                         <input type="email" class="form-control" id="email" maxlength="45" name="email" autocomplete="off" required>
                     </div>
                 </div>
@@ -36,13 +38,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="cel_usuario">Celular: *</label>
+                        <label for="cel_usuario">* Celular: </label>
                         <input type="text" class="form-control numeros" id="cel_usuario" name="cel_usuario" maxlength="10" autocomplete="off" required>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="dir_usuario">Dirección: *</label>
+                        <label for="dir_usuario">* Dirección: </label>
                         <input type="text" class="form-control" id="dir_usuario" name="dir_usuario" maxlength="45" autocomplete="off" required>
                     </div>
                 </div>
@@ -50,13 +52,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="tel_usuario">Telefono: *</label>
+                        <label for="tel_usuario">* Telefono: </label>
                         <input type="text" class="form-control numeros" id="tel_usuario" name="tel_usuario" maxlength="10" autocomplete="off">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="usuario">Usuario *</label>
+                        <label for="usuario">* Usuario: </label>
                         <input type="text" class="form-control" id="usuario" name="usuario" maxlength="15" autocomplete="off">
                     </div>
                 </div>

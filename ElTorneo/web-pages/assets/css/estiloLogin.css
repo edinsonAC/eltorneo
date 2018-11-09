@@ -1,0 +1,30 @@
+.login-container{
+        background: url(../images/balon_estadio.jpg);
+        background-size: cover;
+        background-position: center;
+    
+}
+
+.page-container{
+    background: none;
+}
+#panelInicio{
+    background-color: rgba(255,255,255,0.7);
+    border: 3px solid black;
+    border-radius: 20px;
+    
+}
+#loginIcon{
+    margin-bottom: 6px;
+    margin-right: 6px;
+
+}
+
+#pLogo{
+    margin-bottom: 8px;
+    border-bottom: 2px solid black;
+}
+
+#registro{
+    background-color: rgba(200,200,200,1);
+}

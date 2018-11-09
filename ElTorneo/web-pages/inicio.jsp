@@ -24,16 +24,16 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>ElTorneo</title>
+        <title>Registro - El Torneo</title>
 
         <link href="assets/css/integral-core.css" rel="stylesheet">
         <!-- Global stylesheets -->
-        <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
         <link href="assets/css/bootstrap.css" rel="stylesheet" type="text/css">
         <link href="assets/css/core.css" rel="stylesheet" type="text/css">
         <link href="assets/css/components.css" rel="stylesheet" type="text/css">
         <link href="assets/css/colors.css" rel="stylesheet" type="text/css">
         <link href="assets/css/estilos.css" rel="stylesheet" type="text/css">
+        <link href="assets/css/estiloInicio.css" rel="stylesheet" type="text/css">
 
         <!-- Core JS files -->
         <script type="text/javascript" src="assets/js/plugins/loaders/pace.min.js"></script>
@@ -79,10 +79,11 @@
     </head>
 
     <body>
-        <div class="container">
+        <div class="container" id="hola">
             <header>
+                
                 <nav class="navbar navbar-default">
-                    <div class="container">
+                    <div class="container"  >
                         <div class="navbar-header">
                             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav1">
                                 <span class="sr-only">menu</span>
@@ -90,9 +91,9 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a href="#" class="navbar-brand"><img title="Rusia 2018" src="http://www.balonazos.com/wp-content/uploads/2015/11/RUSIA2018.png"</a>
+                            <h4>El Torneo</h4>
                         </div>
-                        <div class="collapse navbar-collapse" id="nav1">
+                        <div class="collapse navbar-collapse" id="nav1" >
                             <ul class="nav navbar-nav">
                                 <% for (MenuDTO elem : menu) {%>                             
                                 <li class="dropdown">  
@@ -113,8 +114,11 @@
                     </div>
                 </nav>
             </header>
+                                
         </div><br>
-        <div id="contenidoPrincipal" class="page-container">
+        
+        
+        <div id="contenidoPrincipal" class="page-container"  >
         </div>
         <script>
             var idTipoUsuarioLogueado;
