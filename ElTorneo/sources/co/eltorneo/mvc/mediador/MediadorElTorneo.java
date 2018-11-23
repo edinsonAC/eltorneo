@@ -630,16 +630,20 @@ public class MediadorElTorneo {
                                 partidoJuego = new PartidoDTO();
                                 partidoJuego.setId(respuesta.getIdResgistrado());
                                 partidoJuego.setEquipoA(equipos.get(y).getId());
-                                respuesta2 = new PartidoDAO().registrarPartidoJuego(conexion, partidoJuego, partidoJuego.getEquipoA());
+                                
                                 y = 0;
                                 System.out.println("va a validar el equipo -> " + equipos.get(y).getId() + "en la jornada " + partido.getJornada());
                                 while (new PartidoDAO().validarEquipoPorJornada(conexion, equipos.get(y).getId(), partido.getJornada())) {
                                     System.out.println("si existe el equipo -> " + equipos.get(y).getId() + "en la jornada " + partido.getJornada());
                                     y++;
                                 }
+                                while (new PartidoDAO().validarEquipoPorPartidos(conexion, equipos.get(y).getId(), partido.getEquipoA())) {
+                                    System.out.println("si existe el equipo -> " + equipos.get(y).getId() + "en la jornada " + partido.getJornada());
+                                    y++;
+                                }
                                 System.out.println("paso el equipo con -> " + equipos.get(y).getId() + "en la jornada " + partido.getJornada());
                                 partidoJuego.setEquipoB(equipos.get(y).getId());
-                                respuesta2 = new PartidoDAO().registrarPartidoJuego(conexion, partidoJuego, partidoJuego.getEquipoB());
+                                respuesta2 = new PartidoDAO().registrarPartidoJuego(conexion, partidoJuego);
                                 nPartidosPorJornada--;
                                 y = 0;
                             } else {
@@ -673,7 +677,7 @@ public class MediadorElTorneo {
                                     partidoJuego = new PartidoDTO();
                                     partidoJuego.setId(respuesta.getIdResgistrado());
                                     partidoJuego.setEquipoA(equipos.get(y).getId());
-                                    respuesta2 = new PartidoDAO().registrarPartidoJuego(conexion, partidoJuego, partidoJuego.getEquipoA());
+                                    
                                     y = 0;
                                     System.out.println("va a validar el equipo -> " + equipos.get(y).getId() + "en la jornada " + partido.getJornada());
                                     while (new PartidoDAO().validarEquipoPorJornada(conexion, equipos.get(y).getId(), partido.getJornada())) {
@@ -683,7 +687,7 @@ public class MediadorElTorneo {
                                     System.out.println("paso el equipo con -> " + equipos.get(y).getId() + "en la jornada " + partido.getJornada());
 
                                     partidoJuego.setEquipoB(equipos.get(y).getId());
-                                    respuesta2 = new PartidoDAO().registrarPartidoJuego(conexion, partidoJuego, partidoJuego.getEquipoB());
+                                    respuesta2 = new PartidoDAO().registrarPartidoJuego(conexion, partidoJuego);
                                     nPartidosPorJornada--;
                                 } else {
                                     System.out.println("no se registro elpartido");

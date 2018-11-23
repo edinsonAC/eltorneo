@@ -72,7 +72,7 @@ public class PartidoDAO {
      * @return
      * @throws SQLException
      */
-    public RespuestaDTO registrarPartidoJuego(Connection conexion, PartidoDTO partido, String idEquipo) throws SQLException {
+    public RespuestaDTO registrarPartidoJuego(Connection conexion, PartidoDTO partido) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         int nRows = 0;
@@ -83,13 +83,14 @@ public class PartidoDAO {
             registro = new RespuestaDTO();
             //System.out.println("partido " + partido.toStringJson());
             cadSQL = new StringBuilder();
-            cadSQL.append(" INSERT INTO partido_equipo(equi_id, part_id)");
-            cadSQL.append(" VALUES (?,?) ");
+            cadSQL.append(" INSERT INTO partido_equipo(equi_a,equi_b, part_id)");
+            cadSQL.append(" VALUES (?,?,?) ");
 
             ps = conexion.prepareStatement(cadSQL.toString(), Statement.RETURN_GENERATED_KEYS);
 
-            AsignaAtributoStatement.setString(1, idEquipo, ps);
-            AsignaAtributoStatement.setString(2, partido.getId(), ps);
+            AsignaAtributoStatement.setString(1, partido.getEquipoA(), ps);
+            AsignaAtributoStatement.setString(2, partido.getEquipoB(), ps);
+            AsignaAtributoStatement.setString(3, partido.getId(), ps);
 
             nRows = ps.executeUpdate();
             if (nRows > 0) {
@@ -226,34 +227,35 @@ public class PartidoDAO {
      * @param idEquipoB
      * @return
      */
-    public int validarEquipoPorPartidos(Connection conexion, String idEquipoA, String idEquipoB) {
+    public boolean validarEquipoPorPartidos(Connection conexion, String idEquipoA, String idEquipoB) {
         PreparedStatement ps = null;
         ResultSet rs = null;
-        int rta = 0;
+        boolean rta = false;
         StringBuilder cadSQL = null;
 
         try {
 
             cadSQL = new StringBuilder();
-            cadSQL.append(" SELECT COUNT(paq.part_id) as partidos FROM partido_equipo paq ");
-            cadSQL.append(" WHERE paq.equi_id = ? or paq.equi_id = ?");
+            cadSQL.append(" SELECT part_id FROM partido_equipo paq ");
+            cadSQL.append(" WHERE paq.equi_a = ? AND paq.equi_b = ? or paq.equi_a = ? AND paq.equi_b = ? ");
 
             ps = conexion.prepareStatement(cadSQL.toString());
             AsignaAtributoStatement.setString(1, idEquipoA, ps);
             AsignaAtributoStatement.setString(2, idEquipoB, ps);
+            AsignaAtributoStatement.setString(3, idEquipoB, ps);
+            AsignaAtributoStatement.setString(4, idEquipoA, ps);
 
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                rta = rs.getInt("partidos");
-
+                rta = true;
             }
             ps.close();
             ps = null;
 
         } catch (Exception e) {
             LoggerMessage.getInstancia().loggerMessageException(e);
-            return -1;
+            return false;
         } finally {
             try {
                 if (ps != null) {
@@ -264,7 +266,7 @@ public class PartidoDAO {
                 }
             } catch (Exception e) {
                 LoggerMessage.getInstancia().loggerMessageException(e);
-                return -1;
+                return false;
             }
         }
 
