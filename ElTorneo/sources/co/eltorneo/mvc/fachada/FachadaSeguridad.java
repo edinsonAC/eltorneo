@@ -1,14 +1,11 @@
- /*
+/*
  * FachadaSeguridad.java
  *
- * Proyecto: Gestion de Creditos
- * Cliente: Promociones Empresariales
- * Copyright 2016 by Mobiltech SAS 
+ * Proyecto: elTorneo
  * All rights reserved
  */
 package co.eltorneo.mvc.fachada;
 
-//import co.mobiltech.unicloud.mvc.dto.DatosUsuarioDTO;
 import co.eltorneo.mvc.dto.UsuarioDTO;
 import co.eltorneo.mvc.mediador.MediadorSeguridad;
 import org.directwebremoting.annotations.RemoteMethod;
@@ -17,7 +14,7 @@ import org.directwebremoting.annotations.ScriptScope;
 
 /**
  *
- * @author Sys. E. Diego Armando Hernandez
+ * @author edinsonAC
  */
 @RemoteProxy(name = "ajaxSeguridad", scope = ScriptScope.SESSION)
 public class FachadaSeguridad {

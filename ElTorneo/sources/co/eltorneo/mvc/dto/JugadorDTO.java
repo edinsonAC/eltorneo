@@ -27,6 +27,7 @@ public class JugadorDTO implements Serializable {
     String imagenPerfil = Generales.EMPTYSTRING;
     String estado = Generales.EMPTYSTRING;
     String idPosicion = Generales.EMPTYSTRING;
+    String posicion = Generales.EMPTYSTRING;
     String dorsal = Generales.EMPTYSTRING;
     String registradoPor = Generales.EMPTYSTRING;
     String fechaRegistro = Generales.EMPTYSTRING;
@@ -158,6 +159,14 @@ public class JugadorDTO implements Serializable {
 
     public void setIdEquipo(String idEquipo) {
         this.idEquipo = idEquipo;
+    }
+
+    public String getPosicion() {
+        return posicion;
+    }
+
+    public void setPosicion(String posicion) {
+        this.posicion = posicion;
     }
 
     public String toStringJson() {

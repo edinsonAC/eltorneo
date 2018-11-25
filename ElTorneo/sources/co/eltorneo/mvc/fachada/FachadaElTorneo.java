@@ -10,6 +10,7 @@ package co.eltorneo.mvc.fachada;
 import co.eltorneo.mvc.dto.ArbitroDTO;
 import co.eltorneo.mvc.dto.EquipoDTO;
 import co.eltorneo.mvc.dto.JugadorDTO;
+import co.eltorneo.mvc.dto.PosicionDTO;
 import co.eltorneo.mvc.dto.RespuestaDTO;
 import co.eltorneo.mvc.dto.TecnicoDTO;
 import co.eltorneo.mvc.dto.UsuarioDTO;
@@ -18,8 +19,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
-
-//import co.mobiltech.doctorpin.mvc.mediador.MediadorAppUniCloud;
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
 import org.directwebremoting.annotations.ScriptScope;
@@ -55,7 +54,9 @@ public class FachadaElTorneo {
         return MediadorElTorneo.getInstancia().recuperarContrasenia(documento);
     }
 
-    /**aqui usted llama los metodos que hizo en el mediador y el dao, es como el puente entre la vista y codigo
+    /**
+     * aqui usted llama los metodos que hizo en el mediador y el dao, es como el
+     * puente entre la vista y codigo
      *
      * @param tecnico
      * @param usuario
@@ -134,8 +135,32 @@ public class FachadaElTorneo {
         return MediadorElTorneo.getInstancia().listarJugadores();
     }
 
+    /**
+     *
+     * @param fechaInicio
+     * @return
+     */
     @RemoteMethod
     public RespuestaDTO sorteoDePartidos(String fechaInicio) {
         return MediadorElTorneo.getInstancia().sorteoDePartidos(fechaInicio);
+    }
+
+    /**
+     *
+     * @return
+     */
+    @RemoteMethod
+    public ArrayList<PosicionDTO> listarPosicionesDeJuego() {
+        return MediadorElTorneo.getInstancia().listarPosicionDeJuego();
+    }
+
+    /**
+     *
+     * @param idEquipo
+     * @return
+     */
+    @RemoteMethod
+    public ArrayList<JugadorDTO> listarJugadoresPorIdEquipo(String idEquipo) {
+        return MediadorElTorneo.getInstancia().listarJugadoresPorIdEquipo(idEquipo);
     }
 }

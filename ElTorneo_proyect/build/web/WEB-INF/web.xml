@@ -95,63 +95,17 @@
         </form-login-config>
     </login-config>
     
-    <!-- Configuracion de Roles de Seguridad -->
+    <!-- Configuracion de Roles -->
     <security-role>
         <description>Usuarios validos</description>
         <role-name>USER_WEB</role-name>
     </security-role>
     
-    <!-- Configuracion de variables de contexto -->
+    <!-- Configuracion de rutas -->
     <env-entry>
-        <description>Ruta donde quedan guardados los logos de las empresas (S.O. Windows)</description>
+        <description>Ruta donde quedan guardados las imagenes de perfil cuando hayan(S.O. Windows)</description>
         <env-entry-name>ruta_imagen_perfil_windows</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
-        <env-entry-value>C:\unicloud\logoempresa\</env-entry-value>
-    </env-entry>
-    <env-entry>
-        <description>Ruta donde quedan guardados los logos de las empresas (S.O. Linux)</description>
-        <env-entry-name>ruta_imagen_perfil_linux</env-entry-name>
-        <env-entry-type>java.lang.String</env-entry-type>
-        <env-entry-value>/opt/unicloud/files/img/logoempresa/</env-entry-value>
-    </env-entry>
-    
-    <env-entry>
-        <description>Ruta donde quedan guardados los contratos subidos(S.O. Linux)</description>
-        <env-entry-name>ruta_archivo_contrato_linux</env-entry-name>
-        <env-entry-type>java.lang.String</env-entry-type>
-        <env-entry-value>/opt/unicloud/files/contratos/</env-entry-value>
-    </env-entry>
-    <env-entry>
-        <description>Ruta donde quedan guardados los contratos subidos(S.O. Windows)</description>
-        <env-entry-name>ruta_archivo_contrato_windows</env-entry-name>
-        <env-entry-type>java.lang.String</env-entry-type>
-        <env-entry-value>C:\unicloud\files\contratos\</env-entry-value>
-    </env-entry>
-
-     <env-entry>
-        <description>Ruta donde quedan guardados las imagenes de perfil(S.O. Linux)</description>
-        <env-entry-name>ruta_archivo_imgperfil_linux</env-entry-name>
-        <env-entry-type>java.lang.String</env-entry-type>
-        <env-entry-value>/opt/unicloud/files/img/perfil/</env-entry-value>
-    </env-entry>
-    <env-entry>
-        <description>Ruta donde quedan guardados las imagenes de perfil(S.O. Windows)</description>
-        <env-entry-name>ruta_archivo_imgperfil_windows</env-entry-name>
-        <env-entry-type>java.lang.String</env-entry-type>
-        <env-entry-value>C:\unicloud\imgperfil\</env-entry-value>
-    </env-entry>
-    
-     <env-entry>
-        <description>Ruta donde quedan guardados temporalmente los reportes(S.O. Linux)</description>
-        <env-entry-name>ruta_reporte_temporal_linux</env-entry-name>
-        <env-entry-type>java.lang.String</env-entry-type>
-        <env-entry-value>/opt/unicloud/files/reportes/</env-entry-value>
-    </env-entry>
-    <env-entry>
-        <description>Ruta donde quedan guardados temporalmente los reportes(S.O. Windows)</description>
-        <env-entry-name>ruta_reporte_temporal_windows</env-entry-name>
-        <env-entry-type>java.lang.String</env-entry-type>
-        <env-entry-value>C:\unicloud\reportes\</env-entry-value>
-    </env-entry>
-    
+        <env-entry-value>C:\eltorneo\imagenesperfil\</env-entry-value>
+    </env-entry>    
 </web-app>

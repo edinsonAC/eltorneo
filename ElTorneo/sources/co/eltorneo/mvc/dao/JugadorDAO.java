@@ -80,6 +80,11 @@ public class JugadorDAO {
         return registro;
     }
 
+    /**
+     *
+     * @param conexion
+     * @return
+     */
     public ArrayList<JugadorDTO> listarJugadores(Connection conexion) {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -108,6 +113,72 @@ public class JugadorDAO {
                 jugador.setCelular(rs.getString("juga_celular"));
                 jugador.setDocumento(rs.getString("juga_documento"));
                 jugador.setIdPosicion(rs.getString("poju_id"));
+                jugador.setIdEquipo(rs.getString("equi_id"));
+
+                listadoJugador.add(jugador);
+
+            }
+            ps.close();
+            ps = null;
+
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+            return null;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                    ps = null;
+                }
+                if (listadoJugador != null && listadoJugador.isEmpty()) {
+                    listadoJugador = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+                return null;
+            }
+        }
+
+        return listadoJugador;
+    }
+
+    /**
+     *
+     * @param conexion
+     * @param idEquipo
+     * @return
+     */
+    public ArrayList<JugadorDTO> listarJugadoresPorIdEquipo(Connection conexion, String idEquipo) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<JugadorDTO> listadoJugador = null;
+        JugadorDTO jugador = null;
+        StringBuilder cadSQL = null;
+
+        try {
+            cadSQL = new StringBuilder();
+            cadSQL.append(" SELECT juga_id, juga_nombre, juga_apellido,juga_telefono,juga_celular,juga_documento, ");
+            cadSQL.append(" jugador.poju_id,equi_id, poju.poju_nombre");
+            cadSQL.append(" FROM jugador ");
+            cadSQL.append(" INNER JOIN posicion_jugador poju ON poju.poju_id = jugador.poju_id");
+            cadSQL.append(" WHERE equi_id = ?");
+            
+            ps = conexion.prepareStatement(cadSQL.toString());
+            AsignaAtributoStatement.setString(1, idEquipo, ps);
+
+            rs = ps.executeQuery();
+
+            listadoJugador = new ArrayList();
+            while (rs.next()) {
+                jugador = new JugadorDTO();
+                jugador.setId(rs.getString("juga_id"));
+                jugador.setNombre(rs.getString("juga_nombre"));
+                jugador.setApellido(rs.getString("juga_apellido"));
+                jugador.setTelefono(rs.getString("juga_apellido"));
+                jugador.setCelular(rs.getString("juga_celular"));
+                jugador.setDocumento(rs.getString("juga_documento"));
+                jugador.setIdPosicion(rs.getString("poju_id"));
+                jugador.setPosicion(rs.getString("poju_nombre"));
                 jugador.setIdEquipo(rs.getString("equi_id"));
 
                 listadoJugador.add(jugador);
