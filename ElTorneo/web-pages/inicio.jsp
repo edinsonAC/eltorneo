@@ -29,18 +29,16 @@
         <link href="assets/css/integral-core.css" rel="stylesheet">
         <!-- Global stylesheets -->
         <link href="assets/css/bootstrap.css" rel="stylesheet" type="text/css">
-        <link href="assets/css/core.css" rel="stylesheet" type="text/css">
         <link href="assets/css/components.css" rel="stylesheet" type="text/css">
         <link href="assets/css/colors.css" rel="stylesheet" type="text/css">
         <link href="assets/css/estilos.css" rel="stylesheet" type="text/css">
         <link href="assets/css/estiloInicio.css" rel="stylesheet" type="text/css">
 
         <!-- Core JS files -->
-        <script type="text/javascript" src="assets/js/plugins/loaders/pace.min.js"></script>
         <script type="text/javascript" src="assets/js/core/libraries/jquery.min.js"></script>
         <script type="text/javascript" src="assets/js/core/libraries/bootstrap.min.js"></script>
-        <script type="text/javascript" src="assets/js/core/app.js"></script>
         <script type="text/javascript" src="assets/js/plugins/loaders/blockui.min.js"></script>
+         <script type="text/javascript" src="assets/js/plugins/loaders/pace.min.js"></script>
 
         <!-- /core JS files -->
 
@@ -49,7 +47,6 @@
         <!-- Modal SCRIPT -->
 
         <!-- Theme JS files -->
-        <script type="text/javascript" src="assets/js/plugins/forms/selects/bootstrap_multiselect.js"></script>
         <script type='text/javascript' src='/ElTorneo/dwr/interface/ajaxElTorneo.js'></script>
         <script type='text/javascript' src='/ElTorneo/dwr/interface/ajaxSeguridad.js'></script>
         <script type='text/javascript' src='/ElTorneo/dwr/engine.js'></script>
@@ -63,17 +60,11 @@
         <script type="text/javascript" src="assets/js/pages/components_navs.js"></script>
         <!--        Theme JS files -->
         <script type="text/javascript" src="assets/js/plugins/tables/datatables/datatables.min.js"></script>
-        <script type="text/javascript" src="assets/js/plugins/forms/selects/selectboxit.min.js"></script>
-        <script type="text/javascript" src="assets/js/plugins/forms/styling/switch.min.js"></script>
         <!--        Theme JS files-->
-        <script type="text/javascript" src="assets/js/plugins/notifications/pnotify.min.js"></script>
         <script src="assets/libs/bootstrap-validator/js/jquery.validate.js"></script>
         <script src="assets/libs/bootstrap-validator/js/bootstrapValidator.min.js"></script>
 
-        <script type="text/javascript" src="assets/js/plugins/forms/wizards/form_wizard/form_wizard.min.js"></script>
-        <script type="text/javascript" src="assets/js/plugins/forms/wizards/steps.min.js"></script>
-
-        <script type="text/javascript" src="assets/js/plugins/loaders/pace.min.js"></script>
+       
         <script type="text/javascript" src="assets/js/plugins/forms/validation/validate.min.js"></script>
 
     </head>
