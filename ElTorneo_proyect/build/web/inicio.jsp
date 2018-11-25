@@ -26,7 +26,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Registro - El Torneo</title>
 
-        <link href="assets/css/integral-core.css" rel="stylesheet">
         <!-- Global stylesheets -->
         <link href="assets/css/bootstrap.css" rel="stylesheet" type="text/css">
         <link href="assets/css/components.css" rel="stylesheet" type="text/css">
@@ -38,13 +37,8 @@
         <script type="text/javascript" src="assets/js/core/libraries/jquery.min.js"></script>
         <script type="text/javascript" src="assets/js/core/libraries/bootstrap.min.js"></script>
         <script type="text/javascript" src="assets/js/plugins/loaders/blockui.min.js"></script>
-         <script type="text/javascript" src="assets/js/plugins/loaders/pace.min.js"></script>
-
+        <script type="text/javascript" src="assets/js/plugins/loaders/pace.min.js"></script>
         <!-- /core JS files -->
-
-        <!-- Modal SCRIPT -->
-        <script type="text/javascript" src="assets/js/pages/components_modals.js"></script>
-        <!-- Modal SCRIPT -->
 
         <!-- Theme JS files -->
         <script type='text/javascript' src='/ElTorneo/dwr/interface/ajaxElTorneo.js'></script>
@@ -54,17 +48,12 @@
 
 
         <!-- Theme JS files -->
-        <script type="text/javascript" src="assets/js/core/libraries/jquery_ui/interactions.min.js"></script>
-        <script type="text/javascript" src="assets/js/core/libraries/jquery_ui/touch.min.js"></script>
-
-        <script type="text/javascript" src="assets/js/pages/components_navs.js"></script>
+        <script type="text/javascript" src="assets/js/core/libraries/interactions.min.js"></script>
         <!--        Theme JS files -->
         <script type="text/javascript" src="assets/js/plugins/tables/datatables/datatables.min.js"></script>
         <!--        Theme JS files-->
         <script src="assets/libs/bootstrap-validator/js/jquery.validate.js"></script>
         <script src="assets/libs/bootstrap-validator/js/bootstrapValidator.min.js"></script>
-
-       
         <script type="text/javascript" src="assets/js/plugins/forms/validation/validate.min.js"></script>
 
     </head>
@@ -72,7 +61,7 @@
     <body>
         <div class="container" id="hola">
             <header>
-                
+
                 <nav class="navbar navbar-default">
                     <div class="container"  >
                         <div class="navbar-header">
@@ -105,10 +94,10 @@
                     </div>
                 </nav>
             </header>
-                                
+
         </div><br>
-        
-        
+
+
         <div id="contenidoPrincipal" class="page-container"  >
         </div>
         <script>
@@ -116,7 +105,7 @@
             var nombreUsuario;
             var idUsuario;
             var usuario;
-            
+
 
             function cargarPagina(pagina) {
                 console.log("entro a la funcion", pagina);
@@ -128,7 +117,7 @@
                 idTipoUsuarioLogueado = '<%=datosUsuario.getIdTipoUsuario()%>';
                 nombreUsuario = '<%=datosUsuario.getNombre()%>';
                 usuario = '<%=datosUsuario.getUsuario()%>';
-                
+
                 if (idTipoUsuarioLogueado == 1) {
                     $(".loader-backdrop").show();
                     cargarPagina('registrar-usuario.jsp');
