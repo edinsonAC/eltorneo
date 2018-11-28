@@ -34,7 +34,7 @@
 
 <script>
     $(document).ready(function () {
-        listarTecnicos();
+        listarEquipos();
 
     });
     var listadoEquipos = [];
