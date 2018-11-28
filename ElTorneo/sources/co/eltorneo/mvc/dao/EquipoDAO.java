@@ -85,9 +85,8 @@ public class EquipoDAO {
         try {
 
             cadSQL = new StringBuilder();
-            cadSQL.append(" SELECT equi_id, equi_nombre, equipo.tecn_id, CONCAT_WS(' ',tc.tecn_nombre,tc.tecn_apellido)as nombretecnico");
+            cadSQL.append(" SELECT equi_id, equi_nombre, tecn_id");
             cadSQL.append(" FROM equipo ");
-            cadSQL.append(" INNER JOIN tecnico tc ON tc.tecn_id = equipo.tecn_id  ");
             ps = conexion.prepareStatement(cadSQL.toString());
 
             rs = ps.executeQuery();
@@ -99,7 +98,7 @@ public class EquipoDAO {
                 equipo.setId(rs.getString("equi_id"));
                 equipo.setNombre(rs.getString("equi_nombre"));
                 equipo.setIdTecnico(rs.getString("tecn_id"));
-                equipo.setTecnico(rs.getString("nombretecnico"));
+
                 listadoEquipo.add(equipo);
 
             }
