@@ -19,6 +19,7 @@ public class EquipoDTO implements Serializable{
     String nombre = Generales.EMPTYSTRING;
     String registradoPor = Generales.EMPTYSTRING;
     String idTecnico = Generales.EMPTYSTRING;
+    String tecnico = Generales.EMPTYSTRING;
 
     public String getId() {
         return id;
@@ -50,6 +51,14 @@ public class EquipoDTO implements Serializable{
 
     public void setIdTecnico(String idTecnico) {
         this.idTecnico = idTecnico;
+    }
+
+    public String getTecnico() {
+        return tecnico;
+    }
+
+    public void setTecnico(String tecnico) {
+        this.tecnico = tecnico;
     }
 
     public String toStringJson() {
