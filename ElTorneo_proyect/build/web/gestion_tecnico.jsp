@@ -4,7 +4,7 @@
 <%
 
     UsuarioDTO datosUsuario = (UsuarioDTO) session.getAttribute("datosUsuario");
-    System.out.print("Gestion de usuarios JSP >>>> Datos usuario  " + datosUsuario.toStringJson());
+    System.out.print("Gestion tecnico JSP >>>> Datos usuario  " + datosUsuario.toStringJson());
 
 %>
 <style>
