@@ -163,4 +163,14 @@ public class FachadaElTorneo {
     public ArrayList<JugadorDTO> listarJugadoresPorIdEquipo(String idEquipo) {
         return MediadorElTorneo.getInstancia().listarJugadoresPorIdEquipo(idEquipo);
     }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @RemoteMethod
+    public JugadorDTO buscarJugadorPorId(String id) {
+        return MediadorElTorneo.getInstancia().buscarJugadorPorID(id);
+    }
 }

@@ -36,12 +36,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.TimeZone;
 import java.util.UUID;
 import java.util.jar.Pack200;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.lang3.ArrayUtils;
 import org.directwebremoting.WebContextFactory;
 
 /**
@@ -574,31 +576,26 @@ public class MediadorElTorneo {
         DataBaseConnection dbcon = null;
         Connection conexion = null;
         RespuestaDTO respuesta = null;
-        RespuestaDTO respuesta2 = null;
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
         ArrayList<EquipoDTO> equipos = null;
-        ArrayList<EquipoDTO> equipos2 = null;
         ArrayList<HorarioDTO> horarios = null;
         PartidoDTO partido = null;
         PartidoDTO partidoJuego = null;
+        ArrayList<PartidoDTO> partidos = new ArrayList<>();
         int dia = 1, nEquipos = 0;
 
         try {
             dbcon = DataBaseConnection.getInstance();
             conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
             conexion.setAutoCommit(false);
-
             calendar.setTime(formato.parse(fechaInicio));
-
             horarios = new HorarioDAO().listarHorarios(conexion);
             equipos = new EquipoDAO().listarEquipos(conexion);
 
             int nPartidosPorJornada = equipos.size() / 2;
             nEquipos = equipos.size() - 1;
-            byte y = 0, l = 0;
             for (int i = 0; i < nEquipos; i++) {
-                y = 0;
                 while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
                     calendar.add(calendar.DAY_OF_YEAR, dia);
                 }
@@ -614,42 +611,14 @@ public class MediadorElTorneo {
                             partido.setIdHorario(horarios.get(m).getId());
                             partido.setJornada(i + 1);
                             respuesta = new PartidoDAO().registrarPartido(conexion, partido);
+                            partidos.add(partido);
                             System.out.println("se registro el partido con el id " + respuesta.getIdResgistrado());
                             if (respuesta.isRegistro()) {
-                                System.out.println("va a validar el equipo -> " + equipos.get(y).getId() + "en la jornada " + partido.getJornada());
-                                while (new PartidoDAO().validarEquipoPorJornada(conexion, equipos.get(y).getId(), partido.getJornada())) {
-                                    System.out.println("si existe el equipo -> " + equipos.get(y).getId() + "en la jornada " + partido.getJornada());
-                                    y++;
-                                }
-                                System.out.println("paso el equipo con -> " + equipos.get(y).getId() + "en la jornada " + partido.getJornada());
-
-                                partidoJuego = new PartidoDTO();
-                                partidoJuego.setId(respuesta.getIdResgistrado());
-                                partidoJuego.setEquipoA(equipos.get(y).getId());
-
-                                y = 0;
-                                System.out.println("va a validar el equipo -> " + equipos.get(l).getId() + "en la jornada " + partido.getJornada());
-                                while (new PartidoDAO().validarEquipoPorJornada(conexion, equipos.get(l).getId(), partido.getJornada())) {
-                                    System.out.println("si existe el equipo -> " + equipos.get(l).getId() + "en la jornada " + partido.getJornada());
-                                    l++;
-                                }
-
-                                System.out.println("paso el equipo con -> " + equipos.get(y).getId() + "en la jornada " + partido.getJornada());
-                                partidoJuego.setEquipoB(equipos.get(y).getId());
-
-                                while (new PartidoDAO().validarEquipoPorPartidos(conexion, partido.getEquipoA(), partido.getEquipoB())) {
-                                    System.out.println("ya jugaron entre ellos  ");
-                                    y++;
-                                }
-
-                                respuesta2 = new PartidoDAO().registrarPartidoJuego(conexion, partidoJuego);
                                 nPartidosPorJornada--;
-                                y = 0;
                             } else {
                                 System.out.println("no se registro el partido");
                             }
                         }
-
                     }
 
                     calendar.add(calendar.DAY_OF_YEAR, dia);
@@ -664,29 +633,8 @@ public class MediadorElTorneo {
                                 partido.setIdHorario(horarios.get(h).getId());
                                 partido.setJornada(i + 1);
                                 respuesta = new PartidoDAO().registrarPartido(conexion, partido);
-                                System.out.println("se registro el partido con el id " + respuesta.getIdResgistrado());
+                                partidos.add(partido);
                                 if (respuesta.isRegistro()) {
-                                    System.out.println("va a validar el equipo -> " + equipos.get(y).getId() + "en la jornada " + partido.getJornada());
-                                    while (new PartidoDAO().validarEquipoPorJornada(conexion, equipos2.get(y).getId(), partido.getJornada())) {
-                                        System.out.println("si existe el equipo -> " + equipos.get(y).getId() + "en la jornada " + partido.getJornada());
-                                        y++;
-                                    }
-                                    System.out.println("paso el equipo con -> " + equipos2.get(y).getId() + "en la jornada " + partido.getJornada());
-
-                                    partidoJuego = new PartidoDTO();
-                                    partidoJuego.setId(respuesta.getIdResgistrado());
-                                    partidoJuego.setEquipoA(equipos.get(y).getId());
-
-                                    y = 0;
-                                    System.out.println("va a validar el equipo -> " + equipos.get(y).getId() + "en la jornada " + partido.getJornada());
-                                    while (new PartidoDAO().validarEquipoPorJornada(conexion, equipos.get(y).getId(), partido.getJornada())) {
-                                        y++;
-                                        System.out.println("si existe el equipo -> " + equipos.get(y).getId() + "en la jornada " + partido.getJornada());
-                                    }
-                                    System.out.println("paso el equipo con -> " + equipos.get(y).getId() + "en la jornada " + partido.getJornada());
-
-                                    partidoJuego.setEquipoB(equipos.get(y).getId());
-                                    respuesta2 = new PartidoDAO().registrarPartidoJuego(conexion, partidoJuego);
                                     nPartidosPorJornada--;
                                 } else {
                                     System.out.println("no se registro elpartido");
@@ -695,68 +643,16 @@ public class MediadorElTorneo {
                         }
                         nPartidosPorJornada = equipos.size() / 2;
                         calendar.add(calendar.DAY_OF_YEAR, dia);
-
                     }
                 }
-
             }
 
             respuesta.setMensaje("Se ha realizado el sorteo!");
             conexion.commit();
             conexion.close();
             conexion = null;
-        } catch (Exception e) {
-            LoggerMessage.getInstancia().loggerMessageException(e);
-        } finally {
-            try {
-                if (conexion != null && !conexion.isClosed()) {
-                    conexion.close();
-                    conexion = null;
-                }
-            } catch (Exception e) {
-                LoggerMessage.getInstancia().loggerMessageException(e);
-            } finally {
-                try {
-                    if (conexion != null && !conexion.isClosed()) {
-                        conexion.close();
-                        conexion = null;
-                    }
+            sorteoDeEquipos(partidos, equipos);
 
-                } catch (Exception e) {
-                    LoggerMessage.getInstancia().loggerMessageException(e);
-                }
-            }
-            return respuesta;
-        }
-
-    }
-
-    public RespuestaDTO sorteoDeEquipos(String fechaInicio) {
-        DataBaseConnection dbcon = null;
-        Connection conexion = null;
-        RespuestaDTO respuesta = null;
-        ArrayList<EquipoDTO> equipos = null;
-        ArrayList<PartidoDTO> partidos = null;
-        PartidoDTO partido = null;
-        int dia = 1;
-
-        try {
-            dbcon = DataBaseConnection.getInstance();
-            conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
-            conexion.setAutoCommit(false);
-
-            respuesta = sorteoDePartidos(fechaInicio);
-            if (respuesta == null) {
-                respuesta.setMensaje("No se pudo realizar el sorteo de partidos");
-                throw new Exception("ERROR: No se pudo realizar el sorteo de partidos");
-            } else {
-                partidos = new PartidoDAO().listarPartidos(conexion);
-            }
-
-            respuesta.setMensaje("Se ha realizado el sorteo!");
-            conexion.commit();
-            conexion.close();
-            conexion = null;
         } catch (Exception e) {
             LoggerMessage.getInstancia().loggerMessageException(e);
         } finally {
@@ -792,7 +688,7 @@ public class MediadorElTorneo {
 
         DataBaseConnection dbcon = null;
         Connection conexion = null;
-        RespuestaDTO respuesta = null, respuesta2 = new RespuestaDTO();
+        RespuestaDTO respuesta = null;
         ArrayList<FuncionalidadDTO> listadoFuncionalidades = null;
         FuncionalidadDTO funcionalidad;
 
@@ -949,5 +845,157 @@ public class MediadorElTorneo {
             return jugadores;
         }
 
+    }
+
+    /**
+     * *
+     *
+     * @param id
+     * @return
+     */
+    public JugadorDTO buscarJugadorPorID(String id) {
+
+        DataBaseConnection dbcon = null;
+        Connection conexion = null;
+        JugadorDTO jugador = null;
+        try {
+
+            dbcon = DataBaseConnection.getInstance();
+            conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
+
+            jugador = new JugadorDAO().buscarJugadorPorId(conexion, id);
+            if (jugador == null) {
+                throw new Exception("ERROR: No se encontro el jugador");
+            }
+
+            conexion.close();
+            conexion = null;
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+        } finally {
+            try {
+                if (conexion != null && !conexion.isClosed()) {
+                    conexion.close();
+                    conexion = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+            } finally {
+                try {
+                    if (conexion != null && !conexion.isClosed()) {
+                        conexion.close();
+                        conexion = null;
+                    }
+
+                } catch (Exception e) {
+                    LoggerMessage.getInstancia().loggerMessageException(e);
+                }
+            }
+            return jugador;
+        }
+
+    }
+
+    /**
+     *
+     * @param encuentros
+     * @param equipos
+     * @return
+     */
+    public RespuestaDTO sorteoDeEquipos(ArrayList<PartidoDTO> encuentros, ArrayList<EquipoDTO> equipos) {
+        DataBaseConnection dbcon = null;
+        Connection conexion = null;
+        RespuestaDTO respuesta = null;
+        ArrayList<PartidoDTO> partidosFinal = new ArrayList<>();
+        int idPartido = 1;
+        try {
+            System.out.println("entro a la funcion de sorteo equipos");
+            dbcon = DataBaseConnection.getInstance();
+            conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
+            conexion.setAutoCommit(false);
+
+            for (int i = 0; i < equipos.size() - 1; i++) {
+                cruzarEquipos(equipos.size() - 1, equipos, partidosFinal);
+                combinar(equipos.size() - 1, equipos);
+            }
+
+            for (PartidoDTO part : partidosFinal) {
+                // System.out.println("entra al for de registros");
+                part.setId("" + idPartido);
+                respuesta = new PartidoDAO().registrarEncuentro(conexion, part);
+                if (respuesta == null) {
+                    throw new Exception("ERROR no se pudo registrar el partido");
+                }
+
+                System.out.println("ID :" + part.getId() + " ---equipo-> " + part.getEquipoA() + "  vs  equipo ->" + part.getEquipoB());
+                idPartido++;
+            }
+
+            conexion.commit();
+            conexion.close();
+            conexion = null;
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+        } finally {
+            try {
+                if (conexion != null && !conexion.isClosed()) {
+                    conexion.close();
+                    conexion = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+            } finally {
+                try {
+                    if (conexion != null && !conexion.isClosed()) {
+                        conexion.close();
+                        conexion = null;
+                    }
+
+                } catch (Exception e) {
+                    LoggerMessage.getInstancia().loggerMessageException(e);
+                }
+            }
+            return respuesta;
+        }
+
+    }
+
+    /**
+     *
+     * @param longitud
+     * @param equipos
+     * @param partidos
+     * @return
+     */
+    public ArrayList<PartidoDTO> cruzarEquipos(int longitud, ArrayList<EquipoDTO> equipos, ArrayList<PartidoDTO> partidos) {
+        // ArrayList<PartidoDTO> partidos = new ArrayList<>();
+        PartidoDTO partido = null;
+
+        for (int i = 0, j = longitud; i < j; i++, j--) {
+            partido = new PartidoDTO();
+            partido.setEquipoA(equipos.get(i).getId());
+            partido.setEquipoB(equipos.get(j).getId());
+            partidos.add(partido);
+        }
+
+        return partidos;
+    }
+
+    /**
+     *
+     * @param longitud
+     * @param equipos
+     * @return
+     */
+    public ArrayList<EquipoDTO> combinar(int longitud, ArrayList<EquipoDTO> equipos) {
+        EquipoDTO ultimoEquipo = equipos.get(longitud);
+
+        for (int i = longitud; i > 1; i--) {
+            equipos.set(i, equipos.get(i - 1));
+        }
+
+        equipos.set(1, ultimoEquipo);
+
+        return equipos;
     }
 }

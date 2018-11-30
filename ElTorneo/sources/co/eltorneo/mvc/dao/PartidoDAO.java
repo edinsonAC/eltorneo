@@ -81,7 +81,7 @@ public class PartidoDAO {
 
         try {
             registro = new RespuestaDTO();
-            //System.out.println("partido " + partido.toStringJson());
+            System.out.println("entra al dao con este partido-> " + partido.toStringJson());
             cadSQL = new StringBuilder();
             cadSQL.append(" INSERT INTO partido_equipo(equi_a,equi_b, part_id)");
             cadSQL.append(" VALUES (?,?,?) ");
@@ -271,5 +271,46 @@ public class PartidoDAO {
         }
 
         return rta;
+    }
+
+    public RespuestaDTO registrarEncuentro(Connection conexion, PartidoDTO partido) throws SQLException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int nRows = 0;
+        StringBuilder cadSQL = null;
+        RespuestaDTO registro = null;
+
+        try {
+            registro = new RespuestaDTO();
+            System.out.println("entra el partido " + partido.toStringJson());
+            cadSQL = new StringBuilder();
+            cadSQL.append(" INSERT INTO partido_equipo(equi_a, equi_b,part_id)");
+            cadSQL.append(" VALUES (?, ?, ?) ");
+
+            ps = conexion.prepareStatement(cadSQL.toString(), Statement.RETURN_GENERATED_KEYS);
+
+            AsignaAtributoStatement.setInt(1, partido.getEquipoA(), ps);
+            AsignaAtributoStatement.setInt(2, partido.getEquipoB(), ps);
+            AsignaAtributoStatement.setInt(3, partido.getId(), ps);
+
+            nRows = ps.executeUpdate();
+            if (nRows > 0) {
+                rs = ps.getGeneratedKeys();
+                registro.setRegistro(true);
+                if (rs.next()) {
+                    registro.setIdResgistrado(rs.getString(1));
+
+                }
+                rs.close();
+                rs = null;
+            }
+            ps.close();
+            ps = null;
+
+        } catch (SQLException se) {
+            LoggerMessage.getInstancia().loggerMessageException(se);
+            return null;
+        }
+        return registro;
     }
 }

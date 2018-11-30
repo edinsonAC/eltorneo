@@ -32,6 +32,7 @@ public class JugadorDTO implements Serializable {
     String registradoPor = Generales.EMPTYSTRING;
     String fechaRegistro = Generales.EMPTYSTRING;
     String idEquipo = Generales.EMPTYSTRING;
+    String usuario = Generales.EMPTYSTRING;
 
     public String getId() {
         return id;
@@ -167,6 +168,14 @@ public class JugadorDTO implements Serializable {
 
     public void setPosicion(String posicion) {
         this.posicion = posicion;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public String toStringJson() {

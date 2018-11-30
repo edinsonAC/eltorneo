@@ -162,7 +162,7 @@ public class JugadorDAO {
             cadSQL.append(" FROM jugador ");
             cadSQL.append(" INNER JOIN posicion_jugador poju ON poju.poju_id = jugador.poju_id");
             cadSQL.append(" WHERE equi_id = ?");
-            
+
             ps = conexion.prepareStatement(cadSQL.toString());
             AsignaAtributoStatement.setString(1, idEquipo, ps);
 
@@ -206,5 +206,67 @@ public class JugadorDAO {
         }
 
         return listadoJugador;
+    }
+
+    /**
+     *
+     * @param conexion
+     * @param idJugador
+     * @return
+     */
+    public JugadorDTO buscarJugadorPorId(Connection conexion, String idJugador) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        JugadorDTO jugador = null;
+        StringBuilder cadSQL = null;
+
+        try {
+            cadSQL = new StringBuilder();
+            cadSQL.append(" SELECT juga_id, juga_nombre, juga_apellido,juga_telefono,juga_celular,juga_documento, ");
+            cadSQL.append(" jugador.poju_id,equi_id, poju.poju_nombre, us.usua_usuario");
+            cadSQL.append(" FROM jugador ");
+            cadSQL.append(" INNER JOIN posicion_jugador poju ON poju.poju_id = jugador.poju_id");
+            cadSQL.append(" INNER JOIN usuario us ON us.usua_id = jugador.usua_id");
+            cadSQL.append(" WHERE juga_id = ?");
+
+            ps = conexion.prepareStatement(cadSQL.toString());
+            AsignaAtributoStatement.setString(1, idJugador, ps);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                jugador = new JugadorDTO();
+                jugador.setId(rs.getString("juga_id"));
+                jugador.setNombre(rs.getString("juga_nombre"));
+                jugador.setApellido(rs.getString("juga_apellido"));
+                jugador.setTelefono(rs.getString("juga_apellido"));
+                jugador.setCelular(rs.getString("juga_celular"));
+                jugador.setDocumento(rs.getString("juga_documento"));
+                jugador.setIdPosicion(rs.getString("poju_id"));
+                jugador.setPosicion(rs.getString("poju_nombre"));
+                jugador.setIdEquipo(rs.getString("equi_id"));
+                jugador.setIdUsuario(rs.getString("us.usua_id"));
+                jugador.setUsuario(rs.getString("us.usua_usuario"));
+            }
+            ps.close();
+            ps = null;
+
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+            return null;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                    ps = null;
+                }
+
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+                return null;
+            }
+        }
+
+        return jugador;
     }
 }

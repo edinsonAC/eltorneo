@@ -10,7 +10,7 @@
 
 </style>
 
-<div class="content" id="tablaTecn">
+<div class="content" id="tablaEqui">
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
