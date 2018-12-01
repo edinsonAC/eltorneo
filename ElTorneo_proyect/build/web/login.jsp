@@ -31,7 +31,7 @@
         <link href="assets/css/components.css" rel="stylesheet" type="text/css">
         <link href="assets/css/integral-core.css" rel="stylesheet" type="text/css">
         <link href="assets/css/estiloLogin.css" rel="stylesheet" type="text/css">
-
+        <link rel="shortcut icon" href="assets/images/balon_estadio.jpg" />
         <!-- /global stylesheets -->
 
         <!-- Core JS files -->

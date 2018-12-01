@@ -32,14 +32,16 @@ public class Correo extends Thread {
     private String clave = StringUtils.EMPTY;
     private String observacion = StringUtils.EMPTY;
     private String direccionImagen = StringUtils.EMPTY;
+    private String usuario = StringUtils.EMPTY;
 
-    public Correo(String destino2, String clave2, String asunto2, String nombre2, String tipoCopy, String observacion) {
+    public Correo(String destino2, String clave2, String asunto2, String nombre2, String tipoCopy, String observacion, String usuario) {
         this.nombre = nombre2;
         this.correo = destino2;
         this.asunto = asunto2;
         this.tipo = tipoCopy;
         this.observacion = observacion;
         this.clave = clave2;
+        this.usuario = usuario;
     }
 
     public boolean sendFromGMail(String[] to, String subject, String body) {
@@ -229,7 +231,7 @@ public class Correo extends Thread {
                 + "                <table bgcolor=\"#ffffff\" class=\"content\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n"
                 + "                    <tr>\n"
                 + "                        <td>\n"
-                + "                            <img src=\"http://localhost:8080/ElTorneo/ServletVisualizarImagen?imagen=https://sp.depositphotos.com/search/futbol.html?qview=12379367\" alt=\"Smiley face\" width=\"100%\" height=\"250px\">\n"
+                + "                            <img src=\"https://lh3.googleusercontent.com/cXWMyZwbeseqgOZXX7xmkfAl9Rmr4Oqq-GhvPbGiLyC3O6FMlz0qLmvyD0H6dilQrriFkSlttjAvHWhrur3XiLnUp0YAJWD-TC8=w2880-h1920-rw-no\" alt=\"Smiley face\" width=\"100%\" height=\"250px\">\n"
                 + "\n"
                 + "                        </td>\n"
                 + "                    </tr>\n"
@@ -243,7 +245,7 @@ public class Correo extends Thread {
                 + "                                </tr>\n"
                 + "                                <tr>\n"
                 + "                                    <td class=\"bodycopy\">\n"
-                + "                                            ElTorneo te da la bienvenida, Puedes ingresar con tu usuario y la siguiente clave de acceso: <br> Usuario: " + correo + " <br> Clave: " + clave + " \n"
+                + "                                            ElTorneo te da la bienvenida, Puedes ingresar con tu usuario y la siguiente clave de acceso: <br> Usuario: " + usuario + " <br> Clave: " + clave + " \n"
                 + "                                    </td>\n"
                 + "                                </tr>\n"
                 + "                            </table>\n"
@@ -254,7 +256,7 @@ public class Correo extends Thread {
                 + "                            <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n"
                 + "                                <tr>\n"
                 + "                                    <td align=\"center\" class=\"footercopy\">\n"
-                + "                                        &reg; TusCuentas, 2018\n"
+                + "                                        &reg; ElTorneo, 2018\n"
                 + "                                        <br/>\n"
                 + "                                        <a href=\"https://www.google.com\" class=\"unsubscribe\">\n"
                 + "                                            <font color=\"#ffffff\">eltorneo.com</font>\n"

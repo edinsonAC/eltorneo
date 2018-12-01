@@ -28,6 +28,7 @@ public class TecnicoDTO implements Serializable {
     String estado = Generales.EMPTYSTRING;
     String registradoPor = Generales.EMPTYSTRING;
     String fechaRegistro = Generales.EMPTYSTRING;
+    String usuario = Generales.EMPTYSTRING;
 
     public String getId() {
         return id;
@@ -132,7 +133,14 @@ public class TecnicoDTO implements Serializable {
     public void setCelular(String celular) {
         this.celular = celular;
     }
-    
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
 
     public String toStringJson() {
         String dtoJsonString = null;

@@ -70,18 +70,11 @@
                         <select id="pos_jugador" class="form-control"></select>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="usuario_jugador">* Usuario: </label>
-                        <input type="text" class="form-control" id="usuario_jugador" name="usuario_jugador" maxlength="15" autocomplete="off">
-                    </div>
-                </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="col-sm-6 mx-auto" style="text-align: -webkit-center;">
-                        <button type="submit" id="boton" class="btn btn-success mr-2" onclick="validar('reg_usuario', 1);">Registrar</button>   
-                        <button type="button" id="boton2" class="btn btn-success mr-2" onclick="sorteo();">sorteo</button>   
+                        <button type="submit" id="boton" class="btn btn-success mr-2" onclick="validar('reg_jugador', 1);">Registrar</button>     
                     </div>
                     <input class="btn btn-light" type="button" value="Volver" onclick="javascript:redireccionar();">
                 </div>
@@ -119,7 +112,7 @@
 
                         function postValidate() {
                             if (operacion == 1)
-                                registro();
+                                registrarJugador();
                             operacion = null;
                         }
 
@@ -152,7 +145,7 @@
                         });
 
 
-                        function registro() {
+                        function registrarJugador() {
                             $("#boton").prop('disabled', true);
                             var usuario = {
                                 correo: $("#email_jugador").val(),
@@ -170,6 +163,8 @@
                                 celular: $("#cel_jugador").val(),
                                 telefono: $("#tel_jugador").val(),
                                 idPosicion: $("#pos_jugador").val(),
+                                dorsal: $("#dorsal_jugador").val(),
+                                idEquipo: idUsuario,
                                 registradoPor: nombreUsuario
 
                             };
@@ -195,7 +190,7 @@
                         }
 
                         function listarPosiciones() {
-                            ajaxTusCuentas.listarPosicionesDeJuego({
+                            ajaxElTorneo.listarPosicionesDeJuego({
                                 callback: function (data) {
                                     if (data !== null) {
                                         dwr.util.removeAllOptions("pos_jugador");

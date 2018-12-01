@@ -159,8 +159,7 @@ public class MediadorElTorneo {
 
             }
 
-            // esta es la parte donde envio el correo, to lo meti en un hilo para que se vaya enviando en paralelo y sea mas rapido el metodo
-            Correo envio = new Correo(usuario.getCorreo(), usuario.getClave(), "1", tecnico.getNombre(), "1", "ninguna"); //el contructor del hilo
+            Correo envio = new Correo(usuario.getCorreo(), usuario.getClave(), "1", tecnico.getNombre(), "1", "ninguna", usuario.getUsuario());
             envio.start();
 
             respuesta.setMensaje("Se ha registrado el tecnico satisfactoriamente");
@@ -252,15 +251,12 @@ public class MediadorElTorneo {
         Connection conexion = null;
         RespuestaDTO respuesta = null, respuesta2 = new RespuestaDTO();
 
-        String password = "";
         try {
-            password = UUID.randomUUID().toString().substring(0, 8);
-            usuario.setClave(password);
             dbcon = DataBaseConnection.getInstance();
             conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
             conexion.setAutoCommit(false);
 
-            respuesta = new UsuarioDAO().registrarUsuario(conexion, usuario);
+            respuesta = registrarUsuario(usuario);
             if (!respuesta.isRegistro()) {
                 respuesta.setMensaje("No se pudo registrar el usuario");
                 conexion.rollback();
@@ -276,7 +272,7 @@ public class MediadorElTorneo {
 
             }
 
-            Correo envio = new Correo(usuario.getCorreo(), usuario.getClave(), "1", arbitro.getNombres(), "1", "ninguna");
+            Correo envio = new Correo(usuario.getCorreo(), usuario.getClave(), "1", arbitro.getNombres(), "1", "ninguna", usuario.getUsuario());
             envio.start();
 
             respuesta.setMensaje("Se ha registrado el arbitro satisfactoriamente");
@@ -314,12 +310,10 @@ public class MediadorElTorneo {
      * @return
      */
     public ArrayList<ArbitroDTO> listarArbitros() {
-
         DataBaseConnection dbcon = null;
         Connection conexion = null;
         ArrayList<ArbitroDTO> arbitros = null;
         try {
-
             dbcon = DataBaseConnection.getInstance();
             conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
 
@@ -461,10 +455,10 @@ public class MediadorElTorneo {
      * @return
      */
     public RespuestaDTO registrarJugador(JugadorDTO jugador, UsuarioDTO usuario) {
-
         DataBaseConnection dbcon = null;
         Connection conexion = null;
         RespuestaDTO respuesta = null, respuesta2 = new RespuestaDTO();
+        String idEquipo = "";
 
         try {
             dbcon = DataBaseConnection.getInstance();
@@ -477,17 +471,21 @@ public class MediadorElTorneo {
                 conexion.rollback();
                 throw new Exception("ERROR: no se pudo registrar el usuario");
             }
-            jugador.setIdUsuario(respuesta.getIdResgistrado());
-            respuesta2 = new JugadorDAO().registrarJugador(conexion, jugador);
+            idEquipo = new ArbitroDAO().obtenerIdEquipoPorIdArbitroLogueado(conexion, jugador.getIdEquipo());
+            if (!idEquipo.equals("")) {
+                jugador.setIdUsuario(respuesta.getIdResgistrado());
+                jugador.setIdEquipo(idEquipo);
+                respuesta2 = new JugadorDAO().registrarJugador(conexion, jugador);
 
-            if (!respuesta2.isRegistro()) {
-                respuesta2.setMensaje("No se pudo registrar el jugador");
-                conexion.rollback();
-                throw new Exception("ERROR: no se pudo registrar el jugador");
+                if (!respuesta2.isRegistro()) {
+                    respuesta2.setMensaje("No se pudo registrar el jugador");
+                    conexion.rollback();
+                    throw new Exception("ERROR: no se pudo registrar el jugador");
 
+                }
             }
 
-            Correo envio = new Correo(usuario.getCorreo(), usuario.getClave(), "1", jugador.getNombre(), "1", "ninguna");
+            Correo envio = new Correo(usuario.getCorreo(), usuario.getClave(), "1", jugador.getNombre(), "1", "ninguna", usuario.getUsuario());
             envio.start();
 
             respuesta.setMensaje("Se ha registrado el jugador satisfactoriamente");
@@ -708,7 +706,7 @@ public class MediadorElTorneo {
             }
 
             listadoFuncionalidades = new FuncionalidadesDAO().listarFuncionalidadesPorTipoUsuario(conexion, usuario.getIdTipoUsuario());
-            String idUsuario = usuario.getId();
+            String idUsuario = respuesta.getIdResgistrado();
             if (listadoFuncionalidades != null) {
                 for (int i = 0; i < listadoFuncionalidades.size(); i++) {
                     funcionalidad = listadoFuncionalidades.get(i);
@@ -997,5 +995,153 @@ public class MediadorElTorneo {
         equipos.set(1, ultimoEquipo);
 
         return equipos;
+    }
+
+    /**
+     *
+     * @param idTecnico
+     * @return
+     */
+    public TecnicoDTO buscarTecnicoPorId(String idTecnico) {
+
+        DataBaseConnection dbcon = null;
+        Connection conexion = null;
+        TecnicoDTO tecnico = null;
+        try {
+
+            dbcon = DataBaseConnection.getInstance();
+            conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
+
+            tecnico = new TecnicoDAO().buscarTecnicoPorId(conexion, idTecnico);
+            if (tecnico == null) {
+                throw new Exception("ERROR: No se encontro el tecnico");
+            }
+
+            conexion.close();
+            conexion = null;
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+        } finally {
+            try {
+                if (conexion != null && !conexion.isClosed()) {
+                    conexion.close();
+                    conexion = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+            } finally {
+                try {
+                    if (conexion != null && !conexion.isClosed()) {
+                        conexion.close();
+                        conexion = null;
+                    }
+
+                } catch (Exception e) {
+                    LoggerMessage.getInstancia().loggerMessageException(e);
+                }
+            }
+            return tecnico;
+        }
+
+    }
+
+    /**
+     *
+     * @param idArbitro
+     * @return
+     */
+    public ArbitroDTO buscarArbitroPorId(String idArbitro) {
+
+        DataBaseConnection dbcon = null;
+        Connection conexion = null;
+        ArbitroDTO arbitro = null;
+        try {
+
+            dbcon = DataBaseConnection.getInstance();
+            conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
+
+            arbitro = new ArbitroDAO().buscarArbitroPorId(conexion, idArbitro);
+            if (arbitro == null) {
+                throw new Exception("ERROR: No se encontro el arbitro");
+            }
+
+            conexion.close();
+            conexion = null;
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+        } finally {
+            try {
+                if (conexion != null && !conexion.isClosed()) {
+                    conexion.close();
+                    conexion = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+            } finally {
+                try {
+                    if (conexion != null && !conexion.isClosed()) {
+                        conexion.close();
+                        conexion = null;
+                    }
+
+                } catch (Exception e) {
+                    LoggerMessage.getInstancia().loggerMessageException(e);
+                }
+            }
+            return arbitro;
+        }
+
+    }
+
+    /**
+     *
+     * @param arbitro
+     * @return
+     */
+    public RespuestaDTO actualizarArbitro(ArbitroDTO arbitro) {
+
+        DataBaseConnection dbcon = null;
+        Connection conexion = null;
+        RespuestaDTO respuesta = new RespuestaDTO();
+
+        try {
+            dbcon = DataBaseConnection.getInstance();
+            conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
+            conexion.setAutoCommit(false);
+
+            respuesta = new ArbitroDAO().actualizarArbitro(conexion, arbitro);
+            if (!respuesta.isRegistro()) {
+                respuesta.setMensaje("No se pudo actualizar el arbitro");
+                conexion.rollback();
+                throw new Exception("ERROR: No se pudo actualizar el arbitro");
+            }
+
+            conexion.commit();
+            conexion.close();
+            conexion = null;
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+        } finally {
+            try {
+                if (conexion != null && !conexion.isClosed()) {
+                    conexion.close();
+                    conexion = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+            } finally {
+                try {
+                    if (conexion != null && !conexion.isClosed()) {
+                        conexion.close();
+                        conexion = null;
+                    }
+
+                } catch (Exception e) {
+                    LoggerMessage.getInstancia().loggerMessageException(e);
+                }
+            }
+            return respuesta;
+        }
+
     }
 }

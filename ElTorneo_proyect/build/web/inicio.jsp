@@ -32,7 +32,7 @@
         <link href="assets/css/colors.css" rel="stylesheet" type="text/css">
         <link href="assets/css/estilos.css" rel="stylesheet" type="text/css">
         <link href="assets/css/estiloInicio.css" rel="stylesheet" type="text/css">
-
+        <link rel="shortcut icon" href="assets/images/balon_estadio.jpg" />
         <!-- Core JS files -->
         <script type="text/javascript" src="assets/js/core/libraries/jquery.min.js"></script>
         <script type="text/javascript" src="assets/js/core/libraries/bootstrap.min.js"></script>
@@ -59,6 +59,9 @@
     </head>
 
     <body>
+        <form action="${pageContext.request.contextPath}/CerrarSesion" method="post">
+            <input style="display: none" type="submit" value="Logout" id="Logout">
+        </form>
         <div class="container" id="hola">
             <header>
 
@@ -87,13 +90,15 @@
                                     </ul>
                                 </li>
                                 <%}%>
-
+                                <button type="button" class="btn btn-primary" onclick="$('#Logout').click()">cerrar sesion</button>
                             </ul>
 
                         </div>
                     </div>
                 </nav>
             </header>
+
+
 
         </div><br>
 

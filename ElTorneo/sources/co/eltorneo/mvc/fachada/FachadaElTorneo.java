@@ -173,4 +173,34 @@ public class FachadaElTorneo {
     public JugadorDTO buscarJugadorPorId(String id) {
         return MediadorElTorneo.getInstancia().buscarJugadorPorID(id);
     }
+
+    /**
+     *
+     * @param idTecnico
+     * @return
+     */
+    @RemoteMethod
+    public TecnicoDTO buscarTecnicoPorId(String idTecnico) {
+        return MediadorElTorneo.getInstancia().buscarTecnicoPorId(idTecnico);
+    }
+
+    /**
+     *
+     * @param idArbitro
+     * @return
+     */
+    @RemoteMethod
+    public ArbitroDTO buscarArbitroPorId(String idArbitro) {
+        return MediadorElTorneo.getInstancia().buscarArbitroPorId(idArbitro);
+    }
+
+    /**
+     *
+     * @param arbitro
+     * @return
+     */
+    @RemoteMethod
+    public RespuestaDTO actualizarArbitro(ArbitroDTO arbitro) {
+        return MediadorElTorneo.getInstancia().actualizarArbitro(arbitro);
+    }
 }
