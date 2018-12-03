@@ -4,14 +4,14 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="co.eltorneo.mvc.dto.UsuarioDTO"%>
 <%
-    System.out.println("estamos en inicio.jsp----<");
+    // System.out.println("estamos en inicio.jsp----<");
     UsuarioDTO datosUsuario = (UsuarioDTO) session.getAttribute("datosUsuario");
     ArrayList<MenuDTO> menu = null;
-    System.out.println("estamos en inicio.jsp----<" + datosUsuario.toStringJson());
+    // System.out.println("estamos en inicio.jsp----<" + datosUsuario.toStringJson());
     if (datosUsuario.getMenu() != null) {
         menu = datosUsuario.getMenu();
         for (MenuDTO elem : menu) {
-            System.out.println("este es el menu cargado+..." + elem.toStringJson());
+            //  System.out.println("este es el menu cargado+..." + elem.toStringJson());
         }
 
     }
@@ -31,7 +31,11 @@
         <link href="assets/css/components.css" rel="stylesheet" type="text/css">
         <link href="assets/css/colors.css" rel="stylesheet" type="text/css">
         <link href="assets/css/estilos.css" rel="stylesheet" type="text/css">
+        <link href="assets/css/dataTable.css" rel="stylesheet" type="text/css">
         <link href="assets/css/estiloInicio.css" rel="stylesheet" type="text/css">
+        
+        <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        
         <link rel="shortcut icon" href="assets/images/balon_estadio.jpg" />
         <!-- Core JS files -->
         <script type="text/javascript" src="assets/js/core/libraries/jquery.min.js"></script>
@@ -50,7 +54,8 @@
         <!-- Theme JS files -->
         <script type="text/javascript" src="assets/js/core/libraries/interactions.min.js"></script>
         <!--        Theme JS files -->
-        <script type="text/javascript" src="assets/js/plugins/tables/datatables/datatables.min.js"></script>
+<!--        <script type="text/javascript" src="assets/js/plugins/tables/datatables/datatables.min.js"></script>-->
+        <script type="text/javascript" src="assets/js/plugins/tables/datatables/datatables2.js"></script>
         <!--        Theme JS files-->
         <script src="assets/libs/bootstrap-validator/js/jquery.validate.js"></script>
         <script src="assets/libs/bootstrap-validator/js/bootstrapValidator.min.js"></script>
@@ -110,7 +115,7 @@
             var nombreUsuario;
             var idUsuario;
             var usuario;
-
+            var idEquipo;
 
             function cargarPagina(pagina) {
                 console.log("entro a la funcion", pagina);
@@ -122,6 +127,7 @@
                 idTipoUsuarioLogueado = '<%=datosUsuario.getIdTipoUsuario()%>';
                 nombreUsuario = '<%=datosUsuario.getNombre()%>';
                 usuario = '<%=datosUsuario.getUsuario()%>';
+                idEquipo = '<%=datosUsuario.getIdEquipo()%>';
 
                 if (idTipoUsuarioLogueado == 1) {
                     $(".loader-backdrop").show();

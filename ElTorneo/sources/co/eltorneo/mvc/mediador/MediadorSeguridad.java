@@ -55,10 +55,8 @@ public class MediadorSeguridad {
      * @return
      */
     public UsuarioDTO consultarDatosUsuarioLogueado(String usuario) {
-
         DataBaseConnection dbcon = null;
         Connection conexion = null;
-
         UsuarioDTO datosUsuario = null;
 
         String mensajeError = "";

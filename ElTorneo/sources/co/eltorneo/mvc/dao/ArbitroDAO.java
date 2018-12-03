@@ -135,56 +135,6 @@ public class ArbitroDAO {
     /**
      *
      * @param conexion
-     * @param idUsuario
-     * @return
-     */
-    public String obtenerIdEquipoPorIdArbitroLogueado(Connection conexion, String idUsuario) {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        String idEquipo = "";
-        StringBuilder cadSQL = null;
-
-        try {
-
-            cadSQL = new StringBuilder();
-            cadSQL.append(" SELECT t.tecn_id,e.equi_id  ");
-            cadSQL.append(" FROM tecnico t");
-            cadSQL.append(" INNER JOIN equipo e ON e.tecn_id = t.tecn_id");
-            cadSQL.append(" WHERE t.usua_id = ? AND e.equi_estado = '1'");
-            ps = conexion.prepareStatement(cadSQL.toString());
-            AsignaAtributoStatement.setString(1, idUsuario, ps);
-
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                idEquipo = rs.getString("e.equi_id");
-            }
-            rs.close();
-            ps.close();
-            ps = null;
-
-        } catch (Exception e) {
-            LoggerMessage.getInstancia().loggerMessageException(e);
-            return null;
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                    ps = null;
-                }
-
-            } catch (Exception e) {
-                LoggerMessage.getInstancia().loggerMessageException(e);
-                return null;
-            }
-        }
-
-        return idEquipo;
-    }
-
-    /**
-     *
-     * @param conexion
      * @param idArbitro
      * @return
      */
@@ -285,5 +235,50 @@ public class ArbitroDAO {
             return null;
         }
         return registro;
+    }
+
+    /**
+     *
+     * @param conexion
+     * @return
+     */
+    public String arbitrosActivos(Connection conexion) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String arbitros = "";
+        StringBuilder cadSQL = null;
+
+        try {
+
+            cadSQL = new StringBuilder();
+            cadSQL.append(" SELECT count(arbi_id)as num");
+            cadSQL.append(" FROM arbitro WHERE arbi_estado ='1' ");
+            ps = conexion.prepareStatement(cadSQL.toString());
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                arbitros = rs.getString("num");
+            }
+            ps.close();
+            ps = null;
+
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+            return null;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                    ps = null;
+                }
+
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+                return null;
+            }
+        }
+
+        return arbitros;
     }
 }

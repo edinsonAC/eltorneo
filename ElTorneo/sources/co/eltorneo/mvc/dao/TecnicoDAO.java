@@ -230,7 +230,7 @@ public class TecnicoDAO {
             nRows = ps.executeUpdate();
             if (nRows > 0) {
                 registro.setRegistro(true);
-                registro.setMensaje("Se actualizo el arbitro");
+                registro.setMensaje("Se actualizo el tecnico");
             }
             ps.close();
             ps = null;
@@ -240,5 +240,55 @@ public class TecnicoDAO {
             return null;
         }
         return registro;
+    }
+
+    /**
+     *
+     * @param conexion
+     * @param idUsuario
+     * @return
+     */
+    public String obtenerIdEquipoPorIdTecnicoLogueado(Connection conexion, String idUsuario) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String idEquipo = "";
+        StringBuilder cadSQL = null;
+
+        try {
+
+            cadSQL = new StringBuilder();
+            cadSQL.append(" SELECT t.tecn_id,e.equi_id  ");
+            cadSQL.append(" FROM tecnico t");
+            cadSQL.append(" INNER JOIN equipo e ON e.tecn_id = t.tecn_id");
+            cadSQL.append(" WHERE t.usua_id = ? AND e.equi_estado = '1'");
+            ps = conexion.prepareStatement(cadSQL.toString());
+            AsignaAtributoStatement.setString(1, idUsuario, ps);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                idEquipo = rs.getString("e.equi_id");
+            }
+            rs.close();
+            ps.close();
+            ps = null;
+
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+            return null;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                    ps = null;
+                }
+
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+                return null;
+            }
+        }
+
+        return idEquipo;
     }
 }

@@ -194,7 +194,7 @@ public class UsuarioDAO {
                 datosUsuario.setUsuario(rs.getString("usse_usuario"));
                 datosUsuario.setClave(rs.getString("usse_clave"));
                 datosUsuario.setIdTipoUsuario(rs.getString("tius_id"));
-                
+
                 listarClientes.add(datosUsuario);
 
             }
@@ -338,7 +338,7 @@ public class UsuarioDAO {
                 datosUsuario.setDireccion(rs.getString("usua_direccion"));
                 datosUsuario.setDocumento(rs.getString("usua_cedula"));
                 datosUsuario.setCorreo(rs.getString("usua_correo"));
-               
+
                 listarUsuarios.add(datosUsuario);
 
             }
@@ -401,6 +401,7 @@ public class UsuarioDAO {
 
     /**
      * los daos que ya conocemos
+     *
      * @param conexion
      * @param usuario
      * @return
@@ -501,12 +502,12 @@ public class UsuarioDAO {
         StringBuilder cadSQL = null;
 
         try {
-            System.out.println("Usuario logueado : " + usuario);
             cadSQL = new StringBuilder();
-            cadSQL.append(" SELECT usua_id,usua_estado,usua_correo,usua_usuario,usua_clave,tius_id");
-            cadSQL.append(" FROM usuario WHERE usua_usuario = ?");
-
-            //   cadSQL.append(" WHERE clie.clie_estado!=0 ");
+            cadSQL.append(" SELECT distinct usuario.usua_id,usua_estado,usua_correo,usua_usuario,usua_clave,tius_id,e.equi_id ");
+            cadSQL.append(" FROM usuario ");
+            cadSQL.append(" LEFT JOIN tecnico tec ON tec.usua_id = usuario.usua_id ");
+            cadSQL.append(" LEFT JOIN equipo e ON e.tecn_id = tec.tecn_id ");
+            cadSQL.append(" WHERE usua_usuario = ?");
             ps = conexion.prepareStatement(cadSQL.toString());
             AsignaAtributoStatement.setString(1, usuario, ps);
             rs = ps.executeQuery();
@@ -519,6 +520,7 @@ public class UsuarioDAO {
                 datosUsuario.setUsuario(rs.getString("usua_usuario"));
                 datosUsuario.setClave(rs.getString("usua_clave"));
                 datosUsuario.setIdTipoUsuario(rs.getString("tius_id"));
+                datosUsuario.setIdEquipo(rs.getString("e.equi_id"));
 
             }
             System.out.println("y sale---" + datosUsuario.toStringJson());
@@ -594,10 +596,10 @@ public class UsuarioDAO {
     }
 
     /**
-     * 
+     *
      * @param conexion
      * @param usuario
-     * @return 
+     * @return
      */
     public boolean validarUsuario(Connection conexion, String usuario) {
 
@@ -651,12 +653,12 @@ public class UsuarioDAO {
     }
 
     /**
-     * 
+     *
      * @param conexion
      * @param claveActual
      * @param claveNueva
      * @param idUsuario
-     * @return 
+     * @return
      */
     public boolean cambiarClave(Connection conexion, String claveActual, String claveNueva, String idUsuario) {
 

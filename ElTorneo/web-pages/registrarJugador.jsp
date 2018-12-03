@@ -66,8 +66,14 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="tel_jugador">*posicion de juego </label>
+                        <label for="pos_jugador">*posicion de juego </label>
                         <select id="pos_jugador" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="dorsal_jugador">*Dorsal </label>
+                        <input type="number" id="dorsal_jugador"  class="form-control" required>
                     </div>
                 </div>
             </div>
@@ -116,7 +122,8 @@
                             operacion = null;
                         }
 
-                        $(document).ready(function () {//el document ready es por donde empieza a cargar, lo que ud ponga de primero aca, eso es lo que se hace de primero
+                        $(document).ready(function () {
+                            console.log("ready perras");
 //        $("#email").attr("remote", URL + "SevletValidarCorreo?bandera=usuario");
 //        $("#documentoA").attr("remote", URL + "SevletValidarDocumento?bandera=usuario");
 //        $("#usuario").attr("remote", URL + "ServletValidarCrendencial?bandera=usuario");
@@ -164,7 +171,7 @@
                                 telefono: $("#tel_jugador").val(),
                                 idPosicion: $("#pos_jugador").val(),
                                 dorsal: $("#dorsal_jugador").val(),
-                                idEquipo: idUsuario,
+                                idEquipo: idEquipo,
                                 registradoPor: nombreUsuario
 
                             };
@@ -190,9 +197,11 @@
                         }
 
                         function listarPosiciones() {
+                            console.log("entraa la funcion de posiciones");
                             ajaxElTorneo.listarPosicionesDeJuego({
                                 callback: function (data) {
                                     if (data !== null) {
+                                        console.log("con esta data", data);
                                         dwr.util.removeAllOptions("pos_jugador");
                                         dwr.util.addOptions("pos_jugador", [{
                                                 id: '',

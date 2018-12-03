@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="ap1_usuario">* Nombre del equipo: </label>
+                        <label for="nombreEquipo">* Nombre del equipo: </label>
                         <input type="text" class="form-control nombre" id="nombreEquipo" name="nombreEquipo" autocomplete="off" maxlength="20"  required>
                     </div>
                 </div>
@@ -17,8 +17,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="col-sm-6 mx-auto" style="text-align: -webkit-center;">
-                        <button type="submit" id="boton" class="btn btn-success mr-2" onclick="validar('reg_usuario', 1);">Registrar</button>   
-                        <button type="button" id="boton2" class="btn btn-success mr-2" onclick="sorteo();">sorteo</button>   
+                        <button type="submit" id="boton" class="btn btn-success mr-2" onclick="validar('reg_equipo', 1);">Registrar</button>   
                     </div>
                     <input class="btn btn-light" type="button" value="Volver" onclick="javascript:redireccionar();">
                 </div>
@@ -115,18 +114,6 @@
 
                             // recargar();
                         }
-
-                        //esta siempre es la estructura
-                        // ajaxElTorneo.nombredelafuncion(parametros, parametros, {
-                        //       callback: function (data) { recibe lo que devuelve la funcion
-                        //         if (data !== null) { si lo que se devuelve es diferente de null ud ahi hace algo, un mensaje o lo que sea
-                        ///      
-                        // },
-                        //           timeout: 20000  es el tiempo maximo para que devuelva algo la funcion
-                        //     });
-
-
-
 
                         function limpiar() {//limpia solo los input, excepto los i que sean tipo button 
                             $('input').not(":button").val('');

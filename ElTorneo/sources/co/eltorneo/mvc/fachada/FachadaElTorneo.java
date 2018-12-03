@@ -10,9 +10,12 @@ package co.eltorneo.mvc.fachada;
 import co.eltorneo.mvc.dto.ArbitroDTO;
 import co.eltorneo.mvc.dto.EquipoDTO;
 import co.eltorneo.mvc.dto.JugadorDTO;
+import co.eltorneo.mvc.dto.PartidoDTO;
 import co.eltorneo.mvc.dto.PosicionDTO;
+import co.eltorneo.mvc.dto.RequisitoDTO;
 import co.eltorneo.mvc.dto.RespuestaDTO;
 import co.eltorneo.mvc.dto.TecnicoDTO;
+import co.eltorneo.mvc.dto.TemporadaDTO;
 import co.eltorneo.mvc.dto.UsuarioDTO;
 import co.eltorneo.mvc.mediador.MediadorElTorneo;
 import java.sql.Connection;
@@ -117,13 +120,13 @@ public class FachadaElTorneo {
 
     /**
      *
-     * @param equipo
+     * @param jugador
      * @param usuario
      * @return
      */
     @RemoteMethod
-    public RespuestaDTO registrarJugador(JugadorDTO equipo, UsuarioDTO usuario) {
-        return MediadorElTorneo.getInstancia().registrarJugador(equipo, usuario);
+    public RespuestaDTO registrarJugador(JugadorDTO jugador, UsuarioDTO usuario) {
+        return MediadorElTorneo.getInstancia().registrarJugador(jugador, usuario);
     }
 
     /**
@@ -138,11 +141,12 @@ public class FachadaElTorneo {
     /**
      *
      * @param fechaInicio
+     * @param idTemporada
      * @return
      */
     @RemoteMethod
-    public RespuestaDTO sorteoDePartidos(String fechaInicio) {
-        return MediadorElTorneo.getInstancia().sorteoDePartidos(fechaInicio);
+    public RespuestaDTO sorteoDePartidos(String fechaInicio, String idTemporada) {
+        return MediadorElTorneo.getInstancia().sorteoDePartidos(fechaInicio, idTemporada);
     }
 
     /**
@@ -202,5 +206,103 @@ public class FachadaElTorneo {
     @RemoteMethod
     public RespuestaDTO actualizarArbitro(ArbitroDTO arbitro) {
         return MediadorElTorneo.getInstancia().actualizarArbitro(arbitro);
+    }
+
+    /**
+     *
+     * @param tecnico
+     * @return
+     */
+    @RemoteMethod
+    public RespuestaDTO actualizarTecnico(TecnicoDTO tecnico) {
+        return MediadorElTorneo.getInstancia().actualizarTecnico(tecnico);
+    }
+
+    /**
+     *
+     * @param jugador
+     * @return
+     */
+    @RemoteMethod
+    public RespuestaDTO actualizarJugador(JugadorDTO jugador) {
+        return MediadorElTorneo.getInstancia().actualizarJugador(jugador);
+    }
+
+    /**
+     *
+     * @param idEquipo
+     * @return
+     */
+    @RemoteMethod
+    public EquipoDTO buscarEquipoPorId(String idEquipo) {
+        return MediadorElTorneo.getInstancia().buscarEquipoPorId(idEquipo);
+    }
+
+    /**
+     *
+     * @param equipo
+     * @return
+     */
+    @RemoteMethod
+    public RespuestaDTO actualizarEquipo(EquipoDTO equipo) {
+        return MediadorElTorneo.getInstancia().actualizarEquipo(equipo);
+    }
+
+    /**
+     *
+     * @param idTemporada
+     * @return
+     */
+    @RemoteMethod
+    public ArrayList<PartidoDTO> listarPartidosPorIdTemporada(String idTemporada) {
+        return MediadorElTorneo.getInstancia().listarPartidosPorIdTemporada(idTemporada);
+    }
+
+    /**
+     *
+     * @return
+     */
+    @RemoteMethod
+    public ArrayList<TemporadaDTO> listarTemporadas() {
+        return MediadorElTorneo.getInstancia().listarTemporadas();
+    }
+
+    /**
+     *
+     * @param temporada
+     * @return
+     */
+    @RemoteMethod
+    public RespuestaDTO registrarTemporada(TemporadaDTO temporada) {
+        return MediadorElTorneo.getInstancia().registrarTemporada(temporada);
+    }
+
+    /**
+     *
+     * @param idTemporada
+     * @return
+     */
+    @RemoteMethod
+    public TemporadaDTO buscarTemporadaPorId(String idTemporada) {
+        return MediadorElTorneo.getInstancia().buscarTemporadaPorId(idTemporada);
+    }
+
+    /**
+     *
+     * @param temporada
+     * @return
+     */
+    @RemoteMethod
+    public RespuestaDTO actualizarTemporada(TemporadaDTO temporada) {
+        return MediadorElTorneo.getInstancia().actualizarTemporada(temporada);
+    }
+
+    /**
+     *
+     * @return
+     */
+    @RemoteMethod
+    public RequisitoDTO arbitrosEquiposActivos() {
+        return MediadorElTorneo.getInstancia().arbitrosEquiposActivos();
     }
 }

@@ -19,10 +19,17 @@ public class PartidoDTO implements Serializable {
     String fechaPartido = Generales.EMPTYSTRING;
     String idHorario = Generales.EMPTYSTRING;
     String estado = Generales.EMPTYSTRING;
-    int jornada = Generales.ZEROVALUE;
     String equipoA = Generales.EMPTYSTRING;
     String equipoB = Generales.EMPTYSTRING;
     String temporada = Generales.EMPTYSTRING;
+    String idEquipo = Generales.EMPTYSTRING;
+    String horaInicial = Generales.EMPTYSTRING;
+    String horaFinal = Generales.EMPTYSTRING;
+    String nombreEquipoA = Generales.EMPTYSTRING;
+    String nombreEquipoB = Generales.EMPTYSTRING;
+    int jornada = Generales.ZEROVALUE;
+    int golesA = Generales.ZEROVALUE;
+    int golesB = Generales.ZEROVALUE;
 
     public String getId() {
         return id;
@@ -86,6 +93,62 @@ public class PartidoDTO implements Serializable {
 
     public void setTemporada(String temporada) {
         this.temporada = temporada;
+    }
+
+    public String getIdEquipo() {
+        return idEquipo;
+    }
+
+    public void setIdEquipo(String idEquipo) {
+        this.idEquipo = idEquipo;
+    }
+
+    public String getHoraInicial() {
+        return horaInicial;
+    }
+
+    public void setHoraInicial(String horaInicial) {
+        this.horaInicial = horaInicial;
+    }
+
+    public String getHoraFinal() {
+        return horaFinal;
+    }
+
+    public void setHoraFinal(String horaFinal) {
+        this.horaFinal = horaFinal;
+    }
+
+    public int getGolesA() {
+        return golesA;
+    }
+
+    public void setGolesA(int golesA) {
+        this.golesA = golesA;
+    }
+
+    public int getGolesB() {
+        return golesB;
+    }
+
+    public void setGolesB(int golesB) {
+        this.golesB = golesB;
+    }
+
+    public String getNombreEquipoA() {
+        return nombreEquipoA;
+    }
+
+    public void setNombreEquipoA(String nombreEquipoA) {
+        this.nombreEquipoA = nombreEquipoA;
+    }
+
+    public String getNombreEquipoB() {
+        return nombreEquipoB;
+    }
+
+    public void setNombreEquipoB(String nombreEquipoB) {
+        this.nombreEquipoB = nombreEquipoB;
     }
 
     public String toStringJson() {

@@ -206,8 +206,7 @@
             telefono: $("#tel_arbitro").val(),
             correo: $("#email_arbitro").val(),
             idTipoUsuario: ARBITRO,
-            usuario: $("#usuario_arbitro").val(),
-            registradoPor: nombreUsuario
+            usuario: $("#usuario_arbitro").val()
 
         };
 

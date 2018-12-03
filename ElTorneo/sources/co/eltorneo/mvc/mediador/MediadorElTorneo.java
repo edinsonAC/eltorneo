@@ -19,6 +19,7 @@ import co.eltorneo.mvc.dao.JugadorDAO;
 import co.eltorneo.mvc.dao.PartidoDAO;
 import co.eltorneo.mvc.dao.PosicionDAO;
 import co.eltorneo.mvc.dao.TecnicoDAO;
+import co.eltorneo.mvc.dao.TemporadaDAO;
 import co.eltorneo.mvc.dao.UsuarioDAO;
 import co.eltorneo.mvc.dto.ArbitroDTO;
 import co.eltorneo.mvc.dto.EquipoDTO;
@@ -27,8 +28,10 @@ import co.eltorneo.mvc.dto.HorarioDTO;
 import co.eltorneo.mvc.dto.JugadorDTO;
 import co.eltorneo.mvc.dto.PartidoDTO;
 import co.eltorneo.mvc.dto.PosicionDTO;
+import co.eltorneo.mvc.dto.RequisitoDTO;
 import co.eltorneo.mvc.dto.RespuestaDTO;
 import co.eltorneo.mvc.dto.TecnicoDTO;
+import co.eltorneo.mvc.dto.TemporadaDTO;
 import co.eltorneo.mvc.dto.UsuarioDTO;
 import java.sql.Connection;
 import java.text.ParseException;
@@ -114,9 +117,9 @@ public class MediadorElTorneo {
                     LoggerMessage.getInstancia().loggerMessageException(e);
                 }
             }
-            return datosUsuario;
-        }
 
+        }
+        return datosUsuario;
     }
 
     /**
@@ -187,9 +190,9 @@ public class MediadorElTorneo {
                     LoggerMessage.getInstancia().loggerMessageException(e);
                 }
             }
-            return respuesta;
-        }
 
+        }
+        return respuesta;
     }
 
     /**
@@ -234,9 +237,9 @@ public class MediadorElTorneo {
                     LoggerMessage.getInstancia().loggerMessageException(e);
                 }
             }
-            return tecnicos;
-        }
 
+        }
+        return tecnicos;
     }
 
     /**
@@ -300,9 +303,9 @@ public class MediadorElTorneo {
                     LoggerMessage.getInstancia().loggerMessageException(e);
                 }
             }
-            return respuesta;
-        }
 
+        }
+        return respuesta;
     }
 
     /**
@@ -345,9 +348,9 @@ public class MediadorElTorneo {
                     LoggerMessage.getInstancia().loggerMessageException(e);
                 }
             }
-            return arbitros;
-        }
 
+        }
+        return arbitros;
     }
 
     /**
@@ -396,9 +399,9 @@ public class MediadorElTorneo {
                     LoggerMessage.getInstancia().loggerMessageException(e);
                 }
             }
-            return respuesta;
-        }
 
+        }
+        return respuesta;
     }
 
     /**
@@ -443,9 +446,9 @@ public class MediadorElTorneo {
                     LoggerMessage.getInstancia().loggerMessageException(e);
                 }
             }
-            return equipos;
-        }
 
+        }
+        return equipos;
     }
 
     /**
@@ -471,18 +474,16 @@ public class MediadorElTorneo {
                 conexion.rollback();
                 throw new Exception("ERROR: no se pudo registrar el usuario");
             }
-            idEquipo = new ArbitroDAO().obtenerIdEquipoPorIdArbitroLogueado(conexion, jugador.getIdEquipo());
-            if (!idEquipo.equals("")) {
-                jugador.setIdUsuario(respuesta.getIdResgistrado());
-                jugador.setIdEquipo(idEquipo);
-                respuesta2 = new JugadorDAO().registrarJugador(conexion, jugador);
+            //    idEquipo = new TecnicoDAO().obtenerIdEquipoPorIdTecnicoLogueado(conexion, jugador.getIdEquipo());
+            jugador.setIdUsuario(respuesta.getIdResgistrado());
 
-                if (!respuesta2.isRegistro()) {
-                    respuesta2.setMensaje("No se pudo registrar el jugador");
-                    conexion.rollback();
-                    throw new Exception("ERROR: no se pudo registrar el jugador");
+            respuesta2 = new JugadorDAO().registrarJugador(conexion, jugador);
 
-                }
+            if (!respuesta2.isRegistro()) {
+                respuesta2.setMensaje("No se pudo registrar el jugador");
+                conexion.rollback();
+                throw new Exception("ERROR: no se pudo registrar el jugador");
+
             }
 
             Correo envio = new Correo(usuario.getCorreo(), usuario.getClave(), "1", jugador.getNombre(), "1", "ninguna", usuario.getUsuario());
@@ -513,9 +514,9 @@ public class MediadorElTorneo {
                     LoggerMessage.getInstancia().loggerMessageException(e);
                 }
             }
-            return respuesta;
-        }
 
+        }
+        return respuesta;
     }
 
     /**
@@ -560,9 +561,9 @@ public class MediadorElTorneo {
                     LoggerMessage.getInstancia().loggerMessageException(e);
                 }
             }
-            return jugadores;
-        }
 
+        }
+        return jugadores;
     }
 
     /**
@@ -570,7 +571,7 @@ public class MediadorElTorneo {
      * @param fechaInicio
      * @return
      */
-    public RespuestaDTO sorteoDePartidos(String fechaInicio) {
+    public RespuestaDTO sorteoDePartidos(String fechaInicio, String idTemporada) {
         DataBaseConnection dbcon = null;
         Connection conexion = null;
         RespuestaDTO respuesta = null;
@@ -579,7 +580,6 @@ public class MediadorElTorneo {
         ArrayList<EquipoDTO> equipos = null;
         ArrayList<HorarioDTO> horarios = null;
         PartidoDTO partido = null;
-        PartidoDTO partidoJuego = null;
         ArrayList<PartidoDTO> partidos = new ArrayList<>();
         int dia = 1, nEquipos = 0;
 
@@ -605,10 +605,11 @@ public class MediadorElTorneo {
                             partido = new PartidoDTO();
                             partido.setFechaPartido(formato.format(calendar.getTime()));
                             partido.setEstado("0");
-                            partido.setTemporada("1");
+                            partido.setTemporada(idTemporada);
                             partido.setIdHorario(horarios.get(m).getId());
                             partido.setJornada(i + 1);
                             respuesta = new PartidoDAO().registrarPartido(conexion, partido);
+                            partido.setId(respuesta.getIdResgistrado());
                             partidos.add(partido);
                             System.out.println("se registro el partido con el id " + respuesta.getIdResgistrado());
                             if (respuesta.isRegistro()) {
@@ -627,10 +628,11 @@ public class MediadorElTorneo {
                                 partido = new PartidoDTO();
                                 partido.setFechaPartido(formato.format(calendar.getTime()));
                                 partido.setEstado("0");
-                                partido.setTemporada("1");
+                                partido.setTemporada(idTemporada);
                                 partido.setIdHorario(horarios.get(h).getId());
                                 partido.setJornada(i + 1);
                                 respuesta = new PartidoDAO().registrarPartido(conexion, partido);
+                                partido.setId(respuesta.getIdResgistrado());
                                 partidos.add(partido);
                                 if (respuesta.isRegistro()) {
                                     nPartidosPorJornada--;
@@ -672,9 +674,9 @@ public class MediadorElTorneo {
                     LoggerMessage.getInstancia().loggerMessageException(e);
                 }
             }
-            return respuesta;
-        }
 
+        }
+        return respuesta;
     }
 
     /**
@@ -745,9 +747,9 @@ public class MediadorElTorneo {
                     LoggerMessage.getInstancia().loggerMessageException(e);
                 }
             }
-            return respuesta;
-        }
 
+        }
+        return respuesta;
     }
 
     /**
@@ -792,9 +794,9 @@ public class MediadorElTorneo {
                     LoggerMessage.getInstancia().loggerMessageException(e);
                 }
             }
-            return posiciones;
-        }
 
+        }
+        return posiciones;
     }
 
     /**
@@ -840,9 +842,9 @@ public class MediadorElTorneo {
                     LoggerMessage.getInstancia().loggerMessageException(e);
                 }
             }
-            return jugadores;
-        }
 
+        }
+        return jugadores;
     }
 
     /**
@@ -889,9 +891,9 @@ public class MediadorElTorneo {
                     LoggerMessage.getInstancia().loggerMessageException(e);
                 }
             }
-            return jugador;
-        }
 
+        }
+        return jugador;
     }
 
     /**
@@ -905,7 +907,7 @@ public class MediadorElTorneo {
         Connection conexion = null;
         RespuestaDTO respuesta = null;
         ArrayList<PartidoDTO> partidosFinal = new ArrayList<>();
-        int idPartido = 1;
+        int idPartido = Integer.parseInt(encuentros.get(0).getId());
         try {
             System.out.println("entro a la funcion de sorteo equipos");
             dbcon = DataBaseConnection.getInstance();
@@ -953,9 +955,9 @@ public class MediadorElTorneo {
                     LoggerMessage.getInstancia().loggerMessageException(e);
                 }
             }
-            return respuesta;
-        }
 
+        }
+        return respuesta;
     }
 
     /**
@@ -1040,9 +1042,9 @@ public class MediadorElTorneo {
                     LoggerMessage.getInstancia().loggerMessageException(e);
                 }
             }
-            return tecnico;
-        }
 
+        }
+        return tecnico;
     }
 
     /**
@@ -1088,9 +1090,9 @@ public class MediadorElTorneo {
                     LoggerMessage.getInstancia().loggerMessageException(e);
                 }
             }
-            return arbitro;
-        }
 
+        }
+        return arbitro;
     }
 
     /**
@@ -1107,16 +1109,13 @@ public class MediadorElTorneo {
         try {
             dbcon = DataBaseConnection.getInstance();
             conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
-            conexion.setAutoCommit(false);
 
             respuesta = new ArbitroDAO().actualizarArbitro(conexion, arbitro);
             if (!respuesta.isRegistro()) {
                 respuesta.setMensaje("No se pudo actualizar el arbitro");
-                conexion.rollback();
                 throw new Exception("ERROR: No se pudo actualizar el arbitro");
             }
 
-            conexion.commit();
             conexion.close();
             conexion = null;
         } catch (Exception e) {
@@ -1140,8 +1139,491 @@ public class MediadorElTorneo {
                     LoggerMessage.getInstancia().loggerMessageException(e);
                 }
             }
-            return respuesta;
-        }
 
+        }
+        return respuesta;
+    }
+
+    /**
+     *
+     * @param tecnico
+     * @return
+     */
+    public RespuestaDTO actualizarTecnico(TecnicoDTO tecnico) {
+
+        DataBaseConnection dbcon = null;
+        Connection conexion = null;
+        RespuestaDTO respuesta = new RespuestaDTO();
+
+        try {
+            dbcon = DataBaseConnection.getInstance();
+            conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
+
+            respuesta = new TecnicoDAO().actualizarTecnico(conexion, tecnico);
+            if (!respuesta.isRegistro()) {
+                respuesta.setMensaje("No se pudo actualizar el tecnico");
+                throw new Exception("ERROR: No se pudo actualizar el tecnico");
+            }
+
+            conexion.close();
+            conexion = null;
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+        } finally {
+            try {
+                if (conexion != null && !conexion.isClosed()) {
+                    conexion.close();
+                    conexion = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+            } finally {
+                try {
+                    if (conexion != null && !conexion.isClosed()) {
+                        conexion.close();
+                        conexion = null;
+                    }
+
+                } catch (Exception e) {
+                    LoggerMessage.getInstancia().loggerMessageException(e);
+                }
+            }
+
+        }
+        return respuesta;
+    }
+
+    /**
+     *
+     * @param jugador
+     * @return
+     */
+    public RespuestaDTO actualizarJugador(JugadorDTO jugador) {
+
+        DataBaseConnection dbcon = null;
+        Connection conexion = null;
+        RespuestaDTO respuesta = new RespuestaDTO();
+
+        try {
+            dbcon = DataBaseConnection.getInstance();
+            conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
+
+            respuesta = new JugadorDAO().actualizarJugador(conexion, jugador);
+            if (!respuesta.isRegistro()) {
+                respuesta.setMensaje("No se pudo actualizar el jugador");
+                throw new Exception("ERROR: No se pudo actualizar el jugador");
+            }
+
+            conexion.close();
+            conexion = null;
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+        } finally {
+            try {
+                if (conexion != null && !conexion.isClosed()) {
+                    conexion.close();
+                    conexion = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+            } finally {
+                try {
+                    if (conexion != null && !conexion.isClosed()) {
+                        conexion.close();
+                        conexion = null;
+                    }
+
+                } catch (Exception e) {
+                    LoggerMessage.getInstancia().loggerMessageException(e);
+                }
+            }
+
+        }
+        return respuesta;
+    }
+
+    /**
+     *
+     * @param idEquipo
+     * @return
+     */
+    public EquipoDTO buscarEquipoPorId(String idEquipo) {
+
+        DataBaseConnection dbcon = null;
+        Connection conexion = null;
+        EquipoDTO equipo = null;
+        try {
+
+            dbcon = DataBaseConnection.getInstance();
+            conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
+
+            equipo = new EquipoDAO().buscarEquipoPorId(conexion, idEquipo);
+            if (equipo == null) {
+                throw new Exception("ERROR: No se encontro el jugador");
+            }
+
+            conexion.close();
+            conexion = null;
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+        } finally {
+            try {
+                if (conexion != null && !conexion.isClosed()) {
+                    conexion.close();
+                    conexion = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+            } finally {
+                try {
+                    if (conexion != null && !conexion.isClosed()) {
+                        conexion.close();
+                        conexion = null;
+                    }
+
+                } catch (Exception e) {
+                    LoggerMessage.getInstancia().loggerMessageException(e);
+                }
+            }
+
+        }
+        return equipo;
+    }
+
+    /**
+     *
+     * @param equipo
+     * @return
+     */
+    public RespuestaDTO actualizarEquipo(EquipoDTO equipo) {
+
+        DataBaseConnection dbcon = null;
+        Connection conexion = null;
+        RespuestaDTO respuesta = new RespuestaDTO();
+
+        try {
+            dbcon = DataBaseConnection.getInstance();
+            conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
+
+            respuesta = new EquipoDAO().actualizarEquipo(conexion, equipo);
+            if (!respuesta.isRegistro()) {
+                respuesta.setMensaje("No se pudo actualizar el equipo");
+                throw new Exception("ERROR: No se pudo actualizar el equipo");
+            }
+
+            conexion.close();
+            conexion = null;
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+        } finally {
+            try {
+                if (conexion != null && !conexion.isClosed()) {
+                    conexion.close();
+                    conexion = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+            } finally {
+                try {
+                    if (conexion != null && !conexion.isClosed()) {
+                        conexion.close();
+                        conexion = null;
+                    }
+
+                } catch (Exception e) {
+                    LoggerMessage.getInstancia().loggerMessageException(e);
+                }
+            }
+
+        }
+        return respuesta;
+    }
+
+    /**
+     *
+     * @param idTemporada
+     * @return
+     */
+    public ArrayList<PartidoDTO> listarPartidosPorIdTemporada(String idTemporada) {
+
+        DataBaseConnection dbcon = null;
+        Connection conexion = null;
+        ArrayList<PartidoDTO> partidos = null;
+        try {
+
+            dbcon = DataBaseConnection.getInstance();
+            conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
+
+            partidos = new PartidoDAO().listarPartidosPorIdTemporada(conexion, idTemporada);
+            if (partidos.isEmpty()) {
+                throw new Exception("ERROR: listando las posiciones");
+            }
+
+            conexion.close();
+            conexion = null;
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+        } finally {
+            try {
+                if (conexion != null && !conexion.isClosed()) {
+                    conexion.close();
+                    conexion = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+            } finally {
+                try {
+                    if (conexion != null && !conexion.isClosed()) {
+                        conexion.close();
+                        conexion = null;
+                    }
+
+                } catch (Exception e) {
+                    LoggerMessage.getInstancia().loggerMessageException(e);
+                }
+            }
+
+        }
+        return partidos;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public ArrayList<TemporadaDTO> listarTemporadas() {
+
+        DataBaseConnection dbcon = null;
+        Connection conexion = null;
+        ArrayList<TemporadaDTO> temporadas = null;
+        try {
+
+            dbcon = DataBaseConnection.getInstance();
+            conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
+
+            temporadas = new TemporadaDAO().listarTemporadas(conexion);
+            if (temporadas.isEmpty()) {
+                throw new Exception("ERROR: listando las temporadas");
+            }
+
+            conexion.close();
+            conexion = null;
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+        } finally {
+            try {
+                if (conexion != null && !conexion.isClosed()) {
+                    conexion.close();
+                    conexion = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+            } finally {
+                try {
+                    if (conexion != null && !conexion.isClosed()) {
+                        conexion.close();
+                        conexion = null;
+                    }
+
+                } catch (Exception e) {
+                    LoggerMessage.getInstancia().loggerMessageException(e);
+                }
+            }
+
+        }
+        return temporadas;
+    }
+
+    /**
+     *
+     * @param temporada
+     * @return
+     */
+    public RespuestaDTO registrarTemporada(TemporadaDTO temporada) {
+
+        DataBaseConnection dbcon = null;
+        Connection conexion = null;
+        RespuestaDTO respuesta = null;
+
+        try {
+            dbcon = DataBaseConnection.getInstance();
+            conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
+
+            respuesta = new TemporadaDAO().registrarTemporada(conexion, temporada);
+            if (!respuesta.isRegistro()) {
+                respuesta.setMensaje("No se pudo registrar la temporada");
+                conexion.rollback();
+                throw new Exception("ERROR: no se pudo registrar  la temporada");
+            }
+
+            respuesta.setMensaje("Se ha registrado  la temporada satisfactoriamente");
+            conexion.close();
+            conexion = null;
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+        } finally {
+            try {
+                if (conexion != null && !conexion.isClosed()) {
+                    conexion.close();
+                    conexion = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+            } finally {
+                try {
+                    if (conexion != null && !conexion.isClosed()) {
+                        conexion.close();
+                        conexion = null;
+                    }
+
+                } catch (Exception e) {
+                    LoggerMessage.getInstancia().loggerMessageException(e);
+                }
+            }
+
+        }
+        return respuesta;
+    }
+
+    /**
+     *
+     * @param idTemporada
+     * @return
+     */
+    public TemporadaDTO buscarTemporadaPorId(String idTemporada) {
+
+        DataBaseConnection dbcon = null;
+        Connection conexion = null;
+        TemporadaDTO temp = null;
+        try {
+
+            dbcon = DataBaseConnection.getInstance();
+            conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
+
+            temp = new TemporadaDAO().buscarTemporadaPorId(conexion, idTemporada);
+            if (temp == null) {
+                throw new Exception("ERROR: No se encontro la temporada");
+            }
+
+            conexion.close();
+            conexion = null;
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+        } finally {
+            try {
+                if (conexion != null && !conexion.isClosed()) {
+                    conexion.close();
+                    conexion = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+            } finally {
+                try {
+                    if (conexion != null && !conexion.isClosed()) {
+                        conexion.close();
+                        conexion = null;
+                    }
+
+                } catch (Exception e) {
+                    LoggerMessage.getInstancia().loggerMessageException(e);
+                }
+            }
+
+        }
+        return temp;
+    }
+
+    /**
+     *
+     * @param temp
+     * @return
+     */
+    public RespuestaDTO actualizarTemporada(TemporadaDTO temp) {
+
+        DataBaseConnection dbcon = null;
+        Connection conexion = null;
+        RespuestaDTO respuesta = new RespuestaDTO();
+
+        try {
+            dbcon = DataBaseConnection.getInstance();
+            conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
+
+            respuesta = new TemporadaDAO().actualizarTemporada(conexion, temp);
+            if (!respuesta.isRegistro()) {
+                respuesta.setMensaje("No se pudo actualizar el equipo");
+                throw new Exception("ERROR: No se pudo actualizar el equipo");
+            }
+
+            conexion.close();
+            conexion = null;
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+        } finally {
+            try {
+                if (conexion != null && !conexion.isClosed()) {
+                    conexion.close();
+                    conexion = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+            } finally {
+                try {
+                    if (conexion != null && !conexion.isClosed()) {
+                        conexion.close();
+                        conexion = null;
+                    }
+
+                } catch (Exception e) {
+                    LoggerMessage.getInstancia().loggerMessageException(e);
+                }
+            }
+
+        }
+        return respuesta;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public RequisitoDTO arbitrosEquiposActivos() {
+
+        DataBaseConnection dbcon = null;
+        Connection conexion = null;
+        RequisitoDTO requisito = new RequisitoDTO();
+        try {
+
+            dbcon = DataBaseConnection.getInstance();
+            conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
+
+            requisito.setArbitrosActivos(new ArbitroDAO().arbitrosActivos(conexion));
+            requisito.setEquiposActivos(new EquipoDAO().equiposActivos(conexion));
+            
+            conexion.close();
+            conexion = null;
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+        } finally {
+            try {
+                if (conexion != null && !conexion.isClosed()) {
+                    conexion.close();
+                    conexion = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+            } finally {
+                try {
+                    if (conexion != null && !conexion.isClosed()) {
+                        conexion.close();
+                        conexion = null;
+                    }
+
+                } catch (Exception e) {
+                    LoggerMessage.getInstancia().loggerMessageException(e);
+                }
+            }
+
+        }
+        return requisito;
     }
 }

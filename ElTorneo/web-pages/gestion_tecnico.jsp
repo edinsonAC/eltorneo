@@ -1,5 +1,10 @@
 
 <div class="content" id="tablaTecn">
+    <div class="row">
+        <div class="col-md-12 divAgregar">
+            <button type="button" class="btn btn-primary" onclick="javascript:cargarPagina('registrar-usuario.jsp');" >Agregar tecnico</button>
+        </div>
+    </div>
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
@@ -22,9 +27,9 @@
     </div>
 </div>
 
-<div class="card tc-card" id="bodyGestionTecnico">
-    <div class="card-body"  >
-        <h4 class="card-title" id="tituloForm"> <b>  Editar Arbitro </b></h4> 
+<div class="card tc-card" id="bodyGestionTecnico" style="display: none;">
+    <div class="card-body">
+        <h4 class="card-title" id="tituloForm"> <b>  Editar tecnico </b></h4> 
         <br>
         <form class="forms-sample" id="edit_tecnico"  onsubmit="return false;">
             <div class="row">
@@ -87,7 +92,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="col-sm-6 mx-auto" style="text-align: -webkit-center;">
-                        <button type="submit" id="boton" class="btn btn-success mr-2" onclick="validar('edit_tecnico', 1);">Registrar</button>   
+                        <button type="submit" id="boton" class="btn btn-success mr-2" onclick="validar('edit_tecnico', 1);">Guardar</button>   
                     </div>
                     <input class="btn btn-light" type="button" value="Volver" onclick="javascript:redireccionar();">
                 </div>
@@ -100,6 +105,16 @@
 <script>
     //globales
     var idTecnicoEditar;
+    var operacion = null;
+    function validar(form, r) {
+        operacion = r;
+    }
+
+    function postValidate() {
+        if (operacion == 1)
+            editarTecnico();
+        operacion = null;
+    }
 
     $(document).ready(function () {
         listarTecnicos();
@@ -120,6 +135,30 @@
             return '<td><button type="button"  class="btn btn-primary position-right" onclick="llenartecnico(' + data.id + ')">Detalle</button></td>';
         }
     ];
+
+    $("#edit_tecnico").validate({// el validate es sacado de codigo de internet, valida que los campos que tengan required este llenos
+        errorPlacement: function (label, element) {
+            label.addClass('mt-2 text-danger');
+            $(element).parent().append(label);
+        },
+        highlight: function (element, errorClass) {
+            $(element).parent().addClass('has-danger');
+            $(element).addClass('form-control-danger');
+            // operacion = null;
+        },
+        success: function (label) {
+            jQuery(label).closest('.has-danger').removeClass('has-danger');
+            label.remove();
+        },
+        submitHandler: function () {
+            postValidate();  // cuando llega aca es cuando se lleno bien el formulario, y va a la funcin que cree, que se llama postValidate
+        }
+    });
+
+
+
+
+
     function listarTecnicos() {
         ajaxElTorneo.listarTecnicos({
             callback: function (data) {
@@ -145,9 +184,7 @@
             callback: function (data) {
                 if (data !== null) {
                     idTecnicoEditar = data.id;
-                    console.log("llega--> ", data);
                     $("#email_tecnico").val(data.correo);
-                    $("#usuario_arbitro").val(data.usuario);
                     $("#nom_tecnico").val(data.nombre);
                     $("#ap_tecnico").val(data.apellido);
                     $("#doc_tecnico").val(data.documento);
@@ -161,6 +198,39 @@
             },
             timeout: 20000
         });
+    }
+
+
+    function editarTecnico() {
+        $("#boton").prop('disabled', true);
+
+        var tecnico = {
+            id: idTecnicoEditar,
+            nombre: $("#nom_tecnico").val(),
+            apellido: $("#ap_tecnico").val(),
+            documento: $("#doc_tecnico").val(),
+            direccion: $("#dir_tecnico").val(),
+            celular: $("#cel_tecnico").val(),
+            telefono: $("#tel_tecnico").val(),
+            correo: $("#email_tecnico").val(),
+            idTipoUsuario: TECNICO,
+            usuario: $("#usuario_tecnico").val()
+
+        };
+
+        ajaxElTorneo.actualizarTecnico(tecnico, {
+            callback: function (data) {
+                if (data !== null) {
+                    cargarPagina('gestion_tecnico.jsp');
+                    // limpiar();
+                } else {
+                    $("#boton").prop('disabled', false);
+                }
+            },
+            timeout: 20000
+        });
+
+        // recargar();
     }
 
 </script>

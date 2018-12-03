@@ -67,7 +67,6 @@
                 <div class="col-md-12">
                     <div class="col-sm-6 mx-auto" style="text-align: -webkit-center;">
                         <button type="submit" id="boton" class="btn btn-success mr-2" onclick="validar('reg_usuario', 1);">Registrar</button>   
-                        <button type="button" id="boton2" class="btn btn-success mr-2" onclick="sorteo();">sorteo</button>   
                     </div>
                     <input class="btn btn-light" type="button" value="Volver" onclick="javascript:redireccionar();">
                 </div>
@@ -95,7 +94,7 @@
                             this.value = this.value.replace(/[^A-Za-z0-9\s]*$/g, '').replace(' ', '');//no permite espacios
                         });
                         ////////
-                        
+
                         //globales
                         var operacion = null;
 
@@ -114,7 +113,7 @@
 //        $("#documentoA").attr("remote", URL + "SevletValidarDocumento?bandera=usuario");
 //        $("#usuario").attr("remote", URL + "ServletValidarCrendencial?bandera=usuario");
 
-                            $("#reg_usuario").validate({ // el validate es sacado de codigo de internet, valida que los campos que tengan required este llenos
+                            $("#reg_usuario").validate({// el validate es sacado de codigo de internet, valida que los campos que tengan required este llenos
                                 errorPlacement: function (label, element) {
                                     label.addClass('mt-2 text-danger');
                                     $(element).parent().append(label);
@@ -141,11 +140,11 @@
                         function registro() {//aqui empieza la funcion del registro del tecnico
                             $("#boton").prop('disabled', true);
                             //en la fachada declare que el metodo registrar tecnico recibia dos  objetos
-                            
+
                             //esta es la forma de armar un objeto, el nombre no importa, lo que importa son los atributos que deben ser igual a como estan en el dto
                             var usuario = {
-                                correo: $("#email").val(),  //la forma de obtener el valor de un campo con jquery es $("#elIdDelInput").val()
-                                idTipoUsuario: TECNICO,     // tecnico es una contante que cree en un paquete del proyecto
+                                correo: $("#email").val(), //la forma de obtener el valor de un campo con jquery es $("#elIdDelInput").val()
+                                idTipoUsuario: TECNICO, // tecnico es una contante que cree en un paquete del proyecto
                                 usuario: $("#usuario").val(),
                                 registradoPor: nombreUsuario  // es una variable global que cree en los jsp, guarda el nombre del que este logueado
 
@@ -160,7 +159,7 @@
                                 registradoPor: nombreUsuario
 
                             };
-                            
+
                             //esta es la forma de llamar un metodo de la fachada, ajaxElTorneo. y el nombre de la funcion
                             //aqui si importa el orden de los objetos, por que como este en la fachada se deben poner, en este caso primero el tecnico
                             ajaxElTorneo.registrarTecnico(tecnico, usuario, {
@@ -177,38 +176,23 @@
 
                             // recargar();
                         }
-                        
+
                         //esta siempre es la estructura
-                       // ajaxElTorneo.nombredelafuncion(parametros, parametros, {
-                         //       callback: function (data) { recibe lo que devuelve la funcion
-                           //         if (data !== null) { si lo que se devuelve es diferente de null ud ahi hace algo, un mensaje o lo que sea
-                             ///      
-                               // },
-                     //           timeout: 20000  es el tiempo maximo para que devuelva algo la funcion
-                       //     });
-                        
-                        
-                        
+                        // ajaxElTorneo.nombredelafuncion(parametros, parametros, {
+                        //       callback: function (data) { recibe lo que devuelve la funcion
+                        //         if (data !== null) { si lo que se devuelve es diferente de null ud ahi hace algo, un mensaje o lo que sea
+                        ///      
+                        // },
+                        //           timeout: 20000  es el tiempo maximo para que devuelva algo la funcion
+                        //     });
+
+
+
 
                         function limpiar() {//limpia solo los input, excepto los i que sean tipo button 
                             $('input').not(":button").val('');
                         }
 
 
-                        function sorteo() { //aqui estaba probando el sorteo de partidos mediante un boton, solo era para probar
-                            var fecha = "2018-10-22";
-                            ajaxElTorneo.sorteoDePartidos(fecha, {
-                                callback: function (data) {
-                                    if (data !== null) {
-
-                                    } else {
-
-                                    }
-                                },
-                                timeout: 20000
-                            });
-
-                            // recargar();
-                        }
-
+       
 </script>

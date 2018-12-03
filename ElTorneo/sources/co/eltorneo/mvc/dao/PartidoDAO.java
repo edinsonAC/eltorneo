@@ -273,6 +273,13 @@ public class PartidoDAO {
         return rta;
     }
 
+    /**
+     *
+     * @param conexion
+     * @param partido
+     * @return
+     * @throws SQLException
+     */
     public RespuestaDTO registrarEncuentro(Connection conexion, PartidoDTO partido) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -284,8 +291,8 @@ public class PartidoDAO {
             registro = new RespuestaDTO();
             System.out.println("entra el partido " + partido.toStringJson());
             cadSQL = new StringBuilder();
-            cadSQL.append(" INSERT INTO partido_equipo(equi_a, equi_b,part_id)");
-            cadSQL.append(" VALUES (?, ?, ?) ");
+            cadSQL.append(" UPDATE partido SET equi_a = ?,equi_b = ?");
+            cadSQL.append(" WHERE part_id = ?");
 
             ps = conexion.prepareStatement(cadSQL.toString(), Statement.RETURN_GENERATED_KEYS);
 
@@ -313,4 +320,72 @@ public class PartidoDAO {
         }
         return registro;
     }
+
+    /**
+     *
+     * @param conexion
+     * @param idTemporada
+     * @return
+     */
+    public ArrayList<PartidoDTO> listarPartidosPorIdTemporada(Connection conexion, String idTemporada) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<PartidoDTO> partidos = null;
+        PartidoDTO part = null;
+        StringBuilder cadSQL = null;
+
+        try {
+
+            cadSQL = new StringBuilder();
+            cadSQL.append(" SELECT pa.part_id, pa.equi_a,pa.equi_b, eq.equi_nombre as equipoa,equ.equi_nombre as equipob, pa.part_dia, h.hopa_horainicial,h.hopa_horafinal,part_jornada  ");
+            cadSQL.append(" FROM partido pa");
+            cadSQL.append(" INNER JOIN horario_partido h ON h.hopa_id = pa.hopa_id");
+            cadSQL.append(" INNER JOIN equipo eq ON eq.equi_id = pa.equi_a");
+            cadSQL.append(" INNER JOIN equipo equ ON equ.equi_id = pa.equi_b");
+            cadSQL.append(" WHERE pa.temp_id = ?");
+            cadSQL.append(" order by (pa.part_id) asc");
+
+            ps = conexion.prepareStatement(cadSQL.toString());
+            AsignaAtributoStatement.setInt(1, idTemporada, ps);
+            rs = ps.executeQuery();
+            partidos = new ArrayList();
+
+            while (rs.next()) {
+                part = new PartidoDTO();
+                part.setId(rs.getString("part_id"));
+                part.setEquipoA(rs.getString("pa.equi_a"));
+                part.setEquipoB(rs.getString("pa.equi_b"));
+                part.setNombreEquipoA(rs.getString("equipoa"));
+                part.setNombreEquipoB(rs.getString("equipob"));
+                part.setHoraInicial(rs.getString("h.hopa_horainicial"));
+                part.setHoraFinal(rs.getString("h.hopa_horafinal"));
+                part.setFechaPartido(rs.getString("pa.part_dia"));
+                part.setJornada(rs.getInt("part_jornada"));
+                partidos.add(part);
+
+            }
+            ps.close();
+            ps = null;
+
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+            return null;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                    ps = null;
+                }
+                if (partidos != null && partidos.isEmpty()) {
+                    partidos = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+                return null;
+            }
+        }
+
+        return partidos;
+    }
+
 }

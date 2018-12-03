@@ -26,8 +26,8 @@ public class PosicionDAO {
     public ArrayList<PosicionDTO> listarPosiciones(Connection conexion) {
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<PosicionDTO> partidos = null;
-        PosicionDTO part = null;
+        ArrayList<PosicionDTO> posiciones = null;
+        PosicionDTO pos = null;
         StringBuilder cadSQL = null;
 
         try {
@@ -37,13 +37,13 @@ public class PosicionDAO {
             ps = conexion.prepareStatement(cadSQL.toString());
 
             rs = ps.executeQuery();
-            partidos = new ArrayList();
+            posiciones = new ArrayList();
 
             while (rs.next()) {
-                part = new PosicionDTO();
-                part.setId(rs.getString("poju_id"));
-                part.setNombre(rs.getString("poju_nombre"));
-                partidos.add(part);
+                pos = new PosicionDTO();
+                pos.setId(rs.getString("poju_id"));
+                pos.setNombre(rs.getString("poju_nombre"));
+                posiciones.add(pos);
 
             }
             ps.close();
@@ -58,8 +58,8 @@ public class PosicionDAO {
                     ps.close();
                     ps = null;
                 }
-                if (partidos != null && partidos.isEmpty()) {
-                    partidos = null;
+                if (posiciones != null && posiciones.isEmpty()) {
+                    posiciones = null;
                 }
             } catch (Exception e) {
                 LoggerMessage.getInstancia().loggerMessageException(e);
@@ -67,6 +67,6 @@ public class PosicionDAO {
             }
         }
 
-        return partidos;
+        return posiciones;
     }
 }

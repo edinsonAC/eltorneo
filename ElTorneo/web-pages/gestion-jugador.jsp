@@ -17,7 +17,12 @@
 
 </style>
 
-<div class="content" id="tablaTecn">
+<div class="content" id="tablaJuga">
+    <div class="row">
+        <div class="col-md-12 divAgregar">
+            <button type="button" class="btn btn-primary" onclick="javascript:cargarPagina('registrarJugador.jsp');" >Agregar jugador</button>
+        </div>
+    </div>
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
@@ -40,7 +45,7 @@
     </div>
 </div>
 
-<div class="card tc-card" id="bodyGestionEquipo">
+<div class="card tc-card" id="bodyGestionJugador" style="display: none;">
     <div class="card-body"  >
         <h4 class="card-title" id="tituloForm"> <b>  Editar jugador </b></h4> 
         <br>
@@ -111,16 +116,15 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="usuario_jugador">* Usuario: </label>
-                        <input type="text" class="form-control" id="usuario_jugador" name="usuario_jugador" maxlength="15" autocomplete="off">
+                        <label for="dorsal_jugador">* Dorsal </label>
+                        <input type="number" class="form-control" id="dorsal_jugador" name="dorsal_jugador" maxlength="15" autocomplete="off">
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="col-sm-6 mx-auto" style="text-align: -webkit-center;">
-                        <button type="submit" id="boton" class="btn btn-success mr-2" onclick="validar('reg_usuario', 1);">Registrar</button>   
-                        <button type="button" id="boton2" class="btn btn-success mr-2" onclick="sorteo();">sorteo</button>   
+                        <button type="submit" id="boton" class="btn btn-success mr-2" onclick="validar('mod_jugador', 1);">Guardar</button>    
                     </div>
                     <input class="btn btn-light" type="button" value="Volver" onclick="javascript:redireccionar();">
                 </div>
@@ -132,10 +136,21 @@
 <script>
     // variables globales
     var idJugadorEditar;
+    var operacion = null;
+    function validar(form, r) {
+        operacion = r;
+    }
+
+    function postValidate() {
+        if (operacion == 1)
+            editarJugador();
+        operacion = null;
+    }
+
 
     $(document).ready(function () {
         listarJugadores();
-
+        listarPosiciones();
     });
     var listado2 = [];
     var mapa = [
@@ -152,6 +167,27 @@
             return '<td><button type="button"  class="btn btn-primary position-right" onclick="llenarJugador(' + data.id + ')">Editar</button></td>';
         }
     ];
+
+    $("#mod_jugador").validate({
+        errorPlacement: function (label, element) {
+            label.addClass('mt-2 text-danger');
+            $(element).parent().append(label);
+        },
+        highlight: function (element, errorClass) {
+            $(element).parent().addClass('has-danger');
+            $(element).addClass('form-control-danger');
+
+        },
+        success: function (label) {
+            jQuery(label).closest('.has-danger').removeClass('has-danger');
+            label.remove();
+        },
+        submitHandler: function () {
+            postValidate();
+        }
+    });
+
+
     function listarJugadores() {
         ajaxElTorneo.listarJugadoresPorIdEquipo(idEquipo, {
             callback: function (data) {
@@ -170,9 +206,12 @@
     }
 
     function llenarJugador(idJugador) {
+        $("#bodyGestionJugador").show();
+        $("#tablaJuga").hide();
         ajaxElTorneo.buscarJugadorPorId(idJugador, {
             callback: function (data) {
                 if (data !== null) {
+                    console.log("esta es la data", data);
                     idJugadorEditar = data.id;
                     $("#email_jugador").val(data.correo);
                     $("#usuario_jugador").val(data.usuario);
@@ -183,16 +222,63 @@
                     $("#cel_jugador").val(data.celular);
                     $("#tel_jugador").val(data.telefono);
                     $("#pos_jugador").val(data.idPosicion);
-
+                    $("#dorsal_jugador").val(data.dorsal);
                 }
             },
             timeout: 20000
         });
     }
-    
-    
-    function editarJugador(){
-        
+
+
+    function editarJugador() {
+        $("#boton").prop('disabled', true);
+        var jugador = {
+            id: idJugadorEditar,
+            nombre: $("#nom_jugador").val(),
+            apellido: $("#ap_jugador").val(),
+            documento: $("#doc_jugador").val(),
+            direccion: $("#dir_jugador").val(),
+            celular: $("#cel_jugador").val(),
+            telefono: $("#tel_jugador").val(),
+            idPosicion: $("#pos_jugador").val(),
+            dorsal: $("#dorsal_jugador").val(),
+            correo: $("#email_jugador").val(),
+            usuario: $("#usuario_jugador").val()
+
+        };
+
+        ajaxElTorneo.actualizarJugador(jugador, {
+            callback: function (data) {
+                if (data !== null) {
+                    $("#boton").prop('disabled', false);
+                    cargarPagina('gestion-jugador.jsp');
+
+                } else {
+                    $("#boton").prop('disabled', false);
+                }
+            },
+            timeout: 20000
+        });
+
+        // recargar();
+    }
+
+    function listarPosiciones() {
+        console.log("entraa la funcion de posiciones");
+        ajaxElTorneo.listarPosicionesDeJuego({
+            callback: function (data) {
+                if (data !== null) {
+                    console.log("con esta data", data);
+                    dwr.util.removeAllOptions("pos_jugador");
+                    dwr.util.addOptions("pos_jugador", [{
+                            id: '',
+                            nombre: 'Seleccione posicion',
+                        }], 'id', 'nombre');
+                    dwr.util.addOptions("pos_jugador", data, 'id', 'nombre');
+                }
+            },
+            timeout: 20000
+        });
     }
 
 </script>
