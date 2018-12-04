@@ -108,10 +108,10 @@
                             operacion = null;
                         }
 
-                        $(document).ready(function () {//el document ready es por donde empieza a cargar, lo que ud ponga de primero aca, eso es lo que se hace de primero
-//        $("#email").attr("remote", URL + "SevletValidarCorreo?bandera=usuario");
-//        $("#documentoA").attr("remote", URL + "SevletValidarDocumento?bandera=usuario");
-//        $("#usuario").attr("remote", URL + "ServletValidarCrendencial?bandera=usuario");
+                        $(document).ready(function () {
+                            $("#email").attr("remote", URL + "ServletValidarCorreo");
+                            $("#documentoB").attr("remote", URL + "ServletValidarDocumento?bandera=tecnico");
+                            $("#usuario").attr("remote", URL + "ServletValidarUsuario");
 
                             $("#reg_usuario").validate({// el validate es sacado de codigo de internet, valida que los campos que tengan required este llenos
                                 errorPlacement: function (label, element) {
@@ -194,5 +194,5 @@
                         }
 
 
-       
+
 </script>

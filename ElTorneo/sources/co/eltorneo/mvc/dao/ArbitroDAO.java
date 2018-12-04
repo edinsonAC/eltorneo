@@ -281,4 +281,52 @@ public class ArbitroDAO {
 
         return arbitros;
     }
+
+    /**
+     *
+     * @param conexion
+     * @param documento
+     * @return
+     */
+    public boolean validarDocumentoArbitro(Connection conexion, String documento) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean existe = false;
+        StringBuilder cadSQL = null;
+
+        try {
+
+            cadSQL = new StringBuilder();
+            cadSQL.append(" SELECT arbi_id");
+            cadSQL.append(" FROM arbitro ");
+            cadSQL.append(" WHERE arbi_documento  = ? ");
+
+            ps = conexion.prepareStatement(cadSQL.toString());
+            AsignaAtributoStatement.setString(1, documento, ps);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                existe = true;
+            }
+
+            ps.close();
+            ps = null;
+
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+            return false;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                    ps = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+                return false;
+            }
+        }
+
+        return existe;
+    }
 }

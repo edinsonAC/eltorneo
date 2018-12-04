@@ -688,4 +688,100 @@ public class UsuarioDAO {
         return registroExitoso;
     }
 
+    /**
+     *
+     * @param conexion
+     * @param correo
+     * @return
+     */
+    public boolean validarCorreo(Connection conexion, String correo) {
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean existe = false;
+        StringBuilder cadSQL = null;
+
+        try {
+
+            cadSQL = new StringBuilder();
+            cadSQL.append(" SELECT usua.usua_id");
+            cadSQL.append(" FROM usuario usua ");
+            cadSQL.append(" WHERE usua.usua_correo  = ? ");
+
+            ps = conexion.prepareStatement(cadSQL.toString());
+            AsignaAtributoStatement.setString(1, correo, ps);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                existe = true;
+            }
+
+            ps.close();
+            ps = null;
+
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+            return false;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                    ps = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+                return false;
+            }
+        }
+
+        return existe;
+    }
+
+    /**
+     *
+     * @param conexion
+     * @param usuario
+     * @return
+     */
+    public boolean validarUsuarios(Connection conexion, String usuario) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean existe = false;
+        StringBuilder cadSQL = null;
+
+        try {
+
+            cadSQL = new StringBuilder();
+            cadSQL.append(" SELECT usua.usua_id");
+            cadSQL.append(" FROM usuario usua ");
+            cadSQL.append(" WHERE usua.usua_usuario  = ? ");
+
+            ps = conexion.prepareStatement(cadSQL.toString());
+            AsignaAtributoStatement.setString(1, usuario, ps);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                existe = true;
+            }
+
+            ps.close();
+            ps = null;
+
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+            return false;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                    ps = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+                return false;
+            }
+        }
+
+        return existe;
+    }
 }

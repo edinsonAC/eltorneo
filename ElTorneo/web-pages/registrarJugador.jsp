@@ -31,7 +31,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="email_jugador">* Correo: </label>
-                        <input type="email" class="form-control" id="email_jugador" maxlength="45" name="email_jugador" autocomplete="off" required>
+                        <input type="email" class="form-control" id="email_jugador" maxlength="45" name="email" autocomplete="off" required>
                     </div>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="usuario_jugador">* Usuario: </label>
-                        <input type="text" class="form-control" id="usuario_jugador" name="usuario_jugador" maxlength="15" autocomplete="off">
+                        <input type="text" class="form-control" id="usuario_jugador" name="usuario" maxlength="15" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -124,9 +124,9 @@
 
                         $(document).ready(function () {
                             console.log("ready perras");
-//        $("#email").attr("remote", URL + "SevletValidarCorreo?bandera=usuario");
-//        $("#documentoA").attr("remote", URL + "SevletValidarDocumento?bandera=usuario");
-//        $("#usuario").attr("remote", URL + "ServletValidarCrendencial?bandera=usuario");
+                            $("#email_jugador").attr("remote", URL + "ServletValidarCorreo");
+                            $("#doc_jugador").attr("remote", URL + "ServletValidarDocumento?bandera=jugador");
+                            $("#usuario_jugador").attr("remote", URL + "ServletValidarUsuario");
                             listarPosiciones();
                             $("#reg_jugador").validate({// el validate es sacado de codigo de internet, valida que los campos que tengan required este llenos
                                 errorPlacement: function (label, element) {

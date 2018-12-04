@@ -305,4 +305,13 @@ public class FachadaElTorneo {
     public RequisitoDTO arbitrosEquiposActivos() {
         return MediadorElTorneo.getInstancia().arbitrosEquiposActivos();
     }
+
+    /**
+     *
+     * @return
+     */
+    @RemoteMethod
+    public ArrayList<TemporadaDTO> listarTemporadaEnProceso() {
+        return MediadorElTorneo.getInstancia().listarTemporadaEnProceso();
+    }
 }

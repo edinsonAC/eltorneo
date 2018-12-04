@@ -320,4 +320,52 @@ public class JugadorDAO {
         }
         return registro;
     }
+
+    /**
+     *
+     * @param conexion
+     * @param documento
+     * @return
+     */
+    public boolean validarDocumentoJugador(Connection conexion, String documento) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean existe = false;
+        StringBuilder cadSQL = null;
+
+        try {
+
+            cadSQL = new StringBuilder();
+            cadSQL.append(" SELECT juga_id");
+            cadSQL.append(" FROM juugador ");
+            cadSQL.append(" WHERE juga_documento  = ? ");
+
+            ps = conexion.prepareStatement(cadSQL.toString());
+            AsignaAtributoStatement.setString(1, documento, ps);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                existe = true;
+            }
+
+            ps.close();
+            ps = null;
+
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+            return false;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                    ps = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+                return false;
+            }
+        }
+
+        return existe;
+    }
 }

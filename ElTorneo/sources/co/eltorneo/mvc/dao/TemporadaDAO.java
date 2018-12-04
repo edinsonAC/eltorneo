@@ -220,4 +220,61 @@ public class TemporadaDAO {
         }
         return registro;
     }
+
+    /**
+     *
+     * @param conexion
+     * @return
+     */
+    public ArrayList<TemporadaDTO> listarTemporadasEnProceso(Connection conexion) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<TemporadaDTO> temporadas = null;
+        TemporadaDTO temp = null;
+        StringBuilder cadSQL = null;
+
+        try {
+
+            cadSQL = new StringBuilder();
+            cadSQL.append(" SELECT temp_id, temp_nombre, temp_numequipos,temp_fechafinal,temp_fechainicial");
+            cadSQL.append(" FROM temporada WHERE temp_fechafinal is null");
+
+            ps = conexion.prepareStatement(cadSQL.toString());
+
+            rs = ps.executeQuery();
+            temporadas = new ArrayList();
+
+            while (rs.next()) {
+                temp = new TemporadaDTO();
+                temp.setId(rs.getString("temp_id"));
+                temp.setNombre(rs.getString("temp_nombre"));
+                temp.setFechaFinal(rs.getString("temp_fechafinal"));
+                temp.setFechaInicial(rs.getString("temp_fechainicial"));
+                temp.setNumEquipos(rs.getString("temp_numequipos"));
+                temporadas.add(temp);
+
+            }
+            ps.close();
+            ps = null;
+
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+            return null;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                    ps = null;
+                }
+                if (temporadas != null && temporadas.isEmpty()) {
+                    temporadas = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+                return null;
+            }
+        }
+
+        return temporadas;
+    }
 }

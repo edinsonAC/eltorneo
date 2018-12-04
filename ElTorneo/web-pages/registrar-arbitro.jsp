@@ -28,7 +28,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="email_arbitro">* Correo: </label>
-                        <input type="email" class="form-control" id="email_arbitro" maxlength="45" name="email_arbitro" autocomplete="off" required>
+                        <input type="email" class="form-control" id="email_arbitro" maxlength="45" name="email" autocomplete="off" required>
                     </div>
                 </div>
             </div>
@@ -56,7 +56,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="usuario_arbitro">* Usuario: </label>
-                        <input type="text" class="form-control" id="usuario_arbitro" name="usuario_arbitro" maxlength="15" autocomplete="off">
+                        <input type="text" class="form-control" id="usuario_arbitro" name="usuario" maxlength="15" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -105,9 +105,10 @@
     }
 
     $(document).ready(function () {//el document ready es por donde empieza a cargar, lo que ud ponga de primero aca, eso es lo que se hace de primero
-//        $("#email").attr("remote", URL + "SevletValidarCorreo?bandera=usuario");
-//        $("#documentoA").attr("remote", URL + "SevletValidarDocumento?bandera=usuario");
-//        $("#usuario").attr("remote", URL + "ServletValidarCrendencial?bandera=usuario");
+        $("#email_arbitro").attr("remote", URL + "ServletValidarCorreo");
+        $("#doc_arbitro").attr("remote", URL + "ServletValidarDocumento?bandera=arbitro");
+        $("#usuario_arbitro").attr("remote", URL + "ServletValidarUsuario");
+
         $("#reg_arbitro").validate({// el validate es sacado de codigo de internet, valida que los campos que tengan required este llenos
             errorPlacement: function (label, element) {
                 label.addClass('mt-2 text-danger');
