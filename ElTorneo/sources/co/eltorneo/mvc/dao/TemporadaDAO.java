@@ -142,7 +142,7 @@ public class TemporadaDAO {
         try {
 
             cadSQL = new StringBuilder();
-            cadSQL.append(" SELECT temp_id, temp_nombre, temp_fechainicial, temp_fechafinal, temp_numequipos");
+            cadSQL.append(" SELECT temp_id, temp_nombre, temp_fechainicial, temp_fechafinal, temp_numequipos, temp_sorteo");
             cadSQL.append(" FROM temporada ");
             cadSQL.append(" WHERE temp_id = ?");
 
@@ -157,6 +157,7 @@ public class TemporadaDAO {
                 temp.setFechaInicial(rs.getString("temp_fechainicial"));
                 temp.setFechaFinal(rs.getString("temp_fechafinal"));
                 temp.setNumEquipos(rs.getString("temp_numequipos"));
+                temp.setBanderaSorteo(rs.getString("temp_sorteo"));
             }
             ps.close();
             ps = null;
@@ -276,5 +277,90 @@ public class TemporadaDAO {
         }
 
         return temporadas;
+    }
+
+    /**
+     *
+     * @param conexion
+     * @return
+     */
+    public boolean validarTemporadaEnProceso(Connection conexion) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean temp = false;
+        StringBuilder cadSQL = null;
+
+        try {
+            cadSQL = new StringBuilder();
+            cadSQL.append(" SELECT temp_id, temp_fechafinal");
+            cadSQL.append(" FROM temporada ");
+            cadSQL.append(" WHERE temp_fechafinal is null");
+
+            ps = conexion.prepareStatement(cadSQL.toString());
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                temp = true;
+            }
+            ps.close();
+            ps = null;
+
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+            return false;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                    ps = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+                return false;
+            }
+        }
+
+        return temp;
+    }
+
+    /**
+     *
+     * @param conexion
+     * @param idTemporada
+     * @param estado
+     * @return
+     * @throws SQLException
+     */
+    public RespuestaDTO activarBanderaSorteoTemporada(Connection conexion, String idTemporada, String estado) throws SQLException {
+        PreparedStatement ps = null;
+        int nRows = 0;
+        StringBuilder cadSQL = null;
+        RespuestaDTO registro = null;
+
+        try {
+            registro = new RespuestaDTO();
+            cadSQL = new StringBuilder();
+            cadSQL.append(" UPDATE temporada SET temp_sorteo = ?");
+            cadSQL.append(" WHERE temp_id = ?");
+
+            ps = conexion.prepareStatement(cadSQL.toString(), Statement.RETURN_GENERATED_KEYS);
+
+            AsignaAtributoStatement.setString(1, estado, ps);
+            AsignaAtributoStatement.setString(2, idTemporada, ps);
+
+            nRows = ps.executeUpdate();
+            if (nRows > 0) {
+                registro.setRegistro(true);
+
+            }
+            ps.close();
+            ps = null;
+
+        } catch (SQLException se) {
+            LoggerMessage.getInstancia().loggerMessageException(se);
+            return null;
+        }
+        return registro;
     }
 }

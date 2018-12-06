@@ -388,4 +388,132 @@ public class PartidoDAO {
         return partidos;
     }
 
+    /**
+     *
+     * @param conexion
+     * @param idPartido
+     * @return
+     */
+    public ArrayList<PartidoDTO> listarPartidosPorIdArbitroCentral(Connection conexion, String idArbitro) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<PartidoDTO> partidos = null;
+        PartidoDTO part = null;
+        StringBuilder cadSQL = null;
+
+        try {
+
+            cadSQL = new StringBuilder();
+            cadSQL.append(" SELECT pa.part_id, pa.equi_a,pa.equi_b, eq.equi_nombre as equipoa,equ.equi_nombre as equipob, pa.part_dia, h.hopa_horainicial,h.hopa_horafinal,part_jornada ");
+            cadSQL.append(" FROM partido pa");
+            cadSQL.append(" INNER JOIN horario_partido h ON h.hopa_id = pa.hopa_id");
+            cadSQL.append(" INNER JOIN equipo eq ON eq.equi_id = pa.equi_a");
+            cadSQL.append(" INNER JOIN equipo equ ON equ.equi_id = pa.equi_b");
+            cadSQL.append(" INNER JOIN partido_arbitro par ON par.part_id = pa.part_id");
+            cadSQL.append(" WHERE par.arbi_id = ? AND par.paar_arbitrocentral = '1'");
+
+            ps = conexion.prepareStatement(cadSQL.toString());
+            AsignaAtributoStatement.setInt(1, idArbitro, ps);
+            rs = ps.executeQuery();
+            partidos = new ArrayList();
+
+            while (rs.next()) {
+                part = new PartidoDTO();
+                part.setId(rs.getString("part_id"));
+                part.setEquipoA(rs.getString("pa.equi_a"));
+                part.setEquipoB(rs.getString("pa.equi_b"));
+                part.setNombreEquipoA(rs.getString("equipoa"));
+                part.setNombreEquipoB(rs.getString("equipob"));
+                part.setHoraInicial(rs.getString("h.hopa_horainicial"));
+                part.setHoraFinal(rs.getString("h.hopa_horafinal"));
+                part.setFechaPartido(rs.getString("pa.part_dia"));
+                part.setJornada(rs.getInt("part_jornada"));
+                partidos.add(part);
+
+            }
+            ps.close();
+            ps = null;
+
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+            return null;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                    ps = null;
+                }
+                if (partidos != null && partidos.isEmpty()) {
+                    partidos = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+                return null;
+            }
+        }
+
+        return partidos;
+    }
+
+    /**
+     *
+     * @param conexion
+     * @param idPartido
+     * @return
+     */
+    public PartidoDTO verInformacionDePartidoPorId(Connection conexion, String idPartido) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        PartidoDTO part = null;
+        StringBuilder cadSQL = null;
+
+        try {
+
+            cadSQL = new StringBuilder();
+            cadSQL.append(" SELECT pa.part_id, pa.equi_a,pa.equi_b, eq.equi_nombre as equipoa,equ.equi_nombre as equipob, pa.part_dia, h.hopa_horainicial,h.hopa_horafinal,part_jornada ");
+            cadSQL.append(" FROM partido pa");
+            cadSQL.append(" INNER JOIN horario_partido h ON h.hopa_id = pa.hopa_id");
+            cadSQL.append(" INNER JOIN equipo eq ON eq.equi_id = pa.equi_a");
+            cadSQL.append(" INNER JOIN equipo equ ON equ.equi_id = pa.equi_b");
+            cadSQL.append(" INNER JOIN partido_arbitro par ON par.part_id = pa.part_id");
+            cadSQL.append(" WHERE par.part_id");
+
+            ps = conexion.prepareStatement(cadSQL.toString());
+            AsignaAtributoStatement.setInt(1, idPartido, ps);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                part = new PartidoDTO();
+                part.setId(rs.getString("part_id"));
+                part.setEquipoA(rs.getString("pa.equi_a"));
+                part.setEquipoB(rs.getString("pa.equi_b"));
+                part.setNombreEquipoA(rs.getString("equipoa"));
+                part.setNombreEquipoB(rs.getString("equipob"));
+                part.setHoraInicial(rs.getString("h.hopa_horainicial"));
+                part.setHoraFinal(rs.getString("h.hopa_horafinal"));
+                part.setFechaPartido(rs.getString("pa.part_dia"));
+                part.setJornada(rs.getInt("part_jornada"));
+
+            }
+            ps.close();
+            ps = null;
+
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+            return null;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                    ps = null;
+                }
+
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+                return null;
+            }
+        }
+
+        return part;
+    }
 }

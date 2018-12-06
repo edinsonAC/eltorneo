@@ -21,6 +21,7 @@ public class TemporadaDTO implements Serializable {
     String fechaFinal = Generales.EMPTYSTRING;
     String numEquipos = Generales.EMPTYSTRING;
     String estado = Generales.EMPTYSTRING;
+    String banderaSorteo = Generales.EMPTYSTRING;
 
     public String getId() {
         return id;
@@ -68,6 +69,14 @@ public class TemporadaDTO implements Serializable {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getBanderaSorteo() {
+        return banderaSorteo;
+    }
+
+    public void setBanderaSorteo(String banderaSorteo) {
+        this.banderaSorteo = banderaSorteo;
     }
 
     public String toStringJson() {

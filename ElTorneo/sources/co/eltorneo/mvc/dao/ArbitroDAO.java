@@ -329,4 +329,112 @@ public class ArbitroDAO {
 
         return existe;
     }
+
+    /**
+     *
+     * @param conexion
+     * @return
+     */
+    public ArrayList<ArbitroDTO> listarArbitrosActivos(Connection conexion) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<ArbitroDTO> listadoArbitro = null;
+        ArbitroDTO arbitro = null;
+        StringBuilder cadSQL = null;
+
+        try {
+
+            cadSQL = new StringBuilder();
+            cadSQL.append(" SELECT arbi_id, arbi_nombre, arbi_apellido,arbi_telefono,arbi_celular,arbi_documento, CONCAT_WS(' ', arbi_nombre,arbi_apellido) as nombre");
+            cadSQL.append(" FROM arbitro WHERE arbi_estado <> 0");
+            ps = conexion.prepareStatement(cadSQL.toString());
+
+            rs = ps.executeQuery();
+
+            listadoArbitro = new ArrayList();
+
+            while (rs.next()) {
+                arbitro = new ArbitroDTO();
+                arbitro.setId(rs.getString("arbi_id"));
+                arbitro.setNombres(rs.getString("arbi_nombre"));
+                arbitro.setApellidos(rs.getString("arbi_apellido"));
+                arbitro.setTelefono(rs.getString("arbi_telefono"));
+                arbitro.setCelular(rs.getString("arbi_celular"));
+                arbitro.setDocumento(rs.getString("arbi_documento"));
+                arbitro.setNombreCompleto(rs.getString("nombre"));
+                listadoArbitro.add(arbitro);
+
+            }
+            ps.close();
+            ps = null;
+
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+            return null;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                    ps = null;
+                }
+                if (listadoArbitro != null && listadoArbitro.isEmpty()) {
+                    listadoArbitro = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+                return null;
+            }
+        }
+
+        return listadoArbitro;
+    }
+
+    /**
+     *
+     * @param conexion
+     * @param idArbitro
+     * @param idPartido
+     * @param central
+     * @return
+     * @throws SQLException
+     */
+    public RespuestaDTO asignarArbitroPartido(Connection conexion, String idArbitro, String idPartido, String central) throws SQLException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int nRows = 0;
+        StringBuilder cadSQL = null;
+        RespuestaDTO registro = null;
+
+        try {
+            registro = new RespuestaDTO();
+            cadSQL = new StringBuilder();
+            cadSQL.append(" INSERT INTO partido_arbitro(arbi_id,part_id,paar_arbitrocentral)");
+            cadSQL.append(" VALUES (?, ?, ?) ");
+
+            ps = conexion.prepareStatement(cadSQL.toString(), Statement.RETURN_GENERATED_KEYS);
+
+            AsignaAtributoStatement.setString(1, idArbitro, ps);
+            AsignaAtributoStatement.setString(2, idPartido, ps);
+            AsignaAtributoStatement.setString(3, central, ps);
+
+            nRows = ps.executeUpdate();
+            if (nRows > 0) {
+                rs = ps.getGeneratedKeys();
+                registro.setRegistro(true);
+                if (rs.next()) {
+                    registro.setIdResgistrado(rs.getString(1));
+
+                }
+                rs.close();
+                rs = null;
+            }
+            ps.close();
+            ps = null;
+
+        } catch (SQLException se) {
+            LoggerMessage.getInstancia().loggerMessageException(se);
+            return null;
+        }
+        return registro;
+    }
 }

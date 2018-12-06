@@ -1,7 +1,7 @@
         
 <link href="assets/css/estiloRegistrar-usuario.css" rel="stylesheet" type="text/css">
 
-<div class="card tc-card" id="bodyRegistrar" >
+<div class="card tc-card bodyRegistrar" id="bodyRegistrarEquipo" >
     <div class="card-body"  >
         <h4 class="card-title" id="tituloForm"> <b>  Registrar equipo </b></h4> 
         <br>

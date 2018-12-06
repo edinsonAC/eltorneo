@@ -11,7 +11,7 @@
 </style>
 
 <div class="content" id="tablaEqui">
-    <div class="card">
+    <div class="card bodyRegistrar">
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table datatable-html" >

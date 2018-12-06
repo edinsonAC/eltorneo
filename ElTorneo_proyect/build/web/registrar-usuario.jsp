@@ -1,7 +1,4 @@
-        
-<link href="assets/css/estiloRegistrar-usuario.css" rel="stylesheet" type="text/css">
-
-<div class="card tc-card" id="bodyRegistrar" >
+<div class="card tc-card bodyRegistrar" id="bodyRegistrar" >
     <div class="card-body"  >
         <h4 class="card-title" id="tituloForm"> <b>  Registrar Tecnico </b></h4> 
         <br>
@@ -78,7 +75,7 @@
 <script type="text/javascript" src="assets/js/Constantes.js"></script>
 <script>
                         function recargar() {
-                            jQuery("#contenidoPpal").load("admin/registrar-usuario.jsp");
+                            jQuery("#contenidoPrincipal").load("admin/registrar-usuario.jsp");
                         }
                         // esto que esta debajo son clases que hacen que en los input no se puedan usar algunos caracteres 
                         $(".numeros").on("input", function () {

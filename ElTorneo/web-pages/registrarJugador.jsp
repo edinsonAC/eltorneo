@@ -73,7 +73,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="dorsal_jugador">*Dorsal </label>
-                        <input type="number" id="dorsal_jugador"  class="form-control" required>
+                        <input type="number" id="dorsal_jugador" name="dorsal"  class="form-control" required>
                     </div>
                 </div>
             </div>
@@ -123,10 +123,10 @@
                         }
 
                         $(document).ready(function () {
-                            console.log("ready perras");
                             $("#email_jugador").attr("remote", URL + "ServletValidarCorreo");
                             $("#doc_jugador").attr("remote", URL + "ServletValidarDocumento?bandera=jugador");
                             $("#usuario_jugador").attr("remote", URL + "ServletValidarUsuario");
+                            $("#dorsal_jugador").attr("remote", URL + "ServletValidarDorsal?equipo=" + idEquipo);
                             listarPosiciones();
                             $("#reg_jugador").validate({// el validate es sacado de codigo de internet, valida que los campos que tengan required este llenos
                                 errorPlacement: function (label, element) {
@@ -197,7 +197,6 @@
                         }
 
                         function listarPosiciones() {
-                            console.log("entraa la funcion de posiciones");
                             ajaxElTorneo.listarPosicionesDeJuego({
                                 callback: function (data) {
                                     if (data !== null) {

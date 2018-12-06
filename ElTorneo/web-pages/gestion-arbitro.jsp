@@ -4,7 +4,7 @@
             <button type="button" class="btn btn-primary" onclick="javascript:cargarPagina('registrar-arbitro.jsp');" >Agregar arbitro</button>
         </div>
     </div>
-    <div class="card">
+    <div class="card bodyRegistrar">
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table datatable-html" >
@@ -56,7 +56,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="email_arbitro">* Correo: </label>
-                        <input type="email" class="form-control" id="email_arbitro" maxlength="45" name="email_arbitro" autocomplete="off" required>
+                        <input type="email" class="form-control" id="email_arbitro" maxlength="45" name="email_arbitro" autocomplete="off" required disabled>
                     </div>
                 </div>
             </div>
@@ -84,7 +84,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="usuario_arbitro">* Usuario: </label>
-                        <input type="text" class="form-control" id="usuario_arbitro" name="usuario_arbitro" maxlength="15" autocomplete="off">
+                        <input type="text" class="form-control" id="usuario_arbitro" name="usuario_arbitro" maxlength="15" autocomplete="off" disabled>
                     </div>
                 </div>
             </div>

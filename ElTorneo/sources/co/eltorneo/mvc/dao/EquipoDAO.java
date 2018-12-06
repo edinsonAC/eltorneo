@@ -264,4 +264,63 @@ public class EquipoDAO {
 
         return equipos;
     }
+
+    /**
+     *
+     * @param conexion
+     * @param idTecnico
+     * @return
+     */
+    public ArrayList<EquipoDTO> listarTodosLosEquiposPorTecnico(Connection conexion, String idTecnico) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<EquipoDTO> listadoEquipo = null;
+        EquipoDTO equipo = null;
+        StringBuilder cadSQL = null;
+
+        try {
+
+            cadSQL = new StringBuilder();
+            cadSQL.append(" SELECT equi_id, equi_nombre, equipo.tecn_id, CONCAT_WS(' ', tc.tecn_nombre, tc.tecn_apellido)as nombretecnico");
+            cadSQL.append(" FROM equipo ");
+            cadSQL.append(" INNER JOIN tecnico tc ON tc.tecn_id= equipo.tecn_id ");
+            cadSQL.append(" WHERE equipo.tecn_id = ? ");
+            ps = conexion.prepareStatement(cadSQL.toString());
+            AsignaAtributoStatement.setString(1, idTecnico, ps);
+            rs = ps.executeQuery();
+
+            listadoEquipo = new ArrayList();
+
+            while (rs.next()) {
+                equipo = new EquipoDTO();
+                equipo.setId(rs.getString("equi_id"));
+                equipo.setNombre(rs.getString("equi_nombre"));
+                equipo.setIdTecnico(rs.getString("tecn_id"));
+                equipo.setTecnico(rs.getString("nombretecnico"));
+                listadoEquipo.add(equipo);
+
+            }
+            ps.close();
+            ps = null;
+
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+            return null;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                    ps = null;
+                }
+                if (listadoEquipo != null && listadoEquipo.isEmpty()) {
+                    listadoEquipo = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+                return null;
+            }
+        }
+
+        return listadoEquipo;
+    }
 }

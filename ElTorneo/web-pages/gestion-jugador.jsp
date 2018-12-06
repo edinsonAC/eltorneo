@@ -75,7 +75,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="email_jugador">* Correo: </label>
-                        <input type="email" class="form-control" id="email_jugador" maxlength="45" name="email_jugador" autocomplete="off" required>
+                        <input type="email" class="form-control" id="email_jugador" maxlength="45" name="email_jugador" autocomplete="off" required disabled>
                     </div>
                 </div>
             </div>
@@ -103,7 +103,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="usuario_jugador">* Usuario: </label>
-                        <input type="text" class="form-control" id="usuario_jugador" name="usuario_jugador" maxlength="15" autocomplete="off">
+                        <input type="text" class="form-control" id="usuario_jugador" name="usuario_jugador" maxlength="15" autocomplete="off" disabled>
                     </div>
                 </div>
             </div>
@@ -149,6 +149,9 @@
 
 
     $(document).ready(function () {
+        if (idEquipo == "" || idEquipo == null){
+            $(".divAgregar").hide();
+        }
         listarJugadores();
         listarPosiciones();
     });
@@ -192,6 +195,9 @@
         ajaxElTorneo.listarJugadoresPorIdEquipo(idEquipo, {
             callback: function (data) {
                 if (data !== null) {
+                    if (data.length > 19) {
+                        $(".divAgregar").hide();
+                    }
                     jQuery('.datatable-html').dataTable().fnDestroy();
                     dwr.util.removeAllRows("listJugador");
                     listado2 = data;

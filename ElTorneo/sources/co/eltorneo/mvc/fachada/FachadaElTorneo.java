@@ -7,6 +7,7 @@
  */
 package co.eltorneo.mvc.fachada;
 
+import co.eltorneo.mvc.dto.ArbitrajeDTO;
 import co.eltorneo.mvc.dto.ArbitroDTO;
 import co.eltorneo.mvc.dto.EquipoDTO;
 import co.eltorneo.mvc.dto.JugadorDTO;
@@ -314,4 +315,53 @@ public class FachadaElTorneo {
     public ArrayList<TemporadaDTO> listarTemporadaEnProceso() {
         return MediadorElTorneo.getInstancia().listarTemporadaEnProceso();
     }
+
+    /**
+     *
+     * @return
+     */
+    @RemoteMethod
+    public ArrayList<ArbitroDTO> listarArbitrosActivos() {
+        return MediadorElTorneo.getInstancia().listarArbitrosActivos();
+    }
+
+    /**
+     *
+     * @param arbitraje
+     * @return
+     */
+    @RemoteMethod
+    public RespuestaDTO asignarArbitraje(ArbitrajeDTO arbitraje) {
+        return MediadorElTorneo.getInstancia().asignarArbitraje(arbitraje);
+    }
+
+    /**
+     *
+     * @param idPartido
+     * @return
+     */
+    @RemoteMethod
+    public ArrayList<PartidoDTO> listarPartidosPorIdArbitroCentral(String idPartido) {
+        return MediadorElTorneo.getInstancia().listarPartidosPorIdArbitroCentral(idPartido);
+    }
+
+    /**
+     *
+     * @return
+     */
+    @RemoteMethod
+    public boolean validarTemporadaEnProceso() {
+        return MediadorElTorneo.getInstancia().validarTemporadaEnProceso();
+    }
+
+    /**
+     *
+     * @param idTecnico
+     * @return
+     */
+    @RemoteMethod
+    public ArrayList<EquipoDTO> listarTodosLosEquiposPorTecnico(String idTecnico) {
+        return MediadorElTorneo.getInstancia().listarTodosLosEquiposPorTecnico(idTecnico);
+    }
+
 }

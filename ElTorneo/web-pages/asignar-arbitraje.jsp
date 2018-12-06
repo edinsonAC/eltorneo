@@ -1,6 +1,7 @@
 <div class="content" id="tablaTempa">
-    <div class="card">
-        <div class="card-body">
+    <div class="card bodyRegistrar">
+        <div class="card-body ">
+            <h1>Torneos</h1>
             <div class="table-responsive">
                 <table class="table datatable-html">
                     <thead>
@@ -19,7 +20,7 @@
     </div>
 </div>
 <div class="content" id="tablaPartidos" style="display: none;">
-    <div class="card">
+    <div class="card bodyRegistrar">
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table datatable-html" id="datatable-html">
@@ -48,20 +49,36 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Asignar arbitros</h4>
             </div>
-            <div class="modal-body">
-                <p>One fine body&hellip;</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+            <form id="asignarArbitraje" class="temporada" onsubmit="return false;">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Arbitro central</label>
+                            <select class="form-control selectsArbitro" id="arbitros" onchange="selectsArbitro(this.value, this.id)" required> </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Asistente</label>
+                            <select class="form-control selectsArbitro" id="arbitros2" onchange="selectsArbitro(this.value, this.id)" required> </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Asistente</label>
+                            <select class="form-control selectsArbitro" id="arbitros3" onchange="selectsArbitro(this.value, this.id)" required> </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="cerrarModal">Close</button>
+                    <button type="submit" onclick="validar('asignarArbitraje', 1);" class="btn btn-primary">Asignar</button>
+                </div>
+            </form>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
 
 <script>
     // variables globales
-    var idTemporadaEditar;
+    var idTemporadaGlobal;
+    var idPartidoGlobal;
     var operacion = null;
     var fechaSorteo;
     function validar(form, r) {
@@ -70,16 +87,17 @@
 
     function postValidate() {
         if (operacion == 1)
-            editarTemporada();
+            asignarArbitros();
         operacion = null;
     }
     var listado2 = [];
     $(document).ready(function () {
+        listarArbitrosActivos();
         llenarSelect();
         listarTemporadasEnProceso();
 
 
-        $("#edit_temporada").validate({// el validate es sacado de codigo de internet, valida que los campos que tengan required este llenos
+        $(".temporada").validate({// el validate es sacado de codigo de internet, valida que los campos que tengan required este llenos
             errorPlacement: function (label, element) {
                 label.addClass('mt-2 text-danger');
                 $(element).parent().append(label);
@@ -97,6 +115,7 @@
                 postValidate();  // cuando llega aca es cuando se lleno bien el formulario, y va a la funcin que cree, que se llama postValidate
             }
         });
+
 
     });
 
@@ -143,6 +162,9 @@
         }
     }
 
+    function seleccionarPartido(idPar) {
+        idPartidoGlobal = idPar;
+    }
 
     var mapa = [
         function (data) {
@@ -158,10 +180,10 @@
 
     var mapaPartidos = [
         function (data) {
-            return '<p data-toggle="modal" data-target="#modalArbitraje" > ' + data.nombreEquipoA + '</p>';
+            return '<p data-toggle="modal" data-target="#modalArbitraje" onclick="seleccionarPartido(' + data.id + ')" > ' + data.nombreEquipoA + '</p>';
         },
         function (data) {
-            return '<p data-toggle="modal" data-target="#modalArbitraje"> ' + data.nombreEquipoB + '</p>';
+            return '<p data-toggle="modal" data-target="#modalArbitraje" onclick="seleccionarPartido(' + data.id + ')"> ' + data.nombreEquipoB + '</p>';
         },
         function (data) {
             var d = new Date()
@@ -169,36 +191,32 @@
             var fecha = new Date(data.fechaPartido + " GMT" + gmtHours);
 
             var options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
-            return '<p data-toggle="modal" data-target="#modalArbitraje"> ' + fecha.toLocaleDateString("es-CO", options) + '</p>';
+            return '<p data-toggle="modal" data-target="#modalArbitraje" onclick="seleccionarPartido(' + data.id + ')"> ' + fecha.toLocaleDateString("es-CO", options) + '</p>';
         },
         function (data) {
-            return '<p data-toggle="modal" data-target="#modalArbitraje"> ' + data.horaInicial + " - " + data.horaFinal + " PM" + '</p>';
+            return '<p data-toggle="modal" data-target="#modalArbitraje" onclick="seleccionarPartido(' + data.id + ')"> ' + data.horaInicial + " - " + data.horaFinal + " PM" + '</p>';
         },
         function (data) {
-            return '<p data-toggle="modal" data-target="#modalArbitraje"> ' + data.jornada + '</p>';
+            return '<p data-toggle="modal" data-target="#modalArbitraje" onclick="seleccionarPartido(' + data.id + ')"> ' + data.jornada + '</p>';
         }
     ];
 
 
 
-    function editarTemporada() {//aqui empieza la funcion del registro del tecnico
-        $("#boton").prop('disabled', true);
-        var temporada = {
-            id: idTemporadaEditar,
-            nombre: $("#nombre_temporada").val(),
-            numEquipos: $("#num_equipos").val(),
-            fechaInicial: $("#fechaIn_temporada").val()
+    function asignarArbitros() {
+        var arbitraje = {
+            idPartido: idPartidoGlobal,
+            arbitroCentral: $("#arbitros").val(),
+            asistente1: $("#arbitros2").val(),
+            asistente2: $("#arbitros3").val()
 
         };
 
-        ajaxElTorneo.actualizarTemporada(temporada, {
+        ajaxElTorneo.asignarArbitraje(arbitraje, {
             callback: function (data) {
                 if (data !== null) {
-                    $("#boton").prop('disabled', false);
-                    cargarPagina('temporada.jsp');
-                    limpiar();
-                } else {
-                    $("#boton").prop('disabled', false);
+                    listarPartidosPorTemporada(idTemporadaGlobal);
+                    $("#cerrarModal").click();
                 }
             },
             timeout: 20000
@@ -233,6 +251,7 @@
 
     var listaPartidos = [];
     function listarPartidosPorTemporada(idTemporada) {
+        idTemporadaGlobal = idTemporada;
         $("#tablaTempa").hide();
         $("#tablaPartidos").show();
         ajaxElTorneo.listarPartidosPorIdTemporada(idTemporada, {
@@ -251,5 +270,49 @@
             },
             timeout: 20000
         });
+    }
+
+    function listarArbitrosActivos() {
+        ajaxElTorneo.listarArbitrosActivos({
+            callback: function (data) {
+                if (data !== null) {
+                    dwr.util.removeAllOptions("arbitros");
+                    dwr.util.addOptions("arbitros", [{
+                            id: '',
+                            nombreCompleto: 'Seleccione arbitro',
+                        }], 'id', 'nombreCompleto');
+                    dwr.util.addOptions("arbitros", data, 'id', 'nombreCompleto');
+                    ////////////////////////////////////////////
+                    dwr.util.removeAllOptions("arbitros2");
+                    dwr.util.addOptions("arbitros2", [{
+                            id: '',
+                            nombreCompleto: 'Seleccione arbitro',
+                        }], 'id', 'nombreCompleto');
+                    dwr.util.addOptions("arbitros2", data, 'id', 'nombreCompleto');
+                    /////////////////////////////////////////////
+                    dwr.util.removeAllOptions("arbitros3");
+                    dwr.util.addOptions("arbitros3", [{
+                            id: '',
+                            nombreCompleto: 'Seleccione arbitro',
+                        }], 'id', 'nombreCompleto');
+                    dwr.util.addOptions("arbitros3", data, 'id', 'nombreCompleto');
+                }
+            },
+            timeout: 20000
+        });
+    }
+
+    var arbitros = new Object();
+    arbitros["arbitros"] = "";
+    arbitros["arbitros2"] = "";
+    arbitros["arbitros3"] = "";
+    function selectsArbitro(idArbitro, idSelect) {
+        arbitros[idSelect] = idArbitro;
+        for (var item in arbitros) {
+            $("#" + item + " option").show();
+            for (var item2 in arbitros) {
+                $("#" + item + " option[value='" + arbitros[item2] + "'").hide();
+            }
+        }
     }
 </script>

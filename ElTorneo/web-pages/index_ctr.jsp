@@ -23,9 +23,8 @@
             System.out.print(datosUsuario.getEstado());
 
             if (datosUsuario != null && !datosUsuario.getEstado().equals("0")) {
-                System.out.print("pase el segundo if");
                 session.setAttribute("datosUsuario", datosUsuario);
-                System.out.println("" + datosUsuario.getIdTipoUsuario());
+                System.out.println("este es el tipo de usuario " + datosUsuario.getIdTipoUsuario());
 //                response.sendRedirect(request.getContextPath() + "/index.jsp");
 
                 if (datosUsuario.getIdTipoUsuario().equals("1")) {
@@ -34,6 +33,7 @@
                     request.getRequestDispatcher("/inicio.jsp").forward(request, response);
 
                 } else {
+                    System.out.println("entro al else de tipo de usuario");
                     request.getRequestDispatcher("/inicio.jsp").forward(request, response);
                 }
             } else {

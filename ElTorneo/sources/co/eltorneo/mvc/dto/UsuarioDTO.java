@@ -31,6 +31,8 @@ public class UsuarioDTO implements Serializable {
     String fechaRegistro = Generales.EMPTYSTRING;
     String descripcionErrorLogueo = Generales.EMPTYSTRING;
     String idEquipo = Generales.EMPTYSTRING;
+    String arbitro = Generales.EMPTYSTRING;
+    String idTecnico = Generales.EMPTYSTRING;
     ArrayList<MenuDTO> menu = new ArrayList<>();
 
     public String getEstado() {
@@ -167,6 +169,22 @@ public class UsuarioDTO implements Serializable {
 
     public void setIdEquipo(String idEquipo) {
         this.idEquipo = idEquipo;
+    }
+
+    public String getArbitro() {
+        return arbitro;
+    }
+
+    public void setArbitro(String arbitro) {
+        this.arbitro = arbitro;
+    }
+
+    public String getIdTecnico() {
+        return idTecnico;
+    }
+
+    public void setIdTecnico(String idTecnico) {
+        this.idTecnico = idTecnico;
     }
 
     public String toStringJson() {

@@ -158,7 +158,7 @@ public class JugadorDAO {
 
         try {
             cadSQL = new StringBuilder();
-            cadSQL.append(" SELECT juga_id, juga_nombre, juga_apellido,juga_telefono,juga_celular,juga_documento, ");
+            cadSQL.append(" SELECT juga_id, juga_nombre, juga_apellido,juga_telefono,juga_celular,juga_documento,juga_dorsal, ");
             cadSQL.append(" jugador.poju_id,equi_id, poju.poju_nombre");
             cadSQL.append(" FROM jugador ");
             cadSQL.append(" INNER JOIN posicion_jugador poju ON poju.poju_id = jugador.poju_id");
@@ -180,6 +180,7 @@ public class JugadorDAO {
                 jugador.setDocumento(rs.getString("juga_documento"));
                 jugador.setIdPosicion(rs.getString("poju_id"));
                 jugador.setPosicion(rs.getString("poju_nombre"));
+                jugador.setDorsal(rs.getString("juga_dorsal"));
                 jugador.setIdEquipo(rs.getString("equi_id"));
 
                 listadoJugador.add(jugador);
@@ -342,6 +343,57 @@ public class JugadorDAO {
 
             ps = conexion.prepareStatement(cadSQL.toString());
             AsignaAtributoStatement.setString(1, documento, ps);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                existe = true;
+            }
+
+            ps.close();
+            ps = null;
+
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+            return false;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                    ps = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+                return false;
+            }
+        }
+
+        return existe;
+    }
+
+    /**
+     *
+     * @param conexion
+     * @param dorsal
+     * @param equipo
+     * @return
+     */
+    public boolean validarDorsalJugador(Connection conexion, String dorsal, String equipo) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean existe = false;
+        StringBuilder cadSQL = null;
+
+        try {
+
+            cadSQL = new StringBuilder();
+            cadSQL.append(" SELECT juga_id");
+            cadSQL.append(" FROM jugador ");
+            cadSQL.append(" WHERE juga_dorsal  = ? And equi_id = ?");
+
+            ps = conexion.prepareStatement(cadSQL.toString());
+            AsignaAtributoStatement.setString(1, dorsal, ps);
+            AsignaAtributoStatement.setString(2, equipo, ps);
+
             rs = ps.executeQuery();
 
             if (rs.next()) {

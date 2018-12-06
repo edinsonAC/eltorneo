@@ -69,7 +69,7 @@ public class ServletValidarUsuario extends HttpServlet {
         try {
             PrintWriter out = response.getWriter();
             boolean existe;
-            System.out.println(" Datos a validar: " + request.getParameter("email"));
+            System.out.println(" Datos a validar: " + request.getParameter("usuario"));
             existe = MediadorElTorneo.getInstancia().validarUsuario((String) request.getParameter("usuario"));
             System.out.println(" Existe : " + existe);
             out.println(!existe);

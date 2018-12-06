@@ -4,7 +4,7 @@
             <button type="button" class="btn btn-primary" onclick="javascript:cargarPagina('registrar-temporada.jsp');" >Crear torneo</button>
         </div>
     </div>
-    <div class="card">
+    <div class="card bodyRegistrar">
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table datatable-html">
@@ -122,6 +122,9 @@
     var idTemporadaEditar;
     var operacion = null;
     var fechaSorteo;
+    function redireccionar() {
+        cargarPagina('temporada.jsp');
+    }
     function validar(form, r) {
         operacion = r;
     }
@@ -135,6 +138,7 @@
     $(document).ready(function () {
         llenarSelect();
         listarTemporadas();
+        validarTemporadaEnProceso();
 
 
         $("#edit_temporada").validate({// el validate es sacado de codigo de internet, valida que los campos que tengan required este llenos
@@ -176,6 +180,17 @@
         });
     }
 
+    function validarTemporadaEnProceso() {
+        ajaxElTorneo.validarTemporadaEnProceso({
+            callback: function (data) {
+                if (data) {
+                    $(".divAgregar").hide();
+                }
+            },
+            timeout: 20000
+        });
+    }
+
     function llenarTemporada(idTemporada) {
         $("#bodyRegistrarTemporada").show();
         $("#sorteo").show();
@@ -191,6 +206,14 @@
                     $("#fechaIn_temporada").val(data.fechaInicial);
                     fechaSorteo = data.fechaInicial;
                     calcularRequisitos();
+
+                    if (data.banderaSorteo == '1') {
+                        $("#num_equipos").prop("disabled", true);
+                        $("#fechaIn_temporada").prop("disabled", true);
+                        $("#sorteo").hide();
+                    } else {
+                        $("#sorteo").show();
+                    }
                 }
             },
             timeout: 20000
@@ -236,7 +259,7 @@
         function (data) {
             var d = new Date()
             var gmtHours = -d.getTimezoneOffset() / 60;
-            var fecha = new Date(data.fechaPartido + " GMT" + gmtHours );
+            var fecha = new Date(data.fechaPartido + " GMT" + gmtHours);
 
             var options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
             return fecha.toLocaleDateString("es-CO", options);

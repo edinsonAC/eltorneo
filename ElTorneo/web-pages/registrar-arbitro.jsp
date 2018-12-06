@@ -1,4 +1,4 @@
-<div class="card tc-card" id="bodyRegistrar">
+<div class="card tc-card bodyRegistrar" id="bodyRegistrarArbitro">
     <div class="card-body"  >
         <h4 class="card-title" id="tituloForm"> <b>  Registrar Arbitro </b></h4> 
         <br>

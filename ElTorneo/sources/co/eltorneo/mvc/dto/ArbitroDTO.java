@@ -26,6 +26,7 @@ public class ArbitroDTO implements Serializable {
     String usuario = Generales.EMPTYSTRING;
     String direccion = Generales.EMPTYSTRING;
     String correo = Generales.EMPTYSTRING;
+    String nombreCompleto = Generales.EMPTYSTRING;
 
     public String getId() {
         return id;
@@ -113,6 +114,14 @@ public class ArbitroDTO implements Serializable {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
     }
 
     public String toStringJson() {

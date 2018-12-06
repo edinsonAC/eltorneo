@@ -4,7 +4,6 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="co.eltorneo.mvc.dto.UsuarioDTO"%>
 <%
-    // System.out.println("estamos en inicio.jsp----<");
     UsuarioDTO datosUsuario = (UsuarioDTO) session.getAttribute("datosUsuario");
     ArrayList<MenuDTO> menu = null;
     // System.out.println("estamos en inicio.jsp----<" + datosUsuario.toStringJson());
@@ -33,7 +32,7 @@
         <link href="assets/css/estilos.css" rel="stylesheet" type="text/css">
         <link href="assets/css/dataTable.css" rel="stylesheet" type="text/css">
         <link href="assets/css/estiloInicio.css" rel="stylesheet" type="text/css">
-
+        <link href="assets/css/estiloRegistrar-usuario.css" rel="stylesheet" type="text/css">
         <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
         <link rel="shortcut icon" href="assets/images/balon_estadio.jpg" />
@@ -60,6 +59,7 @@
         <script src="assets/libs/bootstrap-validator/js/jquery.validate.js"></script>
         <script src="assets/libs/bootstrap-validator/js/bootstrapValidator.min.js"></script>
         <script type="text/javascript" src="assets/js/plugins/forms/validation/validate.min.js"></script>
+        <script src="assets/js/jquery-steps-master/jquery-steps-master/build/jquery.steps.min.js"></script>
 
     </head>
 
@@ -116,6 +116,8 @@
             var idUsuario;
             var usuario;
             var idEquipo;
+            var idArbitroLogueado;
+            var idTecnicoLogueado;
 
             function cargarPagina(pagina) {
                 console.log("entro a la funcion", pagina);
@@ -128,7 +130,8 @@
                 nombreUsuario = '<%=datosUsuario.getNombre()%>';
                 usuario = '<%=datosUsuario.getUsuario()%>';
                 idEquipo = '<%=datosUsuario.getIdEquipo()%>';
-
+                idArbitroLogueado = '<%=datosUsuario.getArbitro()%>';
+                idTecnicoLogueado = '<%=datosUsuario.getIdTecnico()%>';
 
                 jQuery.extend(jQuery.validator.messages, {
                     required: "Este campo es obligatorio.",

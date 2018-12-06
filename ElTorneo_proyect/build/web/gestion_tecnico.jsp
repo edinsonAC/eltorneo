@@ -1,11 +1,11 @@
 
-<div class="content" id="tablaTecn">
+<div class="content " id="tablaTecn">
     <div class="row">
         <div class="col-md-12 divAgregar">
             <button type="button" class="btn btn-primary" onclick="javascript:cargarPagina('registrar-usuario.jsp');" >Agregar tecnico</button>
         </div>
     </div>
-    <div class="card">
+    <div class="card bodyRegistrar">
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table datatable-html" >
@@ -57,7 +57,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="email_tecnico">* Correo: </label>
-                        <input type="email" class="form-control" id="email_tecnico" maxlength="45" name="email_tecnico" autocomplete="off" required>
+                        <input type="email" class="form-control" id="email_tecnico" maxlength="45" name="email_tecnico" autocomplete="off" required disabled>
                     </div>
                 </div>
             </div>
@@ -85,7 +85,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="usuario_tecnico">* Usuario: </label>
-                        <input type="text" class="form-control" id="usuario_tecnico" name="usuario_tecnico" maxlength="15" autocomplete="off">
+                        <input type="text" class="form-control" id="usuario_tecnico" name="usuario_tecnico" maxlength="15" autocomplete="off" disabled>
                     </div>
                 </div>
             </div>
@@ -192,7 +192,6 @@
                     $("#cel_tecnico").val(data.celular);
                     $("#tel_tecnico").val(data.telefono);
                     $("#usuario_tecnico").val(data.usuario);
-
 
                 }
             },
