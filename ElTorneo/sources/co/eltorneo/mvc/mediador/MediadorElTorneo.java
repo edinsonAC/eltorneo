@@ -2125,7 +2125,7 @@ public class MediadorElTorneo {
      * @param idPartido
      * @return
      */
-    public ArrayList<PartidoDTO> verInformacionDePartidoPorId(String idPartido) {
+    public PartidoDTO verInformacionDePartidoPorId(String idPartido) {
 
         DataBaseConnection dbcon = null;
         Connection conexion = null;
@@ -2166,6 +2166,54 @@ public class MediadorElTorneo {
 
         }
         return partido;
+    }
+
+    /**
+     *
+     * @param idTemporada
+     * @return
+     */
+    public ArrayList<PartidoDTO> listarPartidosPorIdTemporadaConArbitro(String idTemporada) {
+
+        DataBaseConnection dbcon = null;
+        Connection conexion = null;
+        ArrayList<PartidoDTO> partidos = null;
+        try {
+
+            dbcon = DataBaseConnection.getInstance();
+            conexion = dbcon.getConnection(ContextDataResourceNames.MYSQL_ELTORNEO_JDBC);
+
+            partidos = new PartidoDAO().listarPartidosPorIdTemporadaConArbitro(conexion, idTemporada);
+            if (partidos.isEmpty()) {
+                throw new Exception("ERROR: listando las posiciones");
+            }
+
+            conexion.close();
+            conexion = null;
+        } catch (Exception e) {
+            LoggerMessage.getInstancia().loggerMessageException(e);
+        } finally {
+            try {
+                if (conexion != null && !conexion.isClosed()) {
+                    conexion.close();
+                    conexion = null;
+                }
+            } catch (Exception e) {
+                LoggerMessage.getInstancia().loggerMessageException(e);
+            } finally {
+                try {
+                    if (conexion != null && !conexion.isClosed()) {
+                        conexion.close();
+                        conexion = null;
+                    }
+
+                } catch (Exception e) {
+                    LoggerMessage.getInstancia().loggerMessageException(e);
+                }
+            }
+
+        }
+        return partidos;
     }
 
 }

@@ -22,3 +22,53 @@ and open the template in the editor.
 .divAgregar{
     text-align: -webkit-right;
 }
+
+.default-nav{
+    background-color: transparent;
+    border: 0;
+}
+
+
+.nav-transparent{
+    background-color: rgba(239, 237, 237, 0.4);
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border: solid 3px #ffffff52;
+    border-top: 0;
+    box-shadow: 0px 3px 6px 3px #12121266;
+}
+
+.nav-content > li > ul{
+    background-color: rgba(239, 237, 237, 0.4);
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border: solid 3px #ffffff52;
+    border-top: 0;
+    box-shadow: 0px 3px 6px 3px #12121266;
+}
+
+.dropdown-toggle{
+    font-weight: bold;
+    color: black;
+    font-size: 15px;
+}
+
+a + ul.dropdown-menu{
+    margin-top: 6px !important;    
+    border-top: solid 3px #ffffff52;
+}
+
+.transparent{
+      background: transparent;
+}
+
+.nav-content{
+    width: 94%;
+    display: flex;
+}
+
+.btn-sesion{
+    position: absolute;
+    right: 0;
+    align-self: center;
+}

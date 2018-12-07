@@ -27,6 +27,7 @@ public class PartidoDTO implements Serializable {
     String horaFinal = Generales.EMPTYSTRING;
     String nombreEquipoA = Generales.EMPTYSTRING;
     String nombreEquipoB = Generales.EMPTYSTRING;
+    String arbitro = Generales.EMPTYSTRING;
     int jornada = Generales.ZEROVALUE;
     int golesA = Generales.ZEROVALUE;
     int golesB = Generales.ZEROVALUE;
@@ -149,6 +150,14 @@ public class PartidoDTO implements Serializable {
 
     public void setNombreEquipoB(String nombreEquipoB) {
         this.nombreEquipoB = nombreEquipoB;
+    }
+
+    public String getArbitro() {
+        return arbitro;
+    }
+
+    public void setArbitro(String arbitro) {
+        this.arbitro = arbitro;
     }
 
     public String toStringJson() {

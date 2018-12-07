@@ -1,4 +1,4 @@
-<div class="content" id="tablaTempa">
+<div class="content" id="tablaTempa2">
     <div class="card bodyRegistrar">
         <div class="card-body ">
             <h1>Torneos</h1>
@@ -11,7 +11,7 @@
                             <th>Accion</th>
                         </tr>
                     </thead>
-                    <tbody id="listTemporadas">
+                    <tbody id="listTemporadas2">
 
                     </tbody>
                 </table>
@@ -19,22 +19,20 @@
         </div>
     </div>
 </div>
-<div class="content" id="tablaPartidos" style="display: none;">
+<div class="content" id="tablaPartidos2" style="display: none;">
     <div class="card bodyRegistrar">
         <div class="card-body">
-            <h1>Partidos por asignar</h1>
             <div class="table-responsive">
                 <table class="table datatable-html" id="datatable-html">
                     <thead>
                         <tr>
                             <th>Equipo A</th>
                             <th>Equipo B</th>
-                            <th>dia</th>
-                            <th>Hora</th>
+                            <th>Arbitro Central</th>
                             <th>Jornada</th>
                         </tr>
                     </thead>
-                    <tbody id="listPartidos">
+                    <tbody id="listPartidos2">
 
                     </tbody>
                 </table>
@@ -43,7 +41,7 @@
     </div>
 </div>
 
-<div class="modal fade" tabindex="-1" role="dialog" id="modalArbitraje">
+<div class="modal fade" tabindex="-1" role="dialog" id="modalArbitraje2">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -125,9 +123,9 @@
             callback: function (data) {
                 if (data !== null) {
                     jQuery('.datatable-html').dataTable().fnDestroy();
-                    dwr.util.removeAllRows("listTemporadas");
+                    dwr.util.removeAllRows("listTemporadas2");
                     listado2 = data;
-                    dwr.util.addRows("listTemporadas", listado2, mapa, {
+                    dwr.util.addRows("listTemporadas2", listado2, mapa, {
                         escapeHtml: false
                     });
                     $('.datatable-html').dataTable();
@@ -139,8 +137,8 @@
 
     function llenarTemporada(idTemporada) {
         $("#bodyRegistrarTemporada").show();
-        $("#sorteo").show();
-        $("#tablaTempa").hide();
+        $("#sorteo2").show();
+        $("#tablaTempa2").hide();
         ajaxElTorneo.buscarTemporadaPorId(idTemporada, {
             callback: function (data) {
                 if (data !== null) {
@@ -187,15 +185,7 @@
             return '<p data-toggle="modal" data-target="#modalArbitraje" onclick="seleccionarPartido(' + data.id + ')"> ' + data.nombreEquipoB + '</p>';
         },
         function (data) {
-            var d = new Date()
-            var gmtHours = -d.getTimezoneOffset() / 60;
-            var fecha = new Date(data.fechaPartido + " GMT" + gmtHours);
-
-            var options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
-            return '<p data-toggle="modal" data-target="#modalArbitraje" onclick="seleccionarPartido(' + data.id + ')"> ' + fecha.toLocaleDateString("es-CO", options) + '</p>';
-        },
-        function (data) {
-            return '<p data-toggle="modal" data-target="#modalArbitraje" onclick="seleccionarPartido(' + data.id + ')"> ' + data.horaInicial + " - " + data.horaFinal + " PM" + '</p>';
+            return '<p data-toggle="modal" data-target="#modalArbitraje" onclick="seleccionarPartido(' + data.id + ')"> ' + data.arbitro +'</p>';
         },
         function (data) {
             return '<p data-toggle="modal" data-target="#modalArbitraje" onclick="seleccionarPartido(' + data.id + ')"> ' + data.jornada + '</p>';
@@ -253,15 +243,15 @@
     var listaPartidos = [];
     function listarPartidosPorTemporada(idTemporada) {
         idTemporadaGlobal = idTemporada;
-        $("#tablaTempa").hide();
-        $("#tablaPartidos").show();
-        ajaxElTorneo.listarPartidosPorIdTemporada(idTemporada, {
+        $("#tablaTempa2").hide();
+        $("#tablaPartidos2").show();
+        ajaxElTorneo.listarPartidosPorIdTemporadaConArbitro(idTemporada, {
             callback: function (data) {
                 if (data !== null) {
                     jQuery('#datatable-html').dataTable().fnDestroy();
-                    dwr.util.removeAllRows("listPartidos");
+                    dwr.util.removeAllRows("listPartidos2");
                     listaPartidos = data;
-                    $.when(dwr.util.addRows("listPartidos", listaPartidos, mapaPartidos, {
+                    $.when(dwr.util.addRows("listPartidos2", listaPartidos, mapaPartidos, {
                         escapeHtml: false
                     })).done(function () {
                         $('#datatable-html').dataTable();

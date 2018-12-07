@@ -364,4 +364,23 @@ public class FachadaElTorneo {
         return MediadorElTorneo.getInstancia().listarTodosLosEquiposPorTecnico(idTecnico);
     }
 
+    /**
+     *
+     * @param idPartido
+     * @return
+     */
+    @RemoteMethod
+    public PartidoDTO verInformacionDePartidoPorId(String idPartido) {
+        return MediadorElTorneo.getInstancia().verInformacionDePartidoPorId(idPartido);
+    }
+
+    /**
+     *
+     * @param idTemporada
+     * @return
+     */
+    @RemoteMethod
+    public ArrayList<PartidoDTO> listarPartidosPorIdTemporadaConArbitro(String idTemporada) {
+        return MediadorElTorneo.getInstancia().listarPartidosPorIdTemporadaConArbitro(idTemporada);
+    }
 }

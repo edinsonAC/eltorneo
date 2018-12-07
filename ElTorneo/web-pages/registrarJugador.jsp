@@ -1,7 +1,7 @@
         
 <link href="assets/css/estiloRegistrar-usuario.css" rel="stylesheet" type="text/css">
 
-<div class="card tc-card" id="bodyRegistrar">
+<div class="card tc-card bodyRegistrar" id="bodyRegistrar">
     <div class="card-body"  >
         <h4 class="card-title" id="tituloForm"> <b>  Registrar Jugadores </b></h4> 
         <br>
@@ -24,7 +24,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="doc_jugador">* Número documento: </label>
-                        <input type="text" maxlength="10"  class="form-control numeros"  id="doc_jugador" name="doc_jugador" autocomplete="off" >
+                        <input type="text" maxlength="10"  class="form-control numeros"  id="doc_jugador" name="documento" autocomplete="off" >
                     </div>
                 </div>
 
@@ -73,7 +73,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="dorsal_jugador">*Dorsal </label>
-                        <input type="number" id="dorsal_jugador" name="dorsal"  class="form-control" required>
+                        <input type="number" id="dorsal_jugador" name="dorsal" maxlength="2" class="form-control" required>
                     </div>
                 </div>
             </div>
@@ -91,8 +91,8 @@
 </div>
 <script type="text/javascript" src="assets/js/Constantes.js"></script>
 <script>
-                        function recargar() {
-                            jQuery("#contenidoPpal").load("admin/registrar-usuario.jsp");
+                        function redireccionar() {
+                            cargarPagina('gestion-jugador.jsp');
                         }
                         // esto que esta debajo son clases que hacen que en los input no se puedan usar algunos caracteres 
                         $(".numeros").on("input", function () {

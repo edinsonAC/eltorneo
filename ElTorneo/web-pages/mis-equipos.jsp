@@ -16,7 +16,7 @@
             <button type="button" class="btn btn-primary" onclick="javascript:cargarPagina('registrar-equipo.jsp');" >Registrar equipo</button>
         </div>
     </div>
-    <div class="card">
+    <div class="card bodyRegistrar">
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table datatable-html" >
@@ -117,13 +117,20 @@
         ajaxElTorneo.listarTodosLosEquiposPorTecnico(idTecnicoLogueado, {
             callback: function (data) {
                 if (data !== null) {
+                    listadoEquipos = data;
+                    for (var k = 0; k < listadoEquipos.length; k++) {
+                        if (listadoEquipos[k].estado == "1") {
+                            $(".divAgregar").hide();
+                        }
+                    }
                     jQuery('.datatable-html').dataTable().fnDestroy();
                     dwr.util.removeAllRows("listaEquipos");
-                    listadoEquipos = data;
                     dwr.util.addRows("listaEquipos", listadoEquipos, mapa, {
                         escapeHtml: false
                     });
                     $('.datatable-html').dataTable();
+
+
                 }
             },
             timeout: 20000

@@ -23,7 +23,7 @@
             <button type="button" class="btn btn-primary" onclick="javascript:cargarPagina('registrarJugador.jsp');" >Agregar jugador</button>
         </div>
     </div>
-    <div class="card">
+    <div class="card bodyRegistrar">
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table datatable-html" >
@@ -45,7 +45,7 @@
     </div>
 </div>
 
-<div class="card tc-card" id="bodyGestionJugador" style="display: none;">
+<div class="card tc-card bodyRegistrar" id="bodyGestionJugador" style="display: none;">
     <div class="card-body"  >
         <h4 class="card-title" id="tituloForm"> <b>  Editar jugador </b></h4> 
         <br>
@@ -135,6 +135,9 @@
 </div>
 <script>
     // variables globales
+    function redireccionar() {
+        cargarPagina('gestion-jugador.jsp');
+    }
     var idJugadorEditar;
     var operacion = null;
     function validar(form, r) {
@@ -149,7 +152,7 @@
 
 
     $(document).ready(function () {
-        if (idEquipo == "" || idEquipo == null){
+        if (idEquipo == "" || idEquipo == null) {
             $(".divAgregar").hide();
         }
         listarJugadores();

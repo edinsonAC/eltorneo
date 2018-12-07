@@ -32,7 +32,7 @@
             <button type="button" class="btn btn-primary" onclick="javascript:cargarPagina('registrar-temporada.jsp');" >Crear torneo</button>
         </div>
     </div>
-    <div class="card">
+    <div class="card bodyRegistrar">
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table datatable-html" id="datatable-html">
@@ -55,7 +55,7 @@
 </div>
 
 
-<div class="card tc-card" id="bodyRegistrarTemporada" style="display: none;">
+<div class="card tc-card bodyRegistrar" id="bodyRegistrarTemporada" style="display: none;">
     <div class="card-body"  >
         <h4 class="card-title" id="tituloForm"> <b> Torneo </b></h4> 
         <br>
@@ -96,7 +96,7 @@
 </div>
 
 
-<div class="card tc-card" id="sorteo" style="display: none;">
+<div class="card tc-card bodyRegistrar" id="sorteo" style="display: none;">
     <div class="card-body"  >
         <h4 class="card-title" id="tituloForm"> <b> Iniciar torneo </b></h4> 
         <br>
@@ -110,7 +110,7 @@
             </div>
             <div class="col-md-6">
                 <ul>
-                    <button type="button" id="boton2" class="btn btn-success mr-2" onclick="sortearEquipos();">sorteo</button>                 
+                    <button type="button" id="botonSortear" class="btn btn-success mr-2" onclick="sortearEquipos();" disabled>sorteo</button>                 
                 </ul>
             </div>
         </div>
@@ -198,7 +198,6 @@
         ajaxElTorneo.buscarTemporadaPorId(idTemporada, {
             callback: function (data) {
                 if (data !== null) {
-                    console.log("esta es la data", data);
                     idTemporadaEditar = data.id;
                     $("#nombre_temporada").val(data.nombre);
                     $("#equi_requisito").text(data.numEquipos);
@@ -213,6 +212,10 @@
                         $("#sorteo").hide();
                     } else {
                         $("#sorteo").show();
+                    }
+
+                    if (data.numEquipos == equiposActi && arbisActi >= 3) {
+                        $("#botonSortear").prop("disabled", false);
                     }
                 }
             },
@@ -289,7 +292,6 @@
                 if (data !== null) {
                     $("#boton").prop('disabled', false);
                     cargarPagina('temporada.jsp');
-                    limpiar();
                 } else {
                     $("#boton").prop('disabled', false);
                 }
@@ -310,6 +312,8 @@
         });
     }
 
+    var equiposActi;
+    var arbisActi;
 
     function calcularRequisitos() {
         ajaxElTorneo.arbitrosEquiposActivos({
@@ -317,6 +321,10 @@
                 if (data !== null) {
                     $("#equi_activos").text(data.equiposActivos);
                     $("#arbi_activos").text(data.arbitrosActivos);
+
+                    equiposActi = data.equiposActivos;
+                    arbisActi = data.arbitrosActivos;
+
                 }
             },
             timeout: 20000

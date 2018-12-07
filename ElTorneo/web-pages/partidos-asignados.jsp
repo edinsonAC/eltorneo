@@ -41,24 +41,60 @@
                                     <h4  id="nombreEquipoB"></h4>
                                 </div> 
                             </div>
-                            <div class="row">
-                                <div class="col-md-6" id="tarjetasA">
 
-                                </div>
-                                <div class="col-md-6" id="tarjetasB">
-
-                                </div> 
-                            </div>
                         </section>
                         <h3>Participantes</h3>
                         <section>
                             <div class="row">
-                                <div class="col-md-6" id="participantes">
-
+                                <div class="form-group" id="labelRadio" >
+                                    <div class="form-group" style="display:  flex;flex-direction:  row;    justify-content: space-around; flex-wrap: wrap;" >
+                                        <div class="form-radio form-radio-flat" >
+                                            <label class="form-check-label" >
+                                                <input type="radio" class="form-check-input" id="radio1" name="contador" > <span id="nombreEquipoA2"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-radio form-radio-flat">
+                                            <label class="form-check-label">
+                                                <input type="radio" class="form-check-input"  id="radio2" name="contador"> <span id="nombreEquipoB2"></span>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-6" id="participantesc">
-
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="pos_jugador">Jugador </label>
+                                        <select id="jugadores" class="form-control"></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="pos_jugador">Tarjeta </label>
+                                        <select id="tarjetas" class="form-control">
+                                            <option value="1">Tarjeta Amarilla</option>
+                                            <option value="2">Tarjeta roja</option>
+                                        </select>
+                                    </div>
                                 </div> 
+                            </div>
+                            <div class="row" style="text-align: center;">
+                                <button type="button" class="btn btn-primary">Añadir</button>
+                            </div>
+                            <div id="tablaContacto" hidden class="table-responsive">
+                                <table class="table table-bordered" id="tablaContactoDatos">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombres</th>
+                                            <th>Apellidos</th>
+                                            <th>Documento</th>
+                                            <th>Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="listadoTabla">
+
+                                    </tbody>
+                                </table>
                             </div>
                         </section>
                         <h3>Goles</h3>
@@ -78,6 +114,7 @@
 <script type="text/javascript" src="assets/js/wizard.js"></script>
 <script>
     //variables globales
+    var idEquipoA;
     var golesA = [];
     var golesB = [];
     var amarillasA = [];
@@ -161,9 +198,26 @@
     ];
 
     function seleccionarPartido(id, equipoA, equipoB) {
+        ajaxElTorneo.verInformacionDePartidoPorId(id, {
+            callback: function (data) {
+                if (data !== null) {
+                    $("#nombreEquipoA").text(data.nombreEquipoA);
+                    $("#nombreEquipoB").text(data.nombreEquipoB);
+                    $("#nombreEquipoA2").text(data.nombreEquipoA);
+                    $("#nombreEquipoB2").text(data.nombreEquipoB);
+
+                    $("#radio1").attr("onchange", "listarJugadoresEquipo(" + equipoA + ");");
+                    $("#radio2").attr("onchange", "listarJugadoresEquipo(" + equipoB + ");");
+                }
+            },
+            timeout: 20000
+        });
+
+
         ajaxElTorneo.listarJugadoresPorIdEquipo(equipoA, {
             callback: function (data) {
                 if (data !== null) {
+                    $("#participantesA").html("");
                     console.log("entra primero", data);
                     for (var i = 0; i < data.length; i++) {
                         $("#participantesA").append("<div class='form-check form-check-flat'><label class='form-check-label'><input id=" + data[i].id + " value=" + i + " onclick='agregarJugadoresA(this.id);' type='checkbox' class='form-check-input impuestos'>" + data[i].dorsal + ". " + data[i].nombre + "<i class='input-helper'></i></div>");
@@ -175,7 +229,7 @@
         ajaxElTorneo.listarJugadoresPorIdEquipo(equipoB, {
             callback: function (data2) {
                 if (data2 !== null) {
-                    console.log("entra segundo", data2);
+                    $("#participantesB").html("");
                     for (var j = 0; j < data2.length; j++) {
                         $("#participantesB").append("<div class='form-check form-check-flat'><label><input id=" + data2[j].id + " value=" + j + " onclick='agregarJugadoresB(this.id);' type='checkbox' class='form-check-input impuestos'> " + data2[j].dorsal + "." + data2[j].nombre + "<i class='input-helper'></i></div>");
                     }
@@ -187,5 +241,36 @@
     }
 
 
+    function listarJugadoresEquipo(idEquipo) {
+        ajaxElTorneo.listarJugadoresPorIdEquipo(idEquipo, {
+            callback: function (data) {
+                if (data !== null) {
+                    dwr.util.removeAllOptions("jugadores");
+                    dwr.util.addOptions("jugadores", [{
+                            id: '',
+                            nombreSelect: 'Seleccione jugador',
+                        }], 'id', 'nombreSelect');
+                    dwr.util.addOptions("jugadores", data, 'id', 'nombreSelect');
+                }
+            },
+            timeout: 20000
+        });
+    }
+
+   function agregarTarjeta() {
+
+        var datos = {
+            primerNombre: $("#nom1_contacto").val(),
+            otrosNombres: $("#nom2_contacto").val()
+        };
+        listadoContacto[cantidadDatos] = datos;
+        cantidadDatos++;
+        $('#tablaContacto').removeAttr("hidden");
+        dwr.util.removeAllRows("listadoTabla");
+        dwr.util.addRows("listadoTabla", listadoContacto, mapaContacto, {
+            escapeHtml: false
+        });
+        //   return showToastPosition('Mensaje', 'Se ha agregado el contacto con éxito', 'bottom-center', false);
+    }
 
 </script>

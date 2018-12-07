@@ -159,7 +159,7 @@ public class JugadorDAO {
         try {
             cadSQL = new StringBuilder();
             cadSQL.append(" SELECT juga_id, juga_nombre, juga_apellido,juga_telefono,juga_celular,juga_documento,juga_dorsal, ");
-            cadSQL.append(" jugador.poju_id,equi_id, poju.poju_nombre");
+            cadSQL.append(" jugador.poju_id,equi_id, poju.poju_nombre, CONCAT_WS(' ', juga_dorsal,juga_nombre,juga_apellido) AS nombregeneral");
             cadSQL.append(" FROM jugador ");
             cadSQL.append(" INNER JOIN posicion_jugador poju ON poju.poju_id = jugador.poju_id");
             cadSQL.append(" WHERE equi_id = ?");
@@ -182,7 +182,7 @@ public class JugadorDAO {
                 jugador.setPosicion(rs.getString("poju_nombre"));
                 jugador.setDorsal(rs.getString("juga_dorsal"));
                 jugador.setIdEquipo(rs.getString("equi_id"));
-
+                jugador.setNombreSelect(rs.getString("nombregeneral"));
                 listadoJugador.add(jugador);
 
             }
@@ -338,7 +338,7 @@ public class JugadorDAO {
 
             cadSQL = new StringBuilder();
             cadSQL.append(" SELECT juga_id");
-            cadSQL.append(" FROM juugador ");
+            cadSQL.append(" FROM jugador ");
             cadSQL.append(" WHERE juga_documento  = ? ");
 
             ps = conexion.prepareStatement(cadSQL.toString());

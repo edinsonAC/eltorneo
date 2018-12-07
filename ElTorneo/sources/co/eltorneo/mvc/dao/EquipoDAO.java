@@ -36,33 +36,33 @@ public class EquipoDAO {
         int nRows = 0;
         StringBuilder cadSQL = null;
         RespuestaDTO registro = null;
-
+        
         try {
             registro = new RespuestaDTO();
             System.out.println("tecnico " + equipo.toStringJson());
             cadSQL = new StringBuilder();
             cadSQL.append(" INSERT INTO equipo(equi_nombre, tecn_id)");
             cadSQL.append(" VALUES (?, ?) ");
-
+            
             ps = conexion.prepareStatement(cadSQL.toString(), Statement.RETURN_GENERATED_KEYS);
-
+            
             AsignaAtributoStatement.setString(1, equipo.getNombre(), ps);
             AsignaAtributoStatement.setString(2, equipo.getIdTecnico(), ps);
-
+            
             nRows = ps.executeUpdate();
             if (nRows > 0) {
                 rs = ps.getGeneratedKeys();
                 registro.setRegistro(true);
                 if (rs.next()) {
                     registro.setIdResgistrado(rs.getString(1));
-
+                    
                 }
                 rs.close();
                 rs = null;
             }
             ps.close();
             ps = null;
-
+            
         } catch (SQLException se) {
             LoggerMessage.getInstancia().loggerMessageException(se);
             return null;
@@ -81,19 +81,19 @@ public class EquipoDAO {
         ArrayList<EquipoDTO> listadoEquipo = null;
         EquipoDTO equipo = null;
         StringBuilder cadSQL = null;
-
+        
         try {
-
+            
             cadSQL = new StringBuilder();
             cadSQL.append(" SELECT equi_id, equi_nombre, equipo.tecn_id, CONCAT_WS(' ', tc.tecn_nombre, tc.tecn_apellido)as nombretecnico");
             cadSQL.append(" FROM equipo ");
             cadSQL.append(" INNER JOIN tecnico tc ON tc.tecn_id= equipo.tecn_id ");
             ps = conexion.prepareStatement(cadSQL.toString());
-
+            
             rs = ps.executeQuery();
-
+            
             listadoEquipo = new ArrayList();
-
+            
             while (rs.next()) {
                 equipo = new EquipoDTO();
                 equipo.setId(rs.getString("equi_id"));
@@ -101,11 +101,11 @@ public class EquipoDAO {
                 equipo.setIdTecnico(rs.getString("tecn_id"));
                 equipo.setTecnico(rs.getString("nombretecnico"));
                 listadoEquipo.add(equipo);
-
+                
             }
             ps.close();
             ps = null;
-
+            
         } catch (Exception e) {
             LoggerMessage.getInstancia().loggerMessageException(e);
             return null;
@@ -123,7 +123,7 @@ public class EquipoDAO {
                 return null;
             }
         }
-
+        
         return listadoEquipo;
     }
 
@@ -138,30 +138,30 @@ public class EquipoDAO {
         ResultSet rs = null;
         EquipoDTO equipo = null;
         StringBuilder cadSQL = null;
-
+        
         try {
-
+            
             cadSQL = new StringBuilder();
             cadSQL.append(" SELECT equi_id, equi_nombre, equipo.tecn_id, CONCAT_WS(' ', tc.tecn_nombre, tc.tecn_apellido)as nombretecnico");
             cadSQL.append(" FROM equipo ");
             cadSQL.append(" INNER JOIN tecnico tc ON tc.tecn_id= equipo.tecn_id ");
             cadSQL.append(" WHERE equi_id = ?");
-
+            
             ps = conexion.prepareStatement(cadSQL.toString());
             AsignaAtributoStatement.setString(1, idEquipo, ps);
             rs = ps.executeQuery();
-
+            
             while (rs.next()) {
                 equipo = new EquipoDTO();
                 equipo.setId(rs.getString("equi_id"));
                 equipo.setNombre(rs.getString("equi_nombre"));
                 equipo.setIdTecnico(rs.getString("tecn_id"));
                 equipo.setTecnico(rs.getString("nombretecnico"));
-
+                
             }
             ps.close();
             ps = null;
-
+            
         } catch (Exception e) {
             LoggerMessage.getInstancia().loggerMessageException(e);
             return null;
@@ -176,7 +176,7 @@ public class EquipoDAO {
                 return null;
             }
         }
-
+        
         return equipo;
     }
 
@@ -192,27 +192,27 @@ public class EquipoDAO {
         int nRows = 0;
         StringBuilder cadSQL = null;
         RespuestaDTO registro = null;
-
+        
         try {
             registro = new RespuestaDTO();
             System.out.println("equipo " + equipo.toStringJson());
             cadSQL = new StringBuilder();
             cadSQL.append(" UPDATE equipo SET equi_nombre = ?");
             cadSQL.append(" WHERE equi_id = ?");
-
+            
             ps = conexion.prepareStatement(cadSQL.toString(), Statement.RETURN_GENERATED_KEYS);
-
+            
             AsignaAtributoStatement.setString(1, equipo.getNombre(), ps);
             AsignaAtributoStatement.setString(2, equipo.getId(), ps);
-
+            
             nRows = ps.executeUpdate();
             if (nRows > 0) {
                 registro.setRegistro(true);
-
+                
             }
             ps.close();
             ps = null;
-
+            
         } catch (SQLException se) {
             LoggerMessage.getInstancia().loggerMessageException(se);
             return null;
@@ -230,22 +230,22 @@ public class EquipoDAO {
         ResultSet rs = null;
         String equipos = "";
         StringBuilder cadSQL = null;
-
+        
         try {
-
+            
             cadSQL = new StringBuilder();
             cadSQL.append(" SELECT count(equi_id)as num");
             cadSQL.append(" FROM equipo WHERE equi_estado ='1' ");
             ps = conexion.prepareStatement(cadSQL.toString());
-
+            
             rs = ps.executeQuery();
-
+            
             while (rs.next()) {
                 equipos = rs.getString("num");
             }
             ps.close();
             ps = null;
-
+            
         } catch (Exception e) {
             LoggerMessage.getInstancia().loggerMessageException(e);
             return null;
@@ -255,13 +255,13 @@ public class EquipoDAO {
                     ps.close();
                     ps = null;
                 }
-
+                
             } catch (Exception e) {
                 LoggerMessage.getInstancia().loggerMessageException(e);
                 return null;
             }
         }
-
+        
         return equipos;
     }
 
@@ -277,32 +277,33 @@ public class EquipoDAO {
         ArrayList<EquipoDTO> listadoEquipo = null;
         EquipoDTO equipo = null;
         StringBuilder cadSQL = null;
-
+        
         try {
-
+            
             cadSQL = new StringBuilder();
-            cadSQL.append(" SELECT equi_id, equi_nombre, equipo.tecn_id, CONCAT_WS(' ', tc.tecn_nombre, tc.tecn_apellido)as nombretecnico");
+            cadSQL.append(" SELECT equi_id, equi_nombre, equipo.tecn_id, CONCAT_WS(' ', tc.tecn_nombre, tc.tecn_apellido)as nombretecnico, equi_estado");
             cadSQL.append(" FROM equipo ");
             cadSQL.append(" INNER JOIN tecnico tc ON tc.tecn_id= equipo.tecn_id ");
             cadSQL.append(" WHERE equipo.tecn_id = ? ");
             ps = conexion.prepareStatement(cadSQL.toString());
             AsignaAtributoStatement.setString(1, idTecnico, ps);
             rs = ps.executeQuery();
-
+            
             listadoEquipo = new ArrayList();
-
+            
             while (rs.next()) {
                 equipo = new EquipoDTO();
                 equipo.setId(rs.getString("equi_id"));
                 equipo.setNombre(rs.getString("equi_nombre"));
                 equipo.setIdTecnico(rs.getString("tecn_id"));
                 equipo.setTecnico(rs.getString("nombretecnico"));
+                equipo.setEstado(rs.getString("equi_estado"));
                 listadoEquipo.add(equipo);
-
+                
             }
             ps.close();
             ps = null;
-
+            
         } catch (Exception e) {
             LoggerMessage.getInstancia().loggerMessageException(e);
             return null;
@@ -320,7 +321,7 @@ public class EquipoDAO {
                 return null;
             }
         }
-
+        
         return listadoEquipo;
     }
 }

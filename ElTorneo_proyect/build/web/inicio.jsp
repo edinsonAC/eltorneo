@@ -23,7 +23,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Registro - El Torneo</title>
+        <title>El Torneo</title>
 
         <!-- Global stylesheets -->
         <link href="assets/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -60,6 +60,7 @@
         <script src="assets/libs/bootstrap-validator/js/bootstrapValidator.min.js"></script>
         <script type="text/javascript" src="assets/js/plugins/forms/validation/validate.min.js"></script>
         <script src="assets/js/jquery-steps-master/jquery-steps-master/build/jquery.steps.min.js"></script>
+        <script src="assets/js/Constantes.js"></script>
 
     </head>
 
@@ -70,20 +71,20 @@
         <div class="container" id="hola">
             <header>
 
-                <nav class="navbar navbar-default">
-                    <div class="container"  >
+                <nav class="navbar navbar-default default-nav">
+                    <div class="container nav-transparent"  >
                         <div class="navbar-header">
                             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav1">
                                 <span class="sr-only">menu</span>
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
-                            </button>
-                            <h4>El Torneo</h4>
+                            </button>                           
                         </div>
-                        <div class="collapse navbar-collapse" id="nav1" >
-                            <ul class="nav navbar-nav">
-                                <% for (MenuDTO elem : menu) {%>                             
+                        <div class="collapse navbar-collapse transparent" id="nav1" >
+                            <ul class="nav navbar-nav nav-content">
+                                <li class="dropdown"><img src="assets/images/balonn.png" width="50px" height="50px"></li>
+                                    <% for (MenuDTO elem : menu) {%>                             
                                 <li class="dropdown">  
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%=elem.getTituloMenu()%></a>
                                     <ul class="dropdown-menu">
@@ -95,7 +96,7 @@
                                     </ul>
                                 </li>
                                 <%}%>
-                                <button type="button" class="btn btn-primary" onclick="$('#Logout').click()">cerrar sesion</button>
+                                <button type="button" class="btn btn-primary btn-sesion" onclick="$('#Logout').click()">cerrar sesion</button>
                             </ul>
 
                         </div>
@@ -153,9 +154,13 @@
                     min: jQuery.validator.format("Por favor, escribe un valor mayor o igual a {0}.")
                 });
 
-                if (idTipoUsuarioLogueado == 1) {
+                if (idTipoUsuarioLogueado == ADMINISTRADOR) {
                     $(".loader-backdrop").show();
-                    cargarPagina('registrar-usuario.jsp');
+                    cargarPagina('gestion-equipo.jsp');
+                }
+                if (idTipoUsuarioLogueado == TECNICO) {
+                    $(".loader-backdrop").show();
+                    cargarPagina('mis-equipos.jsp');
                 }
             });
 
