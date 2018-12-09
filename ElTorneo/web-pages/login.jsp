@@ -98,7 +98,7 @@
                                 </div>
 
                                 <div class="text-center">
-                                    <a href="login_password_recover.jsp">¿Olvidó su contraseña?</a>
+<!--                                    <a href="login_password_recover.jsp">¿Olvidó su contraseña?</a>-->
                                 </div>
                             </div>
                         </form>

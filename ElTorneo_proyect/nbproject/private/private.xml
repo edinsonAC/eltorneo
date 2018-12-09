@@ -3,17 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/CODE/Javacode/eltorneo/ElTorneo/web-pages/gestion-jugador.jsp</file>
-            <file>file:/C:/CODE/Javacode/eltorneo/ElTorneo/web-pages/inicio.jsp</file>
-            <file>file:/C:/CODE/Javacode/eltorneo/ElTorneo/web-pages/asignar-arbitraje.jsp</file>
-            <file>file:/C:/CODE/Javacode/eltorneo/ElTorneo/web-pages/partidos-con-arbitraje.jsp</file>
+            <file>file:/C:/CODE/Javacode/eltorneo/ElTorneo/web-pages/WEB-INF/web.xml</file>
             <file>file:/C:/CODE/Javacode/eltorneo/ElTorneo/sources/co/eltorneo/mvc/fachada/FachadaElTorneo.java</file>
-            <file>file:/C:/CODE/Javacode/eltorneo/ElTorneo/web-pages/partidos-asignados.jsp</file>
+            <file>file:/C:/CODE/Javacode/eltorneo/ElTorneo/web-pages/registrar-arbitro.jsp</file>
             <file>file:/C:/CODE/Javacode/eltorneo/ElTorneo/sources/co/eltorneo/mvc/mediador/MediadorElTorneo.java</file>
-            <file>file:/C:/CODE/Javacode/eltorneo/ElTorneo/web-pages/mis-equipos.jsp</file>
-            <file>file:/C:/CODE/Javacode/eltorneo/ElTorneo/web-pages/temporada.jsp</file>
-            <file>file:/C:/CODE/Javacode/eltorneo/ElTorneo/web-pages/registrarJugador.jsp</file>
-            <file>file:/C:/CODE/Javacode/eltorneo/ElTorneo/web-pages/assets/js/Constantes.js</file>
         </group>
     </open-files>
 </project-private>

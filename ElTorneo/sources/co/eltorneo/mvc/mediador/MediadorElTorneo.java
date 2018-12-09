@@ -930,7 +930,6 @@ public class MediadorElTorneo {
                 if (respuesta == null) {
                     throw new Exception("ERROR no se pudo registrar el partido");
                 }
-
                 System.out.println("ID :" + part.getId() + " ---equipo-> " + part.getEquipoA() + "  vs  equipo ->" + part.getEquipoB());
                 idPartido++;
             }

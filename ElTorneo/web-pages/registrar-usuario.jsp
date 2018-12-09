@@ -156,7 +156,6 @@
                                 registradoPor: nombreUsuario
 
                             };
-
                             //esta es la forma de llamar un metodo de la fachada, ajaxElTorneo. y el nombre de la funcion
                             //aqui si importa el orden de los objetos, por que como este en la fachada se deben poner, en este caso primero el tecnico
                             ajaxElTorneo.registrarTecnico(tecnico, usuario, {

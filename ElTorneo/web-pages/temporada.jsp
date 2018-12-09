@@ -56,7 +56,7 @@
 
 
 <div class="card tc-card bodyRegistrar" id="bodyRegistrarTemporada" style="display: none;">
-    <div class="card-body"  >
+    <div class="card-body">
         <h4 class="card-title" id="tituloForm"> <b> Torneo </b></h4> 
         <br>
         <form class="forms-sample" id="edit_temporada"  onsubmit="return false;">

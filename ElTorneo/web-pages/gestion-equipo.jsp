@@ -32,9 +32,9 @@
     </div>
 </div>
 
-<div class="card tc-card" id="bodyRegistrarEquipo" style="display: none;">
+<div class="card tc-card bodyRegistrar" id="bodyRegistrarEquipo" style="display: none;">
     <div class="card-body"  >
-        <h4 class="card-title" id="tituloForm"> <b>  Registrar equipo </b></h4> 
+        <h4 class="card-title" id="tituloForm"> <b>  Editar equipo </b></h4> 
         <br>
         <form class="forms-sample" id="reg_equipo"  onsubmit="return false;">
             <div class="row">
@@ -140,11 +140,8 @@
         });
     }
 
-    function editarEquipo() {//aqui empieza la funcion del registro del tecnico
+    function editarEquipo() {
         $("#boton").prop('disabled', true);
-        //en la fachada declare que el metodo registrar tecnico recibia dos  objetos
-
-        //esta es la forma de armar un objeto, el nombre no importa, lo que importa son los atributos que deben ser igual a como estan en el dto
         var equipo = {
             id: idEquipoEditar,
             nombre: $("#nombreEquipo").val(),

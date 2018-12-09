@@ -18,22 +18,18 @@
     try {
         System.out.print("llegue al index control");
         if (!ValidaString.isNullOrEmptyString(request.getRemoteUser())) {
-            System.out.print("pase el primer if");
             datosUsuario = fachadaSeguridad.consultarDatosUsuarioLogueado(request.getRemoteUser());
             System.out.print(datosUsuario.getEstado());
 
             if (datosUsuario != null && !datosUsuario.getEstado().equals("0")) {
                 session.setAttribute("datosUsuario", datosUsuario);
                 System.out.println("este es el tipo de usuario " + datosUsuario.getIdTipoUsuario());
-//                response.sendRedirect(request.getContextPath() + "/index.jsp");
 
                 if (datosUsuario.getIdTipoUsuario().equals("1")) {
-                    //  session.setAttribute("paginaInicial", "index_superadmin.jsp");
                     System.out.println("estamos en index control " + datosUsuario.toStringJson());
                     request.getRequestDispatcher("/inicio.jsp").forward(request, response);
 
                 } else {
-                    System.out.println("entro al else de tipo de usuario");
                     request.getRequestDispatcher("/inicio.jsp").forward(request, response);
                 }
             } else {

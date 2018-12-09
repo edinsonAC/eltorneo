@@ -28,8 +28,8 @@
 </div>
 <script type="text/javascript" src="assets/js/Constantes.js"></script>
 <script>
-                        function recargar() {
-                            jQuery("#contenidoPpal").load("admin/registrar-usuario.jsp");
+                        function redireccionar() {
+                            jQuery("#contenidoPrincipal").load("mis-equipos.jsp");
                         }
                         // esto que esta debajo son clases que hacen que en los input no se puedan usar algunos caracteres 
                         $(".numeros").on("input", function () {
@@ -95,7 +95,7 @@
                             //esta es la forma de armar un objeto, el nombre no importa, lo que importa son los atributos que deben ser igual a como estan en el dto
                             var equipo = {
                                 nombre: $("#nombreEquipo").val(),
-                                idTecnico: idUsuario,
+                                idTecnico: idTecnicoLogueado,
                                 registradoPor: nombreUsuario  // es una variable global que cree en los jsp, guarda el nombre del que este logueado
 
                             };
@@ -104,6 +104,7 @@
                                 callback: function (data) {
                                     if (data !== null) {
                                         $("#boton").prop('disabled', false);
+                                        cargarPagina('mis-equipos.jsp');
                                         limpiar();
                                     } else {
                                         $("#boton").prop('disabled', false);
